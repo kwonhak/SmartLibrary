@@ -1,0 +1,78 @@
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#ffffffff"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="#ffffffff"
+            android:orientation="horizontal" >
+    
+	    <Button
+	        android:id="@+id/bt_home"
+	        android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	    	android:layout_weight="1"
+	    	android:text="home"
+	    	/>
+	    <Button
+	        android:id="@+id/bt_search"
+	        android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	    	android:layout_weight="2"
+	    	android:text="검색"
+	    	/>
+	    <Button
+	        android:id="@+id/bt_search"
+	        android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	    	android:layout_weight="1"
+	    	android:text="..."
+	    	/>
+	      
+	    </LinearLayout>
+	    
+        <LinearLayout
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal" 
+           android:background="@android:color/white" 
+            >         
+
+	    <EditText
+	        android:id="@+id/book_input"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:hint="도서정보를 입력하세요" />
+	    <Button 
+	        android:id="@+id/searchButton"
+	        android:text="Search"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:onClick="search"
+	        />
+	  </LinearLayout>
+	 	  <LinearLayout
+			android:orientation="vertical"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent">
+		
+			<ListView
+				android:layout_height="wrap_content"
+				android:id="@+id/book_list"
+				android:layout_width="fill_parent"></ListView>
+		</LinearLayout>
+
+	</LinearLayout>
+	
+</RelativeLayout>

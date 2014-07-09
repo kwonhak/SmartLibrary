@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    
+    <LinearLayout 
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        >
+        <TextView 
+            android:text="학번"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/student_id"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+        
+    </LinearLayout>
+
+    <LinearLayout 
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        >
+        <TextView 
+            android:text="패스워드"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/student_pw"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" 
+            android:password="true"
+            />
+        
+    </LinearLayout>
+</LinearLayout>

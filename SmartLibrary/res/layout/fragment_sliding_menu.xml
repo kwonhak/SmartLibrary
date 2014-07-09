@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    <SlidingDrawer
+        android:id="@+id/slidingdrawer"
+        android:layout_width="200dp"
+        android:layout_height="fill_parent"
+        android:layout_gravity="right"
+        android:orientation="horizontal"
+        android:handle="@+id/handle"
+        android:content="@+id/sliding_content">
+        <Button 
+            android:id="@+id/sliding_handle"
+            android:text="*"
+            android:layout_width="10dp"
+            android:layout_height="fill_parent"
+            />
+        <LinearLayout 
+            android:id="@+id/sliding_content"
+            android:layout_width="fill_parent"
+    		android:layout_height="fill_parent"
+    		android:orientation="vertical" 
+            android:background="#000000"
+            >
+            <TextView 
+                android:text="여기에 버튼 넣자"
+                android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    		
+                />
+            
+            
+        </LinearLayout>
+    </SlidingDrawer>
+
+</LinearLayout>

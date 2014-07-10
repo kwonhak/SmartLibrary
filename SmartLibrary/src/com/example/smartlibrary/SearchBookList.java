@@ -13,6 +13,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -47,8 +48,8 @@ public class SearchBookList extends Activity implements OnItemClickListener, OnC
 	  Intent intent = getIntent();
 	  String searchText = intent.getStringExtra("text");
 	  querytxt = searchText;
-	 // Toast.makeText(getApplicationContext(), searchText, Toast.LENGTH_LONG).show();
-	 
+	  Toast.makeText(getApplicationContext(), searchText, Toast.LENGTH_LONG).show();
+	  Log.d("kh","query "+searchText);
 	  select();
 	  
 	  
@@ -57,7 +58,7 @@ public class SearchBookList extends Activity implements OnItemClickListener, OnC
 	 mAlData = new ArrayList<String>();
 	 mAaBooklist = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mAlData);
 
-	 //¸®½ºÆ®ºä¿¡ ¾î´ðÅÍ¸¦ ¼¼ÆÃ
+	 //ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ä¿¡ ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½
 	 mLvBooklist.setAdapter(mAaBooklist);
 	 
 	 mLvBooklist.setOnItemClickListener(this);
@@ -70,7 +71,7 @@ public class SearchBookList extends Activity implements OnItemClickListener, OnC
 				
 				@Override
 				public void run() {
-					ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+					final ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 					
 					nameValuePairs.add(new BasicNameValuePair("id",querytxt));
 					
@@ -78,11 +79,11 @@ public class SearchBookList extends Activity implements OnItemClickListener, OnC
 						
 						HttpClient httpclient = new DefaultHttpClient();
 						HttpPost httppost = new HttpPost("http://112.108.40.87/select.php");
-						httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+						httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,HTTP.UTF_8));
 						HttpResponse response = httpclient.execute(httppost);
-						HttpEntity entity = response.getEntity();
+						HttpEntity entity = response.getEntity();						
 						is = entity.getContent();
-						//Log.d("kh", "connection success");
+						//Log.d("kh", "connection success"+is);
 								
 						
 						
@@ -95,7 +96,8 @@ public class SearchBookList extends Activity implements OnItemClickListener, OnC
 					}
 
 					try{
-						BufferedReader reader = new BufferedReader(new InputStreamReader(is,"euckr"),8);
+						
+						BufferedReader reader = new BufferedReader(new InputStreamReader(is,"UTF_8"),8);
 						StringBuilder sb = new StringBuilder();
 						
 						while((line = reader.readLine())!=null)
@@ -115,7 +117,7 @@ public class SearchBookList extends Activity implements OnItemClickListener, OnC
 					
 					try
 			    	{
-			        	Log.d("kh", "1");
+						Log.d("kh", "1");
 			        	JSONObject json_data = new JSONObject(result);
 			        	Log.e("kh", "2");
 			        	bookname=(json_data.getString("bookname"));
@@ -124,7 +126,7 @@ public class SearchBookList extends Activity implements OnItemClickListener, OnC
 			        	Log.d("kh", bookname);
 						
 
-			        	//¸®½ºÆ®ºä¿¡ ³Ö±â
+			        	//ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ä¿¡ ï¿½Ö±ï¿½
 			        	//mAaBooklist.add("");
 			        	//mAaBooklist.notifyDataSetChanged();
 			    	}
@@ -152,14 +154,14 @@ public class SearchBookList extends Activity implements OnItemClickListener, OnC
 
 		         
 
-		        // ArrayList ÃÊ±âÈ­
+		        // ArrayList ï¿½Ê±ï¿½È­
 
 		        mAlData.clear();
 		       
 
 		         
 
-		        // ArrayList¿¡ ´õ¹Ì µ¥ÀÌÅÍ ÀÔ·Â
+		        // ArrayListï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½
 
 		        defaultData();              
 
@@ -168,45 +170,45 @@ public class SearchBookList extends Activity implements OnItemClickListener, OnC
 
 		    {
 
-		        mAlData.add("¾ÆÀÌÅÛ 00");
+		        mAlData.add("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 00");
 
-		        mAlData.add("¾ÆÀÌÅÛ 01");
+		        mAlData.add("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 01");
 
-		        mAlData.add("¾ÆÀÌÅÛ 02");
+		        mAlData.add("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 02");
 
-		        mAlData.add("¾ÆÀÌÅÛ 03");
+		        mAlData.add("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 03");
 
-		        mAlData.add("¾ÆÀÌÅÛ 04");
+		        mAlData.add("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 04");
 
-		        mAlData.add("¾ÆÀÌÅÛ 05");
+		        mAlData.add("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 05");
 
-		        mAlData.add("¾ÆÀÌÅÛ 06");
+		        mAlData.add("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 06");
 
-		        mAlData.add("¾ÆÀÌÅÛ 07");
+		        mAlData.add("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 07");
 
-		        mAlData.add("¾ÆÀÌÅÛ 08");
+		        mAlData.add("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 08");
 
-		        mAlData.add("¾ÆÀÌÅÛ 09");
+		        mAlData.add("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 09");
 
-		        mAlData.add("¾ÆÀÌÅÛ 10");
+		        mAlData.add("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 10");
 
-		        mAlData.add("¾ÆÀÌÅÛ 11");
+		        mAlData.add("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 11");
 
-		        mAlData.add("¾ÆÀÌÅÛ 12");
+		        mAlData.add("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 12");
 
-		        mAlData.add("¾ÆÀÌÅÛ 13");
+		        mAlData.add("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 13");
 
-		        mAlData.add("¾ÆÀÌÅÛ 14");
+		        mAlData.add("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 14");
 
-		        mAlData.add("¾ÆÀÌÅÛ 15");
+		        mAlData.add("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 15");
 
-		        mAlData.add("¾ÆÀÌÅÛ 16");
+		        mAlData.add("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 16");
 
-		        mAlData.add("¾ÆÀÌÅÛ 17");
+		        mAlData.add("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 17");
 
-		        mAlData.add("¾ÆÀÌÅÛ 18");
+		        mAlData.add("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 18");
 
-		        mAlData.add("¾ÆÀÌÅÛ 19");
+		        mAlData.add("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 19");
 
 		    }
 		  
@@ -218,7 +220,7 @@ public class SearchBookList extends Activity implements OnItemClickListener, OnC
 
 		         
 
-		        // ¸®½ºÆ®¿¡¼­ µ¥ÀÌÅÍ¸¦ ¹Þ¾Æ¿Â´Ù.
+		        // ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½Þ¾Æ¿Â´ï¿½.
 
 //		      String data = (String) parent.getItemAtPosition(position);
 
@@ -226,9 +228,9 @@ public class SearchBookList extends Activity implements OnItemClickListener, OnC
 
 		         
 
-		        // »èÁ¦ ´ÙÀÌ¾ó·Î±×¿¡ º¸¿©ÁÙ ¸Þ½ÃÁö¸¦ ¸¸µç´Ù.
+		        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾ï¿½Î±×¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½.
 
-		        String message = "ÇØ´ç µ¥ÀÌÅÍ¸¦ »èÁ¦ÇÏ½Ã°Ú½À´Ï±î?<br />" + 
+		        String message = "ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï½Ã°Ú½ï¿½ï¿½Ï±ï¿½?<br />" + 
 
 		                "position : " + position + "<br />" +
 
@@ -246,13 +248,13 @@ public class SearchBookList extends Activity implements OnItemClickListener, OnC
 
 		            {
 
-		                // ¼±ÅÃµÈ ¾ÆÀÌÅÛÀ» ¸®½ºÆ®¿¡¼­ »èÁ¦ÇÑ´Ù.
+		                // ï¿½ï¿½ï¿½Ãµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 
 		                mAlData.remove(position);
 
 		                 
 
-		                // Adapter¿¡ µ¥ÀÌÅÍ°¡ ¹Ù²ï°É ¾Ë¸®°í ¸®½ºÆ®ºä¿¡ ´Ù½Ã ±×¸°´Ù.
+		                // Adapterï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½Ù²ï¿½ï¿½ ï¿½Ë¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ä¿¡ ï¿½Ù½ï¿½ ï¿½×¸ï¿½ï¿½ï¿½.
 
 		                mAaBooklist.notifyDataSetChanged();               
 
@@ -262,15 +264,15 @@ public class SearchBookList extends Activity implements OnItemClickListener, OnC
 
 		         
 
-		        // »èÁ¦¸¦ ¹°¾îº¸´Â ´ÙÀÌ¾ó·Î±×¸¦ »ý¼ºÇÑ´Ù.
+		        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½îº¸ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾ï¿½Î±×¸ï¿½ ï¿½ï¿½ï¿½Ñ´ï¿½.
 
 		        new AlertDialog.Builder(this)
 
-		            .setTitle("http://croute.me - ¿¹Á¦")
+		            .setTitle("http://croute.me - ï¿½ï¿½ï¿½ï¿½")
 
 		            .setMessage(Html.fromHtml(message))
 
-		            .setPositiveButton("»èÁ¦", deleteListener)
+		            .setPositiveButton("ï¿½ï¿½ï¿½ï¿½", deleteListener)
 
 		            .show();
 		        */
@@ -291,7 +293,7 @@ public class SearchBookList extends Activity implements OnItemClickListener, OnC
 
 		        {
 
-		        // ¸®½ºÆ®¿¡ Ãß°¡ ¹öÆ°ÀÌ Å¬¸¯µÇ¾úÀ»¶§ÀÇ Ã³¸®
+		        // ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ß°ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
 
 		        case R.id.main_b_input_to_list:
 
@@ -299,9 +301,9 @@ public class SearchBookList extends Activity implements OnItemClickListener, OnC
 
 		            {
 
-		                // µ¥ÀÌÅÍ¸¦ ÀÔ·ÂÇÏ¶ó´Â ¸Þ½ÃÁö Åä½ºÆ®¸¦ Ãâ·ÂÇÑ´Ù.
+		                // ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½Ô·ï¿½ï¿½Ï¶ï¿½ï¿½ ï¿½Þ½ï¿½ï¿½ï¿½ ï¿½ä½ºÆ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 
-		                Toast.makeText(this, "µ¥ÀÌÅÍ¸¦ ÀÔ·ÂÇÏ¼¼¿ä.", Toast.LENGTH_SHORT).show();
+		                Toast.makeText(this, "ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½Ô·ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½.", Toast.LENGTH_SHORT).show();
 
 		            }
 
@@ -309,37 +311,37 @@ public class SearchBookList extends Activity implements OnItemClickListener, OnC
 
 		            {
 
-		                // ÀÔ·ÂÇÒ µ¥ÀÌÅÍ¸¦ ¹Þ¾Æ¿Â´Ù.
+		                // ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½Þ¾Æ¿Â´ï¿½.
 
 		                String data = mEtInputText.getText().toString();
 
 		                 
 
-		                // ¸®½ºÆ®¿¡ µ¥ÀÌÅÍ¸¦ ÀÔ·ÂÇÑ´Ù.
+		                // ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½Ô·ï¿½ï¿½Ñ´ï¿½.
 
 		                mAlData.add(data);
 
 		                 
 
-		                // Adapter¿¡ µ¥ÀÌÅÍ°¡ ¹Ù²ï°É ¾Ë¸®°í ¸®½ºÆ®ºä¿¡ ´Ù½Ã ±×¸°´Ù.
+		                // Adapterï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½Ù²ï¿½ï¿½ ï¿½Ë¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ä¿¡ ï¿½Ù½ï¿½ ï¿½×¸ï¿½ï¿½ï¿½.
 
 		                mAaString.notifyDataSetChanged();
 
 		                 
 
-		                // µ¥ÀÌÅÍ Ãß°¡ ¼º°ø ¸Þ½ÃÁö Åä½ºÆ®¸¦ Ãâ·ÂÇÑ´Ù.
+		                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ½ï¿½ï¿½ï¿½ ï¿½ä½ºÆ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 
-		                Toast.makeText(this, "µ¥ÀÌÅÍ°¡ Ãß°¡µÇ¾ú½À´Ï´Ù.", Toast.LENGTH_SHORT).show();
+		                Toast.makeText(this, "ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ß°ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½Ï´ï¿½.", Toast.LENGTH_SHORT).show();
 
 		                 
 
-		                // EditTextÀÇ ³»¿ëÀ» Áö¿î´Ù.
+		                // EditTextï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½.
 
 		                mEtInputText.setText("");
 
 		                 
 
-		                // µ¥ÀÌÅÍ°¡ Ãß°¡µÈ À§Ä¡(¸®½ºÆ®ºäÀÇ ¸¶Áö¸·)À¸·Î Æ÷Ä¿½º¸¦ ÀÌµ¿½ÃÅ²´Ù.
+		                // ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ß°ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡(ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½ï¿½Å²ï¿½ï¿½.
 
 		                mLvList.setSelection(mAlData.size()-1);
 

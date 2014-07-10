@@ -1,6 +1,9 @@
 package com.example.smartlibrary;
 
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -43,23 +46,28 @@ public class SearchViewerActivity extends Fragment  {
 					break;
 				case R.id.searchButton:
 					
-
-					Intent intent_search = new Intent();
-					intent_search.setClass(getActivity(), SearchBookList.class);
-					intent_search.putExtra("text", e_id.getText().toString());
-					Log.d(TAG, "searchButton " + intent_search);
-					startActivity(intent_search);
-					break;
+					String encode_str = null;
+					encode_str = e_id.getText().toString();
+						Intent intent_search = new Intent();
+						intent_search.setClass(getActivity(), SearchBookList.class);
+						//intent_search.putExtra("text",encode_str);
+						intent_search.putExtra("text", e_id.getText(). toString());
+						Log.d("kh", "searchButton " + encode_str);
+						startActivity(intent_search);
+						break;
+	
+					
+					
 				}
 			}
 		});
 		
 		
-		// ArrayAdapter °´Ã¼¸¦ »ı¼ºÇÑ´Ù.
+		// ArrayAdapter ê°ì²´ë¥¼ ìƒì„±í•œë‹¤.
 		ArrayAdapter<String> adapter;
 
-		// ¸®½ºÆ®ºä°¡ º¸¿©Áú ¾ÆÀÌÅÛ ¸®¼Ò½º¿Í ¹®ÀÚ¿­ Á¤º¸¸¦ ÀúÀåÇÑ´Ù
-		// °´Ã¼¸í = new ArrayAdapter<µ¥ÀÌÅÍÇü>(ÂüÁ¶ÇÒ¸Ş¼Òµå, º¸¿©Áú¾ÆÀÌÅÛ¸®¼Ò½º, º¸¿©Áú¹®ÀÚ¿­);
+		// ë¦¬ìŠ¤íŠ¸ë·°ê°€ ë³´ì—¬ì§ˆ ì•„ì´í…œ ë¦¬ì†ŒìŠ¤ì™€ ë¬¸ìì—´ ì •ë³´ë¥¼ ì €ì¥í•œë‹¤
+		// ê°ì²´ëª… = new ArrayAdapter<ë°ì´í„°í˜•>(ì°¸ì¡°í• ë©”ì†Œë“œ, ë³´ì—¬ì§ˆì•„ì´í…œë¦¬ì†ŒìŠ¤, ë³´ì—¬ì§ˆë¬¸ìì—´);
 		adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, book_list_item);
 
 

@@ -16,11 +16,8 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,6 +34,7 @@ public class SearchBookList extends Activity implements OnItemClickListener, OnC
 	String result = null;
 	String line = null;
 	String bookname;
+	String querytxt;
 	private ListView mLvBooklist;
 	private ArrayList<String> mAlData;
 	private ArrayAdapter<String> mAaBooklist;
@@ -48,6 +46,11 @@ public class SearchBookList extends Activity implements OnItemClickListener, OnC
 	
 	  Intent intent = getIntent();
 	  String searchText = intent.getStringExtra("text");
+	  querytxt = searchText;
+	 // Toast.makeText(getApplicationContext(), searchText, Toast.LENGTH_LONG).show();
+	 
+	  select();
+	  
 	  
 	 mLvBooklist = (ListView) findViewById(R.id.book_list);
 	 
@@ -69,21 +72,17 @@ public class SearchBookList extends Activity implements OnItemClickListener, OnC
 				public void run() {
 					ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 					
-					nameValuePairs.add(new BasicNameValuePair("id",id));
+					nameValuePairs.add(new BasicNameValuePair("id",querytxt));
 					
 					try{
-						Log.d("kh", "1");
+						
 						HttpClient httpclient = new DefaultHttpClient();
-						Log.d("kh", "2");
 						HttpPost httppost = new HttpPost("http://112.108.40.87/select.php");
-						Log.d("kh", "3");
 						httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-						Log.d("kh", "4");
 						HttpResponse response = httpclient.execute(httppost);
 						HttpEntity entity = response.getEntity();
-						Log.d("kh", "5");
 						is = entity.getContent();
-						Log.d("kh", "connection success");
+						//Log.d("kh", "connection success");
 								
 						
 						
@@ -94,19 +93,19 @@ public class SearchBookList extends Activity implements OnItemClickListener, OnC
 						//Toast.makeText(getApplicationContext(), "Invalid IP Address",Toast.LENGTH_LONG).show();
 						
 					}
-					
-					
 
 					try{
-						BufferedReader reader = new BufferedReader(new InputStreamReader(is,"utf-8"),8);
+						BufferedReader reader = new BufferedReader(new InputStreamReader(is,"euckr"),8);
 						StringBuilder sb = new StringBuilder();
+						
 						while((line = reader.readLine())!=null)
 						{
 							sb.append(line+"\n");
 						}
 						is.close();
+			        	Log.d("kh", "result");
 						result = sb.toString();
-						Log.e("pass 2","Connection success");
+						Log.d("kh",result);
 					}
 					catch(Exception e)
 					{
@@ -116,18 +115,30 @@ public class SearchBookList extends Activity implements OnItemClickListener, OnC
 					
 					try
 			    	{
+			        	Log.d("kh", "1");
 			        	JSONObject json_data = new JSONObject(result);
+			        	Log.e("kh", "2");
 			        	bookname=(json_data.getString("bookname"));
+			        	Log.d("kh", "3");
+			        	Toast.makeText(getApplicationContext(), bookname, Toast.LENGTH_LONG).show();
+			        	Log.d("kh", bookname);
+						
 
 			        	//리스트뷰에 넣기
+			        	//mAaBooklist.add("");
+			        	//mAaBooklist.notifyDataSetChanged();
 			    	}
 			        catch(Exception e)
 			    	{
 			        	Log.e("Fail 3", e.toString());
 			    	}
+
+					
+					
 				}
 			}).start();
 
+			
 			
 		}
 		
@@ -144,6 +155,7 @@ public class SearchBookList extends Activity implements OnItemClickListener, OnC
 		        // ArrayList 초기화
 
 		        mAlData.clear();
+		       
 
 		         
 

@@ -3,6 +3,8 @@ package com.example.smartlibrary;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 import org.apache.http.HttpEntity;
@@ -14,6 +16,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -25,6 +28,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -51,7 +55,7 @@ public class SearchBookList extends Activity implements OnItemClickListener, OnC
 	  Toast.makeText(getApplicationContext(), searchText, Toast.LENGTH_LONG).show();
 	  Log.d("kh","query "+searchText);
 	  select();
-	  
+	  Button btn = (Button)findViewById(R.id.searchButton);
 	  
 	 mLvBooklist = (ListView) findViewById(R.id.book_list);
 	 
@@ -62,9 +66,59 @@ public class SearchBookList extends Activity implements OnItemClickListener, OnC
 	 mLvBooklist.setAdapter(mAaBooklist);
 	 
 	 mLvBooklist.setOnItemClickListener(this);
+	 btn.setOnClickListener(new Button.OnClickListener(){
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+		String json = DownloadHtml("http://112.108.40.87/select.php");
+		Log.d("kh",json);
+		try{
+			
+			
+		}
+		 catch(Exception e) {
+		     Toast.makeText(v.getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+		    }
+		
+
+		} 
+	 });
 	  
 	 }
+	 
+	 String DownloadHtml(String addr){
+		  StringBuilder jsonHtml = new StringBuilder();
+		   try{
+		      // 연결 url 설정
+		      URL url = new URL(addr);
+		      // 커넥션 객체 생성
+		      HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+		      // 연결되었으면.
+		      if(conn != null){
+		         conn.setConnectTimeout(10000);
+		         conn.setUseCaches(false);
+		         // 연결되었음 코드가 리턴되면.
+		         if(conn.getResponseCode() == HttpURLConnection.HTTP_OK){
+		            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "EUC-KR"));
+		            for(;;){
+		                // 웹상에 보여지는 텍스트를 라인단위로 읽어 저장.  
+		                String line = br.readLine();
+		                if(line == null) break;
+		                // 저장된 텍스트 라인을 jsonHtml에 붙여넣음
+		                jsonHtml.append(line + "\n");
+		             }
+		          br.close();
+		       }
+		        conn.disconnect();
+		     }
+		   } catch(Exception ex){
+		      Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
+		   }
+		   return jsonHtml.toString();
+	 }
+		
 
+	 
 		public void select()
 		{
 			new Thread(new Runnable() {
@@ -118,6 +172,7 @@ public class SearchBookList extends Activity implements OnItemClickListener, OnC
 					try
 			    	{
 						Log.d("kh", "1");
+//						JSONArray ja = new JSONArray(result);
 			        	JSONObject json_data = new JSONObject(result);
 			        	Log.e("kh", "2");
 			        	bookname=(json_data.getString("bookname"));
@@ -126,7 +181,7 @@ public class SearchBookList extends Activity implements OnItemClickListener, OnC
 			        	Log.d("kh", bookname);
 						
 
-			        	//����Ʈ�信 �ֱ�
+			        	//여기에 리스트뷰 추가
 			        	//mAaBooklist.add("");
 			        	//mAaBooklist.notifyDataSetChanged();
 			    	}
@@ -145,24 +200,13 @@ public class SearchBookList extends Activity implements OnItemClickListener, OnC
 		}
 		
 		 @Override
-
 		    protected void onResume()
 
 		    {
 
 		        super.onResume();
 
-		         
-
-		        // ArrayList �ʱ�ȭ
-
 		        mAlData.clear();
-		       
-
-		         
-
-		        // ArrayList�� ���� ������ �Է�
-
 		        defaultData();              
 
 		    }
@@ -170,187 +214,19 @@ public class SearchBookList extends Activity implements OnItemClickListener, OnC
 
 		    {
 
-		        mAlData.add("������ 00");
-
-		        mAlData.add("������ 01");
-
-		        mAlData.add("������ 02");
-
-		        mAlData.add("������ 03");
-
-		        mAlData.add("������ 04");
-
-		        mAlData.add("������ 05");
-
-		        mAlData.add("������ 06");
-
-		        mAlData.add("������ 07");
-
-		        mAlData.add("������ 08");
-
-		        mAlData.add("������ 09");
-
-		        mAlData.add("������ 10");
-
-		        mAlData.add("������ 11");
-
-		        mAlData.add("������ 12");
-
-		        mAlData.add("������ 13");
-
-		        mAlData.add("������ 14");
-
-		        mAlData.add("������ 15");
-
-		        mAlData.add("������ 16");
-
-		        mAlData.add("������ 17");
-
-		        mAlData.add("������ 18");
-
-		        mAlData.add("������ 19");
-
+		        mAlData.add("검색한 자료가 없습니다.");
 		    }
 		  
 		  public void onItemClick(AdapterView<?> parent, View v, final int position, long id)
-
 		    {
-
-/*  
-
-		         
-
-		        // ����Ʈ���� �����͸� �޾ƿ´�.
-
-//		      String data = (String) parent.getItemAtPosition(position);
-
-		        String data = mAlData.get(position);
-
-		         
-
-		        // ���� ���̾�α׿� ������ �޽����� �����.
-
-		        String message = "�ش� �����͸� �����Ͻðڽ��ϱ�?<br />" + 
-
-		                "position : " + position + "<br />" +
-
-		                "data : " + data + "<br />";
-
-		         
-
-		        DialogInterface.OnClickListener deleteListener = new DialogInterface.OnClickListener()
-
-		        {
-
-		            @Override
-
-		            public void onClick(DialogInterface arg0, int arg1)
-
-		            {
-
-		                // ���õ� �������� ����Ʈ���� �����Ѵ�.
-
-		                mAlData.remove(position);
-
-		                 
-
-		                // Adapter�� �����Ͱ� �ٲ�� �˸��� ����Ʈ�信 �ٽ� �׸���.
-
-		                mAaBooklist.notifyDataSetChanged();               
-
-		            }
-
-		        };
-
-		         
-
-		        // ������ ����� ���̾�α׸� ���Ѵ�.
-
-		        new AlertDialog.Builder(this)
-
-		            .setTitle("http://croute.me - ����")
-
-		            .setMessage(Html.fromHtml(message))
-
-		            .setPositiveButton("����", deleteListener)
-
-		            .show();
-		        */
 
 		    }
 
 		 
 
 		    public void onClick(View v)
-
 		    {
 
-		        
-/*
-		         
-
-		        switch(v.getId())
-
-		        {
-
-		        // ����Ʈ�� �߰� ��ư�� Ŭ���Ǿ������� ó��
-
-		        case R.id.main_b_input_to_list:
-
-		            if(mEtInputText.getText().length() == 0)
-
-		            {
-
-		                // �����͸� �Է��϶�� �޽��� �佺Ʈ�� ����Ѵ�.
-
-		                Toast.makeText(this, "�����͸� �Է��ϼ���.", Toast.LENGTH_SHORT).show();
-
-		            }
-
-		            else
-
-		            {
-
-		                // �Է��� �����͸� �޾ƿ´�.
-
-		                String data = mEtInputText.getText().toString();
-
-		                 
-
-		                // ����Ʈ�� �����͸� �Է��Ѵ�.
-
-		                mAlData.add(data);
-
-		                 
-
-		                // Adapter�� �����Ͱ� �ٲ�� �˸��� ����Ʈ�信 �ٽ� �׸���.
-
-		                mAaString.notifyDataSetChanged();
-
-		                 
-
-		                // ������ �߰� ���� �޽��� �佺Ʈ�� ����Ѵ�.
-
-		                Toast.makeText(this, "�����Ͱ� �߰��Ǿ���ϴ�.", Toast.LENGTH_SHORT).show();
-
-		                 
-
-		                // EditText�� ������ �����.
-
-		                mEtInputText.setText("");
-
-		                 
-
-		                // �����Ͱ� �߰��� ��ġ(����Ʈ���� ������)���� ��Ŀ���� �̵���Ų��.
-
-		                mLvList.setSelection(mAlData.size()-1);
-
-		            }
-
-		            break;
-
-		        }
-*/
 		    }
   
 

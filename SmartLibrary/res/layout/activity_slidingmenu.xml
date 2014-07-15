@@ -22,14 +22,11 @@
             android:layout_width="fill_parent"
     		android:layout_height="fill_parent"
     		android:orientation="vertical" 
-            android:background="#000000"
-            >
+            android:background="#000000">
             <TextView 
                 android:text="여기에 버튼 넣자"
                 android:layout_width="wrap_content"
-    			android:layout_height="wrap_content"
-    		
-                />
+    			android:layout_height="wrap_content"/>
             
             
         </LinearLayout>

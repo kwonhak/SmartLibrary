@@ -1,5 +1,6 @@
 package com.example.smartlibrary;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -27,7 +28,19 @@ public class TabMenuActivity extends FragmentActivity implements OnClickListener
 		Button bt_twoFragment = (Button) findViewById(R.id.bt_twoFragment);
 		bt_twoFragment.setOnClickListener(this);
 		Button bt_threeFragment = (Button) findViewById(R.id.bt_threeFragment);
-		bt_threeFragment.setOnClickListener(this);
+		bt_threeFragment.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent intent_search = new Intent();
+				intent_search.setClass(TabMenuActivity.this, SettingActivity.class);
+				
+				Log.d("kh", "setting button ");
+				startActivity(intent_search);
+				
+			}
+		});
 
 		mCurrentFragmentIndex = FRAGMENT_ONE; 
 
@@ -62,10 +75,12 @@ public class TabMenuActivity extends FragmentActivity implements OnClickListener
 			break;
 		case FRAGMENT_TWO:
 			newFragment = new SearchViewerActivity();
+			Log.d("kh","프래그먼트2");
 			break;
-		case FRAGMENT_THREE:
-			newFragment = new SettingActivity();
-			break;
+//		case FRAGMENT_THREE:
+//			newFragment = new SettingActivity();
+//			Log.d("kh","프래그먼트3");
+//			break;
 
 		default:
 			Log.d(TAG, "Unhandle case");
@@ -80,18 +95,7 @@ public class TabMenuActivity extends FragmentActivity implements OnClickListener
 
 		switch (v.getId()) {
 
-		case R.id.bt_oneFragment:
-			mCurrentFragmentIndex = FRAGMENT_ONE;
-			fragmentReplace(mCurrentFragmentIndex);
-			break;
-		case R.id.bt_twoFragment:
-			mCurrentFragmentIndex = FRAGMENT_TWO;
-			fragmentReplace(mCurrentFragmentIndex);
-			break;
-		case R.id.bt_threeFragment:
-			mCurrentFragmentIndex = FRAGMENT_THREE;
-			fragmentReplace(mCurrentFragmentIndex);
-			break;
+		
 
 		}
 

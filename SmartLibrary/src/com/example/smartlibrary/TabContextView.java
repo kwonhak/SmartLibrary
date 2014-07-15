@@ -11,7 +11,7 @@ public class TabContextView extends android.support.v4.app.Fragment implements O
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		View v = inflater.inflate(R.layout.fragment_presentation_viewer, container, false);
+		View v = inflater.inflate(R.layout.activity_slidingmenu, container, false);
 
 		return v;
 	}

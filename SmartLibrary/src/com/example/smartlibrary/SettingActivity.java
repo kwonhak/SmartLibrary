@@ -1,12 +1,14 @@
 package com.example.smartlibrary;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class SettingActivity extends Activity  {
+public class SettingActivity extends Activity implements OnClickListener {
 
 	@Override
 	public void onCreate(Bundle SavedInstanceState) {
@@ -20,20 +22,35 @@ public class SettingActivity extends Activity  {
 		btnsearch.setOnClickListener(this);
 		btnbookinfo.setOnClickListener(this);
 		btnpersoninfo.setOnClickListener(this);
-		
-		public void onClick(View v){
-			switch(v.getId())
-			{
-			case R.id.bt_search:
-				break;
-			case R.id.bt_book:
-				break;
-			case R.id.bt_lock:
-				break;
-			
-			}
-		}
-		
 
+	}
+	
+	@Override
+	public void onClick(View v){
+		switch(v.getId())
+		{
+		case R.id.bt_search:
+			Intent intent_search = new Intent();
+			intent_search.setClass(SettingActivity.this, TabMenuActivity.class);
+			
+			Log.d("kh", "setting home button ");
+			startActivity(intent_search);
+			break;
+		case R.id.bt_book:
+			Intent intent_book = new Intent();
+			intent_book.setClass(SettingActivity.this, SettingActivity.class);
+			
+			Log.d("kh", "setting book button ");
+			startActivity(intent_book);
+			break;
+		case R.id.bt_lock:
+			Intent intent_person = new Intent();
+			intent_person.setClass(SettingActivity.this, SettingActivity.class);
+			
+			Log.d("kh", "setting personinfo button ");
+			startActivity(intent_person);
+			break;
+		
+		}
 	}
 }

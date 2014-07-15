@@ -32,49 +32,52 @@ public final class R {
         public static final int shadow=0x7f020005;
     }
     public static final class id {
-        public static final int action_settings=0x7f090018;
+        public static final int action_settings=0x7f09001a;
         public static final int author=0x7f090001;
-        public static final int book_info=0x7f090011;
-        public static final int book_input=0x7f090008;
-        public static final int book_list=0x7f090006;
+        public static final int book_info=0x7f090013;
+        public static final int book_input=0x7f09000a;
+        public static final int book_list=0x7f090007;
         public static final int bookname=0x7f090000;
-        public static final int bt_book=0x7f09000a;
-        public static final int bt_borrow=0x7f090003;
-        public static final int bt_home=0x7f090002;
-        public static final int bt_lock=0x7f09000b;
-        public static final int bt_oneFragment=0x7f090012;
-        public static final int bt_rent=0x7f090004;
-        public static final int bt_search=0x7f090005;
-        public static final int bt_threeFragment=0x7f090014;
-        public static final int bt_twoFragment=0x7f090013;
-        public static final int content=0x7f09000e;
-        public static final int fragment_mainContainer=0x7f090007;
-        public static final int handle=0x7f09000d;
-        public static final int ll_fragment=0x7f090015;
-        public static final int searchButton=0x7f090009;
-        public static final int sliding_content=0x7f09000f;
-        public static final int sliding_handle=0x7f090010;
-        public static final int slidingdrawer=0x7f09000c;
-        public static final int student_id=0x7f090016;
-        public static final int student_pw=0x7f090017;
+        public static final int bt_book=0x7f09000c;
+        public static final int bt_borrow=0x7f090004;
+        public static final int bt_home=0x7f090003;
+        public static final int bt_lock=0x7f09000d;
+        public static final int bt_oneFragment=0x7f090014;
+        public static final int bt_rent=0x7f090005;
+        public static final int bt_search=0x7f090006;
+        public static final int bt_setting=0x7f090009;
+        public static final int bt_threeFragment=0x7f090016;
+        public static final int bt_twoFragment=0x7f090015;
+        public static final int content=0x7f090010;
+        public static final int fragment_mainContainer=0x7f090008;
+        public static final int handle=0x7f09000f;
+        public static final int isbn=0x7f090002;
+        public static final int ll_fragment=0x7f090017;
+        public static final int searchButton=0x7f09000b;
+        public static final int sliding_content=0x7f090011;
+        public static final int sliding_handle=0x7f090012;
+        public static final int slidingdrawer=0x7f09000e;
+        public static final int student_id=0x7f090018;
+        public static final int student_pw=0x7f090019;
     }
     public static final class integer {
         public static final int num_cols=0x7f050000;
     }
     public static final class layout {
-        public static final int activity_bookitem=0x7f030000;
-        public static final int activity_borrow=0x7f030001;
-        public static final int activity_main=0x7f030002;
-        public static final int activity_searchbooklist=0x7f030003;
-        public static final int activity_setting=0x7f030004;
-        public static final int activity_slidingdrawer=0x7f030005;
-        public static final int activity_slidingmenu=0x7f030006;
-        public static final int empty=0x7f030007;
-        public static final int fragment_login=0x7f030008;
-        public static final int fragment_presentation_viewer=0x7f030009;
-        public static final int fragment_search=0x7f03000a;
-        public static final int fragment_tab_menu=0x7f03000b;
-        public static final int logindialog=0x7f03000c;
+        public static final int activity_bookinfo=0x7f030000;
+        public static final int activity_bookitem=0x7f030001;
+        public static final int activity_borrow=0x7f030002;
+        public static final int activity_main=0x7f030003;
+        public static final int activity_searchbooklist=0x7f030004;
+        public static final int activity_setting=0x7f030005;
+        public static final int activity_slidingdrawer=0x7f030006;
+        public static final int activity_slidingmenu=0x7f030007;
+        public static final int empty=0x7f030008;
+        public static final int fragment_login=0x7f030009;
+        public static final int fragment_presentation_viewer=0x7f03000a;
+        public static final int fragment_search=0x7f03000b;
+        public static final int fragment_tab_menu=0x7f03000c;
+        public static final int logindialog=0x7f03000d;
     }
     public static final class menu {
         public static final int main=0x7f080000;

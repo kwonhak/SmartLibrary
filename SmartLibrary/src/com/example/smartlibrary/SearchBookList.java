@@ -50,6 +50,7 @@ public class SearchBookList extends Activity implements OnItemClickListener,
 	String querytxt;
     DataAdapter adapter;
 	private ListView mListView = null;
+    EditText e_id;
 
 	private ArrayList<BookInfo> bkList;
 //	ArrayAdapter<String> adapter;
@@ -64,12 +65,17 @@ public class SearchBookList extends Activity implements OnItemClickListener,
 		Intent intent = getIntent();
 		String searchText = intent.getStringExtra("text");
 		querytxt = searchText;
-//		Toast.makeText(getApplicationContext(), searchText, Toast.LENGTH_LONG)
-//				.show();
-//		Log.d("kh", "query " + searchText);
 
-		Button btn = (Button) findViewById(R.id.searchButton);
-		final EditText e_id = (EditText) findViewById(R.id.book_input);
+		Button btnselect = (Button) findViewById(R.id.searchButton);
+		Button btnsearch = (Button) findViewById(R.id.bt_search);
+		Button btnhome = (Button) findViewById(R.id.bt_home);
+		Button btnsetting = (Button) findViewById(R.id.bt_setting);
+		btnhome.setOnClickListener(this);
+		btnsetting.setOnClickListener(this);
+		btnselect.setOnClickListener(this);
+		btnsearch.setOnClickListener(this);
+		
+	    e_id = (EditText) findViewById(R.id.book_input);
 		e_id.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
 		e_id.setInputType(InputType.TYPE_CLASS_TEXT);
 		
@@ -98,29 +104,48 @@ public class SearchBookList extends Activity implements OnItemClickListener,
 		mListView.setAdapter(adapter);
 		select(querytxt);
 
-		
-		
 		//여기부터
 		mListView.setOnItemClickListener(this);
-		btn.setOnClickListener(new Button.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				adapter.clear();
-				// TODO Auto-generated method stub
-				bkList = new ArrayList<BookInfo>();
-				Log.d("kh", e_id.getText().toString());
-				Log.d("kh", "json start");
-				select(e_id.getText().toString());
 
-				try {
+	}
 
-				} catch (Exception e) {
-					Log.e("Fail Button", e.toString());
-				}
+	@Override
+	public void onClick(View v){
+		switch(v.getId())
+		{
+		case R.id.bt_home:
+			Intent intent_home = new Intent();
+			intent_home.setClass(SearchBookList.this, TabMenuActivity.class);
+			
+			Log.d("kh", "list home button ");
+			startActivity(intent_home);
+			break;
+		case R.id.searchButton:
+			adapter.clear();
+			bkList = new ArrayList<BookInfo>();
+			Log.d("kh", e_id.getText().toString());
+			Log.d("kh", "json start");
+			select(e_id.getText().toString());
+//			
+			Log.d("kh", "list search button ");
 
-			}
-		});
-
+			break;
+		case R.id.bt_setting:
+			Intent intent_setting = new Intent();
+			intent_setting.setClass(SearchBookList.this, SettingActivity.class);
+			
+			Log.d("kh", "list setting button ");
+			startActivity(intent_setting);
+			break;
+		case R.id.bt_search:
+//			Intent intent_search = new Intent();
+//			intent_search.setClass(SearchBookList.this, SettingActivity.class);
+			
+			Log.d("kh", "list setting button ");
+//			startActivity(intent_search);
+			break;
+		
+		}
 	}
 	
 	public void select(final String qtx) {
@@ -128,16 +153,6 @@ public class SearchBookList extends Activity implements OnItemClickListener,
 
 			@Override
 			public void run() {
-				/*
-				final String bookTitle;
-				final String bookAuthor;
-				final String bookIsbn;
-				final String bookNum;
-				final String bookPublisher;
-				final String bookPubdate;
-				final String bookCategory;
-				final String bookReservation;
-*/
 				ArrayList bklist = new ArrayList<BookInfo>();
 			//	adapter = new ArrayAdapter<BookInfo>()
 				final ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
@@ -253,11 +268,15 @@ public class SearchBookList extends Activity implements OnItemClickListener,
 	public void onItemClick(AdapterView<?> parent, View v, final int position,
 			long id) {
 
+		String select_isbn = ((TextView) v.findViewById(R.id.isbn)).getText().toString();
+		Log.d("kh","isbn "+select_isbn);
+		Intent intent_search = new Intent();
+		intent_search.setClass(SearchBookList.this, BookInfoActivity.class);
+		intent_search.putExtra("text", select_isbn);
+		startActivity(intent_search);
 	}
 
-	public void onClick(View v) {
 
-	}
 
 	private class DataAdapter extends ArrayAdapter<BookInfo> {
 		// 레이아웃 XML을 읽어들이기 위한 객체
@@ -294,14 +313,16 @@ public class SearchBookList extends Activity implements OnItemClickListener,
 
 			if (data != null) {
 				// 화면 출력
-				TextView tv = (TextView) view.findViewById(R.id.bookname);
-				TextView tv2 = (TextView) view.findViewById(R.id.author);
+				TextView bkname = (TextView) view.findViewById(R.id.bookname);
+				TextView bkauthor = (TextView) view.findViewById(R.id.author);
+				TextView bkisbn = (TextView) view.findViewById(R.id.isbn);
+				
 				// 텍스트뷰1에 getLabel()을 출력 즉 첫번째 인수값
-				tv.setText(data.getBookname());
+				bkname.setText(data.getBookname());
 				// 텍스트뷰2에 getData()을 출력 즉 두번째 인수값
-				tv2.setText(data.getAuthor());
-				tv2.setTextColor(Color.BLACK);
-
+				bkauthor.setText(data.getAuthor());
+				bkauthor.setTextColor(Color.BLACK);
+				bkisbn.setText(data.getIsbn());
 			}
 
 			return view;
@@ -310,61 +331,4 @@ public class SearchBookList extends Activity implements OnItemClickListener,
 
 	}
 
-	public class BookInfo {
-		private String isbn;
-		private String num;
-		private String category;
-		private String author;
-		private String publisher;
-		private String pubdate;
-		private String bookname;
-		private String reservation;
-
-		public BookInfo(Context context, String b_isbn, String b_num,
-				String b_category, String b_author, String b_publisher,
-				String b_pubdate, String b_bookname, String b_reservation) {
-			isbn = b_isbn;
-			num = b_num;
-			category = b_category;
-			author = b_author;
-			publisher = b_publisher;
-			pubdate = b_pubdate;
-			bookname = b_bookname;
-			reservation = b_reservation;
-
-		}
-
-		public String getIsbn() {
-			return isbn;
-		}
-
-		public String getNum() {
-			return num;
-		}
-
-		public String getCategory() {
-			return category;
-		}
-
-		public String getAuthor() {
-			return author;
-		}
-
-		public String getPublisher() {
-			return publisher;
-		}
-
-		public String getPubdate() {
-			return pubdate;
-		}
-
-		public String getBookname() {
-			return bookname;
-		}
-
-		public String getReservation() {
-			return reservation;
-		}
-
-	}
 }

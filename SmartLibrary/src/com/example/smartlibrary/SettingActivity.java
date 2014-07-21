@@ -18,10 +18,12 @@ public class SettingActivity extends Activity implements OnClickListener {
 		Button btnsearch = (Button)findViewById(R.id.bt_search);
 		Button btnbookinfo = (Button)findViewById(R.id.bt_book);
 		Button btnpersoninfo = (Button)findViewById(R.id.bt_lock);
+		Button btnenroll = (Button)findViewById(R.id.bt_enroll);
 		
 		btnsearch.setOnClickListener(this);
 		btnbookinfo.setOnClickListener(this);
 		btnpersoninfo.setOnClickListener(this);
+		btnenroll.setOnClickListener(this);
 
 	}
 	
@@ -45,12 +47,23 @@ public class SettingActivity extends Activity implements OnClickListener {
 			break;
 		case R.id.bt_lock:
 			Intent intent_person = new Intent();
-			intent_person.setClass(SettingActivity.this, SettingActivity.class);
-			
+			intent_person.setClass(SettingActivity.this, SettingActivity.class);		
 			Log.d("kh", "setting personinfo button ");
 			startActivity(intent_person);
 			break;
 		
+		case R.id.bt_enroll:
+			Intent intent_enroll = new Intent();
+			intent_enroll.setClass(SettingActivity.this, BarcodeScan.class);		
+			Log.d("kh", "setting personinfo button ");
+			startActivity(intent_enroll);
+			break;
+		case R.id.bt_bluetooth:
+			Intent intent_bluetooth = new Intent();
+			intent_bluetooth.setClass(SettingActivity.this, ActivityBluetooth.class);
+			Log.d("kh", "setting bluetooth ");
+			startActivity(intent_bluetooth);
+			break;
 		}
 	}
 }

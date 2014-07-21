@@ -319,9 +319,13 @@ public class SearchBookList extends Activity implements OnItemClickListener,
 				
 				// 텍스트뷰1에 getLabel()을 출력 즉 첫번째 인수값
 				bkname.setText(data.getBookname());
+				
+				
 				// 텍스트뷰2에 getData()을 출력 즉 두번째 인수값
-				bkauthor.setText(data.getAuthor());
-				bkauthor.setTextColor(Color.BLACK);
+				bkauthor.setText(data.getAuthor()+"/");
+
+		//		bkauthor.append(data.getAuthor());
+				//bkauthor.setTextColor(Color.BLACK);
 				bkisbn.setText(data.getIsbn());
 			}
 

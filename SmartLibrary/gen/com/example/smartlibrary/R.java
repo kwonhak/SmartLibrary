@@ -32,10 +32,10 @@ public final class R {
         public static final int shadow=0x7f020005;
     }
     public static final class id {
-        public static final int action_settings=0x7f090030;
+        public static final int action_settings=0x7f090037;
         public static final int author=0x7f090004;
         public static final int barcode_image_view=0x7f09001f;
-        public static final int book_info=0x7f090029;
+        public static final int book_info=0x7f090030;
         public static final int book_input=0x7f09000f;
         public static final int book_list=0x7f09000a;
         public static final int bookname=0x7f090003;
@@ -46,13 +46,14 @@ public final class R {
         public static final int bt_enroll=0x7f090013;
         public static final int bt_home=0x7f090006;
         public static final int bt_lock=0x7f090012;
-        public static final int bt_oneFragment=0x7f09002a;
+        public static final int bt_oneFragment=0x7f090031;
         public static final int bt_rent=0x7f090008;
         public static final int bt_search=0x7f090009;
         public static final int bt_setting=0x7f09000e;
-        public static final int bt_threeFragment=0x7f09002c;
-        public static final int bt_twoFragment=0x7f09002b;
+        public static final int bt_threeFragment=0x7f090033;
+        public static final int bt_twoFragment=0x7f090032;
         public static final int btn_connect=0x7f09001a;
+        public static final int button_scan=0x7f09002f;
         public static final int content=0x7f090017;
         public static final int contents_supplement_text_view=0x7f090026;
         public static final int contents_text_view=0x7f090025;
@@ -60,10 +61,12 @@ public final class R {
         public static final int fragment_mainContainer=0x7f09000d;
         public static final int handle=0x7f090016;
         public static final int isbn=0x7f090005;
-        public static final int ll_fragment=0x7f09002d;
+        public static final int ll_fragment=0x7f090034;
         public static final int message=0x7f090002;
         public static final int meta_text_view=0x7f090024;
         public static final int meta_text_view_label=0x7f090023;
+        public static final int new_devices=0x7f09002e;
+        public static final int paired_devices=0x7f09002c;
         public static final int preview_view=0x7f09001c;
         public static final int reservation=0x7f090001;
         public static final int result_button_view=0x7f090027;
@@ -75,9 +78,13 @@ public final class R {
         public static final int sliding_handle=0x7f090019;
         public static final int slidingdrawer=0x7f090015;
         public static final int status_view=0x7f090028;
-        public static final int student_id=0x7f09002e;
-        public static final int student_pw=0x7f09002f;
+        public static final int student_id=0x7f090035;
+        public static final int student_pw=0x7f090036;
         public static final int time_text_view=0x7f090022;
+        public static final int title_left_text=0x7f090029;
+        public static final int title_new_devices=0x7f09002d;
+        public static final int title_paired_devices=0x7f09002b;
+        public static final int title_right_text=0x7f09002a;
         public static final int txt_result=0x7f09001b;
         public static final int type_text_view=0x7f090021;
         public static final int viewfinder_view=0x7f09001d;
@@ -97,12 +104,16 @@ public final class R {
         public static final int activity_slidingmenu=0x7f030008;
         public static final int bluetooth=0x7f030009;
         public static final int capture=0x7f03000a;
-        public static final int empty=0x7f03000b;
-        public static final int fragment_login=0x7f03000c;
-        public static final int fragment_presentation_viewer=0x7f03000d;
-        public static final int fragment_search=0x7f03000e;
-        public static final int fragment_tab_menu=0x7f03000f;
-        public static final int logindialog=0x7f030010;
+        public static final int custom_title=0x7f03000b;
+        public static final int device_list=0x7f03000c;
+        public static final int device_name=0x7f03000d;
+        public static final int empty=0x7f03000e;
+        public static final int fragment_login=0x7f03000f;
+        public static final int fragment_presentation_viewer=0x7f030010;
+        public static final int fragment_search=0x7f030011;
+        public static final int fragment_tab_menu=0x7f030012;
+        public static final int logindialog=0x7f030013;
+        public static final int message=0x7f030014;
     }
     public static final class menu {
         public static final int main=0x7f080000;
@@ -110,7 +121,21 @@ public final class R {
     public static final class string {
         public static final int action_settings=0x7f060001;
         public static final int app_name=0x7f060000;
+        public static final int button_scan=0x7f060009;
+        public static final int discoverable=0x7f06000c;
         public static final int hello_world=0x7f060002;
+        public static final int insecure_connect=0x7f06000b;
+        public static final int none_found=0x7f060006;
+        public static final int none_paired=0x7f060005;
+        /**   DeviceListActivity 
+         */
+        public static final int scanning=0x7f060003;
+        /**  Options Menu 
+         */
+        public static final int secure_connect=0x7f06000a;
+        public static final int select_device=0x7f060004;
+        public static final int title_other_devices=0x7f060008;
+        public static final int title_paired_devices=0x7f060007;
     }
     public static final class style {
         /** 

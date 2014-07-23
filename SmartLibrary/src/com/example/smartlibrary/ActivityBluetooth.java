@@ -67,10 +67,19 @@ public class ActivityBluetooth extends Activity implements OnClickListener {
 	        Log.d(TAG, "onActivityResult " + resultCode);
 	         
 	        switch (requestCode) {
+	        /** 추가된 부분 시작 **/
+	        case REQUEST_CONNECT_DEVICE:
+	            // When DeviceListActivity returns with a device to connect
+	            if (resultCode == Activity.RESULT_OK) {
+	                btService.getDeviceInfo(data);
+	            }
+	            break;
+	        /** 추가된 부분 끝 **/
 	 
 	        case REQUEST_ENABLE_BT:
 	            // When the request to enable Bluetooth returns
 	            if (resultCode == Activity.RESULT_OK) {
+	            	btService.scanDevice();
 	                 
 	            } else {
 	 

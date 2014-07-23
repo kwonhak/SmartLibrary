@@ -44,10 +44,11 @@
         </activity>
         <activity android:name="com.example.smartlibrary.BookInfoActivity" >
         </activity>
-        <activity android:name="com.example.smartlibrary.BarcodeScan"
-           >
+        <activity android:name="com.example.smartlibrary.BarcodeScan">
         </activity>
         <activity android:name="com.example.smartlibrary.ActivityBluetooth" >
+        </activity>
+        <activity android:name="com.example.smartlibrary.DeviceListActivity" >
         </activity>
     </application>
 

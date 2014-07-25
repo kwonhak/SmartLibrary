@@ -24,8 +24,11 @@ public class BarcodeScan extends Activity{
                 
                 public void onClick(View v) {
                     Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-                    intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+                    intent.putExtra("com.google.zxing.client.android.SCAN.SCAN_MODE", "QR_CODE_MODE");
                     startActivityForResult(intent, 0);
+                    
+                    
+
                 }
  
             });

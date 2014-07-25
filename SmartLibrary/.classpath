@@ -6,6 +6,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry exported="true" kind="lib" path="C:/adt-bundle-windows-x86_64-20131030/sdk/extras/android/support/v4/android-support-v4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Administrator/Downloads/core-3.1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Administrator/git/SmartLibrary/SmartLibrary/libs/core-3.1.0.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

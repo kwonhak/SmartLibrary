@@ -24,7 +24,9 @@ public class BluetoothService {
 
 	// RFCOMM Protocol
 	private static final UUID MY_UUID = UUID
-			.fromString("00000003-0000-1000-8000-00805F9B34FB");
+			.fromString("00001101-0000-1000-8000-00805F9B34FB");
+	//블루투스 서비스 프로토콜 주소
+	// http://dsnight.tistory.com/13
 
 	private BluetoothAdapter btAdapter;
 
@@ -348,7 +350,7 @@ public class BluetoothService {
 			InputStream tmpIn = null;
 			OutputStream tmpOut = null;
 
-			// BluetoothSocket�� inputstream �� outputstream�� ��´�.
+			// BluetoothSocket의 inputstream 과 outputstream을 얻는다.
 			try {
 				tmpIn = socket.getInputStream();
 				tmpOut = socket.getOutputStream();
@@ -368,7 +370,7 @@ public class BluetoothService {
 			// Keep listening to the InputStream while connected
 			while (true) {
 				try {
-					// InputStream���κ��� ���� �޴� �д� �κ�(���� �޴´�)
+					// InputStream으로부터 값을 받는 읽는 부분(값을 받는다)
 					bytes = mmInStream.read(buffer);
 
 				} catch (IOException e) {
@@ -387,7 +389,7 @@ public class BluetoothService {
 		 */
 		public void write(byte[] buffer) {
 			try {
-				// ���� ���� �κ�(���� ������)
+				// 값을 쓰는 부분(값을 보낸다)
 				mmOutStream.write(buffer);
 
 			} catch (IOException e) {

@@ -1,8 +1,11 @@
 package com.example.smartlibrary;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -24,9 +27,10 @@ public class BarcodeScan extends Activity{
                 
                 public void onClick(View v) {
                     Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+                    
                     intent.putExtra("com.google.zxing.client.android.SCAN.SCAN_MODE", "QR_CODE_MODE");
                     startActivityForResult(intent, 0);
-                    
+                   
                     
 
                 }
@@ -38,15 +42,24 @@ public class BarcodeScan extends Activity{
                 
                 public void onClick(View v) {
                     Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+                    intent.setPackage("com.google.zxing.client.android");
                     intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
+
+                    try{
                     startActivityForResult(intent, 0);
+                    }
+                    catch(ActivityNotFoundException e){
+                    	Log.d("___", e.toString());
+                    	 downloadFromMarket();
+
+                    }
                 }
  
             });
             
         } catch (ActivityNotFoundException anfe) {
             Log.e("onCreate", "Scanner Not Found", anfe);
-        }
+                   }
         
     }
     
@@ -67,9 +80,24 @@ public class BarcodeScan extends Activity{
                 Toast toast = Toast.makeText(this, "Scan was Cancelled!", Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.TOP, 25, 400);
                 toast.show();
+            
                 
             }
         }
     }
+    public void downloadFromMarket() {  
+        AlertDialog.Builder downloadDialog = new AlertDialog.Builder(this);  
+        downloadDialog.setTitle("Warning");  
+        downloadDialog.setMessage("Barcode app not found. Download?");  
+        downloadDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {  
+             public void onClick(DialogInterface dialogInterface, int i) {  
+                  Uri uri = Uri.parse("market://search?q=pname:com.google.zxing.client.android");  
+                  Intent intent = new Intent(Intent.ACTION_VIEW, uri);  
+                  startActivity(intent);  
+             }  
+        });  
+
+        downloadDialog.show();  
+   }  
 
 }

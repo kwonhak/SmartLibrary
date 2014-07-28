@@ -11,6 +11,9 @@
             backward-compatibility can go here.
         -->
     </style>
+    <style name="TestTheme" parent="android:Theme.Light" >
+        <item name="android:windowNoTitle">true</item>
+        </style>
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">

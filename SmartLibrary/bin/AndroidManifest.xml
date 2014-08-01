@@ -18,7 +18,7 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
-<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
         android:allowBackup="true"
@@ -39,30 +39,36 @@
         <activity android:name="com.example.smartlibrary.SearchViewerActivity" >
         </activity>
         <activity android:name="com.example.smartlibrary.SettingActivity" >
+            
         </activity>
         <activity android:name="com.example.smartlibrary.SlidingDrawer" >
         </activity>
         <activity android:name="com.example.smartlibrary.BookInfoActivity" >
         </activity>
-        <activity android:name="com.example.smartlibrary.BarcodeScan"
-            android:configChanges="orientation|keyboardHidden"
-  		    android:screenOrientation="portrait"
-			android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-			android:windowSoftInputMode="stateAlwaysHidden">
-            <intent-filter>
-                  <action android:name="android.intent.action.AndroidScanner"/>
-                  <category android:name="android.intent.category.DEFAULT"/>
-               </intent-filter>
-               <intent-filter>
-                  <action android:name="com.google.zxing.client.android.SCAN"/>
-                  <category android:name="android.intent.category.DEFAULT"/>
-               </intent-filter>
-        </activity>
         <activity android:name="com.example.smartlibrary.ActivityBluetooth" >
         </activity>
         <activity android:name="com.example.smartlibrary.DeviceListActivity" >
         </activity>
-         <activity android:name="com.example.smartlibrary.ActivityJoin" >
+        <activity android:name="com.example.smartlibrary.ActivityJoin" >
+        </activity>
+        <activity android:name="com.example.smartlibrary.GetBookdata" >
+        </activity>
+        <activity
+            android:name="com.example.smartlibrary.BarcodeScan"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="stateAlwaysHidden" >
+            <intent-filter>
+                <action android:name="android.intent.action.AndroidScanner" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.google.zxing.client.android.SCAN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
     </application>
 

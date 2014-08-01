@@ -4,123 +4,151 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="#ffffffff"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/bt_oneFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="home" />
+
+        <Button
+            android:id="@+id/bt_twoFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="검색" />
+
+        <Button
+            android:id="@+id/bt_threeFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="..." />
+    </LinearLayout>
     <!-- 위에 도서 정보 -->
 
-    
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:orientation="vertical" >
 
         <!-- 책제목 -->
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
             <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="marquee"              	
-            android:text="제 목"    />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="제 목" />
 
-            <TextView 
-            android:id="@+id/booktitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="marquee"              	
-                />
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp" />
         </LinearLayout>
 
-        <!--  저자사항 -->
+        <!-- 저자사항 -->
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal" >
-
-             <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="marquee"              	
-            android:text="저자"    />
-
-            <TextView 
-            android:id="@+id/booktitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="marquee"              	
-                />
-        </LinearLayout>
-        <!-- 출판사 발행년-->
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:orientation="horizontal" >
 
             <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="marquee"              	
-            android:text="발행사항"    />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="저자" />
 
-            <TextView 
-            android:id="@+id/booktitle"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp" />
+        </LinearLayout>
+        <!-- 출판사 발행년 -->
+
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="marquee"              	
-                />
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="출판사" />
+
+            <TextView
+                android:id="@+id/publisher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp" />
         </LinearLayout>
         <!-- 발행사항 -->
+
 
         <!-- ISBN -->
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-              <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="marquee"              	
-            android:text="ISBN"    />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="ISBN" />
 
-            <TextView 
-            android:id="@+id/booktitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="marquee"              	
-                />
+            <TextView
+                android:id="@+id/isbn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp" />
         </LinearLayout>
-    </LinearLayout>
 
-    <!-- 소장정보 -->
+        <!-- 소장정보 -->
 
+        <ListView
+            android:id="@+id/selectbook"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
 
-    <!-- 예약버튼 -->
+        <!-- 예약버튼 -->
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal" >
-      	    <Button
-	        android:id="@+id/reservation"
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:layout_weight="1"
-	    	android:text="예약하기"
-	    	/>
-      	    <Button
-	        android:id="@+id/message"
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:layout_weight="1"
-	    	android:text="메시지보내기"
-	    	/>
-        
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/reservation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="예약하기" />
+
+            <Button
+                android:id="@+id/message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="메시지보내기" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

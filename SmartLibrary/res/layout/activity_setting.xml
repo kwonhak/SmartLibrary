@@ -8,14 +8,6 @@
         android:layout_weight="1"
         android:background="#ffffffff"
         android:orientation="horizontal" >
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:background="#ffffffff"
-        android:orientation="horizontal" >
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -25,56 +17,64 @@
             android:background="#ffffffff"
             android:orientation="vertical" >
 
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="30dp" />
+
             <Button
                 android:id="@+id/bt_search"
-                android:layout_height="fill_parent"
                 android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
                 android:drawableLeft="@drawable/home"
                 android:drawablePadding="4dp"
                 android:text="Home" />
 
-             <Button
+            <Button
                 android:id="@+id/bt_login"
-                android:layout_height="fill_parent"
                 android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
                 android:drawableLeft="@drawable/home"
                 android:drawablePadding="4dp"
                 android:text="Login" />
-             
-             <Button
+
+            <Button
                 android:id="@+id/bt_join"
-                android:layout_height="fill_parent"
                 android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
                 android:drawableLeft="@drawable/home"
                 android:drawablePadding="4dp"
                 android:text="회원가입" />
-            
+
             <Button
                 android:id="@+id/bt_book"
-                android:layout_height="fill_parent"
                 android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
                 android:drawableLeft="@drawable/book"
                 android:drawablePadding="4dp"
                 android:text="대출정보" />
 
             <Button
                 android:id="@+id/bt_lock"
-                android:layout_height="fill_parent"
                 android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
                 android:drawableLeft="@drawable/lock"
                 android:drawablePadding="4dp"
                 android:text="회원정보" />
-              <Button
+
+            <Button
                 android:id="@+id/bt_enroll"
-                android:layout_height="fill_parent"
                 android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
                 android:drawableLeft="@drawable/book"
                 android:drawablePadding="4dp"
                 android:text="도서등록" />
-               <Button
+
+            <Button
                 android:id="@+id/bt_bluetooth"
-                android:layout_height="fill_parent"
                 android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
                 android:drawableLeft="@drawable/book"
                 android:drawablePadding="4dp"
                 android:text="Bluetooth" />

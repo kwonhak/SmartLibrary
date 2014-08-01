@@ -20,7 +20,6 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -28,16 +27,16 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.TextView.OnEditorActionListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
 public class SearchBookList extends Activity implements OnItemClickListener,
 		OnClickListener {
@@ -59,11 +58,13 @@ public class SearchBookList extends Activity implements OnItemClickListener,
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
+		Log.d("kh", "SearchBooklist " );
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_searchbooklist);
 
 		Intent intent = getIntent();
 		String searchText = intent.getStringExtra("text");
+		Log.d("kh", "searchtext: "+searchText );
 		querytxt = searchText;
 
 		Button btnselect = (Button) findViewById(R.id.searchButton);
@@ -91,7 +92,6 @@ public class SearchBookList extends Activity implements OnItemClickListener,
 					break;
 				default:
 					return false;
-
 				}
 				return true;
 			}
@@ -125,8 +125,7 @@ public class SearchBookList extends Activity implements OnItemClickListener,
 			bkList = new ArrayList<BookInfo>();
 			Log.d("kh", e_id.getText().toString());
 			Log.d("kh", "json start");
-			select(e_id.getText().toString());
-//			
+			select(e_id.getText().toString());		
 			Log.d("kh", "list search button ");
 
 			break;
@@ -138,8 +137,6 @@ public class SearchBookList extends Activity implements OnItemClickListener,
 			startActivity(intent_setting);
 			break;
 		case R.id.bt_search:
-//			Intent intent_search = new Intent();
-//			intent_search.setClass(SearchBookList.this, SettingActivity.class);
 			
 			Log.d("kh", "list setting button ");
 //			startActivity(intent_search);
@@ -153,8 +150,8 @@ public class SearchBookList extends Activity implements OnItemClickListener,
 
 			@Override
 			public void run() {
-				ArrayList bklist = new ArrayList<BookInfo>();
-			//	adapter = new ArrayAdapter<BookInfo>()
+				Log.d("kh", "select start ");
+
 				final ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 
 				nameValuePairs.add(new BasicNameValuePair("id", qtx));
@@ -173,9 +170,6 @@ public class SearchBookList extends Activity implements OnItemClickListener,
 
 				} catch (Exception e) {
 					Log.e("Fail 1", e.toString());
-					// Toast.makeText(getApplicationContext(),
-					// "Invalid IP Address",Toast.LENGTH_LONG).show();
-
 				}
 
 				try {
@@ -232,10 +226,6 @@ public class SearchBookList extends Activity implements OnItemClickListener,
 
 					}
 					
-
-					// 여기에 리스트뷰 추가
-					// mAaBooklist.add("");
-					// mAaBooklist.notifyDataSetChanged();
 				} catch (Exception e) {
 					Log.e("Fail 3", e.toString());
 				}
@@ -272,7 +262,7 @@ public class SearchBookList extends Activity implements OnItemClickListener,
 		Log.d("kh","isbn "+select_isbn);
 		Intent intent_search = new Intent();
 		intent_search.setClass(SearchBookList.this, BookInfoActivity.class);
-		intent_search.putExtra("text", select_isbn);
+		intent_search.putExtra("isbn", select_isbn);
 		startActivity(intent_search);
 	}
 

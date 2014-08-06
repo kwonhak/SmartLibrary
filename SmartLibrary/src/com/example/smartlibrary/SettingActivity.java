@@ -105,7 +105,7 @@ public class SettingActivity extends Activity implements OnClickListener {
 			break;
 		case R.id.bt_lock:
 			Intent intent_person = new Intent();
-			intent_person.setClass(SettingActivity.this, SettingActivity.class);
+			intent_person.setClass(SettingActivity.this, Chunggu.class);
 			Log.d("kh", "setting personinfo button ");
 			startActivity(intent_person);
 			break;
@@ -119,15 +119,19 @@ public class SettingActivity extends Activity implements OnClickListener {
 			break;
 
 		case R.id.bt_enroll:
-			Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-			intent.setPackage("com.google.zxing.client.android");
-			intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
-			try {
-				startActivityForResult(intent, 0);
-			} catch (ActivityNotFoundException e) {
-				Log.d("kh", e.toString());
-				// downloadFromMarket();
-			}
+//			Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+//			intent.setPackage("com.google.zxing.client.android");
+//			intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
+//			try {
+//				startActivityForResult(intent, 0);
+//			} catch (ActivityNotFoundException e) {
+//				Log.d("kh", e.toString());
+//				// downloadFromMarket();
+//			}
+			Intent intent_enroll = new Intent();
+			intent_enroll.setClass(SettingActivity.this, Chunggu.class);
+			Log.d("kh", "setting personinfo button ");
+			startActivity(intent_enroll);
 
 			break;
 
@@ -199,42 +203,6 @@ public class SettingActivity extends Activity implements OnClickListener {
 								+ id.getText().toString());
 
 						select();
-						
-						//while(!end){}
-//						
-//						if (userId.equals(id.getText().toString())) {
-//
-//							// 여기서 서버로 로그인 정보 전송
-//							
-//							if(!passwd.equals(pw.getText().toString()))
-//							{
-//								Toast.makeText(SettingActivity.this,
-//										"비밀번호가 잘못되었습니다.", Toast.LENGTH_LONG)
-//										.show();							
-//							}
-//							else
-//							{
-//								Toast.makeText(SettingActivity.this,
-//								"ID : " + id.getText().toString(),
-//								Toast.LENGTH_LONG).show();
-//
-//								sharedEditor.putString("id", id.getText()
-//										.toString());
-//								sharedEditor.commit();
-//								btnlogin.setText("Logout");
-//								Log.d("kh", "userId : " + userId + "  id: "
-//										+ id.getText().toString() + "  성공");
-//							}
-//
-//							end = false;
-//						} else {
-//							Toast.makeText(SettingActivity.this,
-//									"회원 정보가 올바르지 않습니다.", Toast.LENGTH_LONG)
-//									.show();
-//							Log.d("kh", "  fail T.T");
-//							end = false;
-//						}
-
 					}
 				}).show();
 	}
@@ -252,6 +220,7 @@ public class SettingActivity extends Activity implements OnClickListener {
 				 
 				@Override
 				protected String doInBackground(String... params) {
+					//여기서 데이터 전송
 					final ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 					nameValuePairs.add(new BasicNameValuePair("id", id.getText()
 							.toString()));
@@ -318,6 +287,7 @@ public class SettingActivity extends Activity implements OnClickListener {
 					if (result == null)
 						return ;
 					
+					//여기서 받은 데이터 처리
 					
 					if (userId.equals(id.getText().toString())) {
 
@@ -343,13 +313,12 @@ public class SettingActivity extends Activity implements OnClickListener {
 									+ id.getText().toString() + "  성공");
 						}
 
-						end = false;
 					} else {
 						Toast.makeText(SettingActivity.this,
 								"회원 정보가 올바르지 않습니다.", Toast.LENGTH_LONG)
 								.show();
 						Log.d("kh", "  fail T.T");
-						end = false;
+
 					}
 				}
 			}.execute("")).get();
@@ -357,70 +326,6 @@ public class SettingActivity extends Activity implements OnClickListener {
 		} catch (Exception e) {
 			return null;
 		}
-		
-//		new Thread(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//
-//				final ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-//				nameValuePairs.add(new BasicNameValuePair("id", id.getText()
-//						.toString()));
-//				nameValuePairs.add(new BasicNameValuePair("secret", pw.getText()
-//						.toString()));
-//
-//				try {
-//					HttpClient httpclient = new DefaultHttpClient();
-//					HttpPost httppost = new HttpPost(
-//							"http://112.108.40.87/memberlogin.php");
-//					httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
-//							HTTP.UTF_8));
-//					HttpResponse response = httpclient.execute(httppost);
-//					HttpEntity entity = response.getEntity();
-//					is = entity.getContent();
-//					 Log.d("kh", "connection success");
-//
-//				} catch (Exception e) {
-//					Log.e("Fail 1", e.toString());
-//				}
-//
-//				try {
-//					BufferedReader reader = new BufferedReader(
-//							new InputStreamReader(is, "UTF_8"), 8);
-//					StringBuilder sb = new StringBuilder();
-//
-//					while ((line = reader.readLine()) != null) {
-//						sb.append(line + "\n");
-//					}
-//					is.close();
-//					Log.d("kh", "result");
-//					result = sb.toString();
-//					Log.d("kh", result);
-//				} catch (Exception e) {
-//					Log.e("Fail 2", e.toString());
-//
-//				}
-//
-//				try {
-//					Log.d("kh", "1");
-//					JSONObject json_data = null;
-//					json_data = new JSONObject(result);
-//					Log.d("kh", "1.5"); // 여기는 됨
-//					JSONArray bkName = json_data.getJSONArray("results");
-//					for (int i = 0; i < bkName.length(); i++) {
-//						Log.d("kh", "i " + i);
-//						JSONObject jo = bkName.getJSONObject(i);
-//						userId = jo.getString("id");
-//						passwd = jo.getString("secret");
-//					}
-//
-//				} catch (Exception e) {
-//					Log.e("Fail 3", e.toString());
-//				}
-//				end = true;
-//			}
-//
-//		}).start();
 
 	}
 

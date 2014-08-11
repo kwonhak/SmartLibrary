@@ -1,6 +1,7 @@
 package com.example.smartlibrary;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
@@ -16,11 +17,12 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-import android.widget.Toast;
 
 public class SearchViewerActivity extends Fragment {
 	final String TAG = "SearchViewActivity";
 	String[] book_list_item = new String[5];
+	private SharedPreferences sharedPref;
+	private SharedPreferences.Editor sharedEditor ;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -29,6 +31,8 @@ public class SearchViewerActivity extends Fragment {
 		View v = inflater.inflate(R.layout.fragment_search, container, false);
 
 		ListView list = (ListView) v.findViewById(R.id.book_list);
+		
+
 
 		final EditText e_id = (EditText) v.findViewById(R.id.book_input);
 		e_id.setImeOptions(EditorInfo.IME_ACTION_SEARCH);

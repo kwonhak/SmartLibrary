@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="10"
         android:targetSdkVersion="18" />
 
     <uses-permission android:name="android.permission.CAMERA" />
@@ -19,6 +19,8 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+        <uses-feature android:name="android.hardware.nfc" android:required="false" />
+    <uses-permission android:name="android.permission.NFC" />
 
     <application
         android:allowBackup="true"
@@ -43,15 +45,17 @@
         </activity>
         <activity android:name="com.example.smartlibrary.SlidingDrawer" >
         </activity>
-        <activity android:name="com.example.smartlibrary.BookInfoActivity" >
+        <activity android:name="com.smartlibrary.book.BookInfoActivity" >
         </activity>
-        <activity android:name="com.example.smartlibrary.ActivityBluetooth" >
+        <activity android:name="com.smartlibrary.bluetooth.ActivityBluetooth" >
         </activity>
-        <activity android:name="com.example.smartlibrary.DeviceListActivity" >
+        <activity android:name="com.example.smartlibrary.ActivityNFC" >
+        </activity>
+        <activity android:name="com.smartlibrary.bluetooth.DeviceListActivity" >
         </activity>
         <activity android:name="com.example.smartlibrary.ActivityJoin" >
         </activity>
-        <activity android:name="com.example.smartlibrary.GetBookdata" >
+        <activity android:name="com.smartlibrary.book.GetBookdata" >
         </activity>
         <activity android:name="com.example.smartlibrary.Chunggu" >
         </activity>
@@ -71,6 +75,8 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+        </activity>
+        <activity android:name="com.example.smartlibrary.ActivityBorrow" >
         </activity>
     </application>
 

@@ -1,5 +1,7 @@
 package com.example.smartlibrary;
 
+import com.smartlibrary.book.GetBookdata;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -37,7 +39,7 @@ public class Chunggu extends Activity{
 
 						//sign=chung.getText().toString();
 						Intent intent_person = new Intent();
-						intent_person.setClass(Chunggu.this, GetBookdata.class);
+						intent_person.setClass(Chunggu.this, ActivityNFC.class);
 						intent_person.putExtra("chung", chung.getText().toString());
 						startActivity(intent_person);
 					}

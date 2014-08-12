@@ -82,13 +82,19 @@ public class ActivityNFC<NFCReaderActivity> extends Activity{
 		if (tag != null) {
 			byte[] tagId = tag.getId();
 			tagDesc.setText("TagID: " + toHexString(tagId));
-			String strCut = toHexString(tagId).substring(0,1);
-			Log.d("kh","tagid : "+strCut);
+			String strCut1 = toHexString(tagId).substring(0,1);
+			String strCut2 = toHexString(tagId).substring(1,2);
+
+			int hexToint = Integer.parseInt(strCut1, 16);
+			int hexToint2 = Integer.parseInt(strCut2, 16);
+
+			Log.d("kh","binary : "+Integer.toBinaryString(hexToint)+" "+Integer.toBinaryString(hexToint2));
 			
-			Intent intent_person = new Intent();
-			intent_person.setClass(ActivityNFC.this, GetBookdata.class);
-			//intent_person.putExtra("chung", chung.getText().toString());
-			startActivity(intent_person);
+			
+//			Intent intent_person = new Intent();
+//			intent_person.setClass(ActivityNFC.this, GetBookdata.class);
+//			//intent_person.putExtra("chung", chung.getText().toString());
+//			startActivity(intent_person);
 		}
 	}
 	

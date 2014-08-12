@@ -13,14 +13,17 @@ import android.view.LayoutInflater;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-public class Chunggu extends Activity{
+public class ActivityChunggu extends Activity{
 
 	EditText chung;
+	String isbn;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.example);
+		Intent intent = getIntent();
+		isbn = intent.getStringExtra("isbn");
 		showAlertChung();
 		
 	}
@@ -39,8 +42,9 @@ public class Chunggu extends Activity{
 
 						//sign=chung.getText().toString();
 						Intent intent_person = new Intent();
-						intent_person.setClass(Chunggu.this, ActivityNFC.class);
+						intent_person.setClass(ActivityChunggu.this, ActivityNFC.class);
 						intent_person.putExtra("chung", chung.getText().toString());
+						intent_person.putExtra("isbn", isbn);
 						startActivity(intent_person);
 					}
 				}).show();

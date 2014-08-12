@@ -198,9 +198,7 @@ public class ActivityBorrow extends Activity {
 							isbn = (jo.getString("isbn"));
 							student = jo.getString("student");
 							title = (jo.getString("title"));
-							enddate = (jo.getString("enddate"));
 							startdate = jo.getString("startdate");
-							extension = jo.getString("extension");
 							card = jo.getString("card");
 							Log.d("kh", "ok");
 							

@@ -19,7 +19,11 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-        <uses-feature android:name="android.hardware.nfc" android:required="false" />
+
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="false" />
+
     <uses-permission android:name="android.permission.NFC" />
 
     <application
@@ -41,7 +45,6 @@
         <activity android:name="com.example.smartlibrary.SearchViewerActivity" >
         </activity>
         <activity android:name="com.example.smartlibrary.SettingActivity" >
-            
         </activity>
         <activity android:name="com.example.smartlibrary.SlidingDrawer" >
         </activity>
@@ -51,13 +54,15 @@
         </activity>
         <activity android:name="com.example.smartlibrary.ActivityNFC" >
         </activity>
+        <activity android:name="com.example.smartlibrary.ActivityRent" >
+        </activity>
         <activity android:name="com.smartlibrary.bluetooth.DeviceListActivity" >
         </activity>
         <activity android:name="com.example.smartlibrary.ActivityJoin" >
         </activity>
         <activity android:name="com.smartlibrary.book.GetBookdata" >
         </activity>
-        <activity android:name="com.example.smartlibrary.Chunggu" >
+        <activity android:name="com.example.smartlibrary.ActivityChunggu" >
         </activity>
         <activity
             android:name="com.example.smartlibrary.BarcodeScan"

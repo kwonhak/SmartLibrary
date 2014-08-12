@@ -17,13 +17,9 @@ import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.smartlibrary.bluetooth.ActivityBluetooth;
-import com.smartlibrary.bluetooth.BluetoothService;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -40,8 +36,9 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.smartlibrary.bluetooth.BluetoothService;
 
 public class SettingActivity extends Activity implements OnClickListener {
 
@@ -141,7 +138,7 @@ public class SettingActivity extends Activity implements OnClickListener {
 			break;
 		case R.id.bt_lock:
 			Intent intent_person = new Intent();
-			intent_person.setClass(SettingActivity.this, Chunggu.class);
+			intent_person.setClass(SettingActivity.this, ActivityChunggu.class);
 			Log.d("kh", "setting personinfo button ");
 			startActivity(intent_person);
 			break;
@@ -166,7 +163,7 @@ public class SettingActivity extends Activity implements OnClickListener {
 			// // downloadFromMarket();
 			// }
 			Intent intent_enroll = new Intent();
-			intent_enroll.setClass(SettingActivity.this, Chunggu.class);
+			intent_enroll.setClass(SettingActivity.this, BarcodeScan.class);
 			Log.d("kh", "setting personinfo button ");
 			startActivity(intent_enroll);
 

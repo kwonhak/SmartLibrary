@@ -36,8 +36,10 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.example.smartlibrary.ActivityNFC;
 import com.example.smartlibrary.R;
 import com.example.smartlibrary.R.layout;
+import com.example.smartlibrary.SettingActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -110,13 +112,22 @@ public class GetBookdata extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_enrollbook);
 
-		searchIsbn = "9788994506166";
+		
 		// public GetBookInfo throws ParserConfigurationException,
 		// MalformedURLException, IOException, AXException{
 		 
 		//showAlertChung();
 		Intent intent = getIntent();
-		sign = intent.getStringExtra("chung");
+		sign = intent.getStringExtra("sign");
+		card = intent.getStringExtra("nfc");
+		searchIsbn = intent.getStringExtra("isbn");
+		Log.d("kh", "넘어온값 : " + sign + card);
+	
+		txtTitle = (TextView)findViewById(R.id.title);
+		txtIsbn =  (TextView)findViewById(R.id.isbn);
+		txtAuthor =  (TextView)findViewById(R.id.author);
+		txtPublisher =  (TextView)findViewById(R.id.publisher);
+		
 		select();
 	
 		
@@ -328,6 +339,11 @@ public class GetBookdata extends Activity {
 					
 					Log.d("kh", "이름기호 : " + category);
 					send();
+					txtAuthor.setText(author);
+					txtIsbn.setText(isbn);
+					txtTitle.setText(title);
+					txtPublisher.setText(publisher);
+					 alert();
 					
 					
 				}
@@ -337,6 +353,29 @@ public class GetBookdata extends Activity {
 			return null;
 		}
 
+	}
+	public void alert()
+	{
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);     // 여기서 this는 Activity의 this
+
+		// 여기서 부터는 알림창의 속성 설정
+		builder.setTitle("도서 등록이 완료되었습니다.")        // 제목 설정
+		.setMessage("확인을 누르시면 Setting화면으로 넘어갑니다.")        // 메세지 설정
+		.setCancelable(false)        // 뒤로 버튼 클릭시 취소 가능 설정
+		.setPositiveButton("확인", new DialogInterface.OnClickListener(){       
+		 // 확인 버튼 클릭시 설정
+		public void onClick(DialogInterface dialog, int whichButton){
+			Intent intent_person = new Intent();
+			intent_person.setClass(GetBookdata.this,
+					SettingActivity.class);
+			startActivity(intent_person);
+		finish();   
+
+		}
+		});
+
+		AlertDialog dialog = builder.create();    // 알림창 객체 생성
+		dialog.show();    // 알림창 띄우기
 	}
 
 //	private void showAlertChung() {
@@ -362,9 +401,9 @@ public class GetBookdata extends Activity {
 		String lastname; // 성
 		String firstname_1 = null; // 이름
 		String firstname_2 = null; // 이름
-		char titleVal = (char) (title.charAt(0) - 0xAC00);
+		char titleVal = (char) (publisher.charAt(0) - 0xAC00);
 		char titlename = (char) (((titleVal - (titleVal % 28)) / 28) / 21);
-		System.out.println(CHO[titlename]);
+		//System.out.println(CHO[titlename]);
 
 		List<Map<String, Integer>> list = new ArrayList<Map<String,
 

@@ -1,5 +1,22 @@
 package com.example.smartlibrary;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import com.smartlibrary.book.GetBookdata;
 
 import android.app.Activity;
@@ -9,55 +26,72 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
+public class ActivityNFC<NFCReaderActivity> extends Activity {
 
-
-public class ActivityNFC<NFCReaderActivity> extends Activity{
-
+	String sign;
 	private NfcAdapter nfcAdapter;
 	private PendingIntent pendingIntent;
-	
+	String isbn;
+	String card;
+	int hexToint;
+	int hexToint2;
 	private TextView tagDesc;
-	
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_nfc);
-        
-        tagDesc = (TextView)findViewById(R.id.tagDesc);
-        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        
-        //nfcAdapter = NfcAdapter.getDefaultAdapter(this);        
-        if (!nfcAdapter.isEnabled())     {   
-         
-         //NFC Setting UI
-          AlertDialog.Builder ad=new AlertDialog.Builder(ActivityNFC.this);
-          ad.setTitle("Connection Error");
-          ad.setMessage("설정에서 NFC을 ON 해주세요.");
-          ad.setPositiveButton("OK",new DialogInterface.OnClickListener() {
-           public void onClick(DialogInterface dialog,int whichButton) {
-            startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));    
-            
-           }
-          });
-          ad.create();
-          ad.show();
-         }
-        //nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        Intent intent = new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-    }
+	String bin;
 
-    protected void startNfcSettingsActivity() {
-        if (android.os.Build.VERSION.SDK_INT >= 16) {
-            startActivity(new Intent(android.provider.Settings.ACTION_NFC_SETTINGS));
-        } else {
-            startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
-        }
-    }
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_nfc);
+
+		tagDesc = (TextView) findViewById(R.id.tagDesc);
+		nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+		Intent intenta = getIntent();
+		sign = intenta.getStringExtra("chung");
+		isbn = intenta.getStringExtra("isbn");
+
+		// nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+		if (!nfcAdapter.isEnabled()) {
+
+			// NFC Setting UI
+			AlertDialog.Builder ad = new AlertDialog.Builder(ActivityNFC.this);
+			ad.setTitle("Connection Error");
+			ad.setMessage("설정에서 NFC을 ON 해주세요.");
+			ad.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+					startActivity(new Intent(
+							android.provider.Settings.ACTION_WIRELESS_SETTINGS));
+
+				}
+			});
+			ad.create();
+			ad.show();
+		}
+
+		showIntent();
+	}
+
+	public void showIntent() {
+		Intent intent = new Intent(this, getClass())
+				.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+	}
+
+	protected void startNfcSettingsActivity() {
+		if (android.os.Build.VERSION.SDK_INT >= 16) {
+			startActivity(new Intent(
+					android.provider.Settings.ACTION_NFC_SETTINGS));
+		} else {
+			startActivity(new Intent(
+					android.provider.Settings.ACTION_WIRELESS_SETTINGS));
+		}
+	}
+
 	@Override
 	protected void onPause() {
 		if (nfcAdapter != null) {
@@ -70,43 +104,158 @@ public class ActivityNFC<NFCReaderActivity> extends Activity{
 	protected void onResume() {
 		super.onResume();
 		if (nfcAdapter != null) {
-			nfcAdapter.enableForegroundDispatch(this, pendingIntent, null, null);
+			nfcAdapter
+					.enableForegroundDispatch(this, pendingIntent, null, null);
 		}
 	}
 
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
-		
+
 		Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 		if (tag != null) {
 			byte[] tagId = tag.getId();
 			tagDesc.setText("TagID: " + toHexString(tagId));
-			String strCut1 = toHexString(tagId).substring(0,1);
-			String strCut2 = toHexString(tagId).substring(1,2);
+			String strCut1 = toHexString(tagId).substring(0, 1);
+			String strCut2 = toHexString(tagId).substring(1, 2);
 
-			int hexToint = Integer.parseInt(strCut1, 16);
-			int hexToint2 = Integer.parseInt(strCut2, 16);
+			hexToint = Integer.parseInt(strCut1, 16);
+			hexToint2 = Integer.parseInt(strCut2, 16);
 
-			Log.d("kh","binary : "+Integer.toBinaryString(hexToint)+" "+Integer.toBinaryString(hexToint2));
-			
-			
-//			Intent intent_person = new Intent();
-//			intent_person.setClass(ActivityNFC.this, GetBookdata.class);
-//			//intent_person.putExtra("chung", chung.getText().toString());
-//			startActivity(intent_person);
+			Log.d("kh", "binary : " + Integer.toBinaryString(hexToint) + " "
+					+ Integer.toBinaryString(hexToint2));
+		 bin = Integer.toBinaryString(hexToint)
+					+ Integer.toBinaryString(hexToint2);
+
+			select(bin);
 		}
 	}
-	
-	
+
 	public static final String CHARS = "0123456789ABCDEF";
-	
+
 	public static String toHexString(byte[] data) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < data.length; ++i) {
-			sb.append(CHARS.charAt((data[i] >> 4) & 0x0F))
-				.append(CHARS.charAt(data[i] & 0x0F));
+			sb.append(CHARS.charAt((data[i] >> 4) & 0x0F)).append(
+					CHARS.charAt(data[i] & 0x0F));
 		}
 		return sb.toString();
 	}
+
+	public String select(final String qtx) {
+
+		try {
+			return (new AsyncTask<String, String, String>() {
+
+				ArrayList<BorrowInfo> dataList = new ArrayList<BorrowInfo>();
+				private InputStream is;
+				private String line;
+				private String result;
+
+				@Override
+				protected void onProgressUpdate(String... values) {
+					// TODO Auto-generated method stub
+					super.onProgressUpdate(values);
+				}
+
+				@Override
+				protected String doInBackground(String... params) {
+					final ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+					nameValuePairs.add(new BasicNameValuePair("card", qtx));
+
+					try {
+						HttpClient httpclient = new DefaultHttpClient();
+						HttpPost httppost = new HttpPost(
+								"http://112.108.40.87/nfcfinder.php");
+						httppost.setEntity(new UrlEncodedFormEntity(
+								nameValuePairs, HTTP.UTF_8));
+						HttpResponse response = httpclient.execute(httppost);
+						HttpEntity entity = response.getEntity();
+						is = entity.getContent();
+						Log.d("kh", "connection success");
+
+					} catch (Exception e) {
+						Log.e("Fail 1", e.toString());
+					}
+
+					try {
+						BufferedReader reader = new BufferedReader(
+								new InputStreamReader(is, "UTF_8"), 8);
+						StringBuilder sb = new StringBuilder();
+
+						while ((line = reader.readLine()) != null) {
+							sb.append(line + "\n");
+						}
+						is.close();
+						Log.d("kh", "result");
+						result = sb.toString();
+						Log.d("kh", result);
+					} catch (Exception e) {
+						Log.e("Fail 2", e.toString());
+
+					}
+
+					try {
+						Log.d("kh", "1");
+						JSONObject json_data = null;
+						json_data = new JSONObject(result);
+						Log.d("kh", "1.5"); // 여기는 됨
+						JSONArray bkName = json_data.getJSONArray("results");
+
+						for (int i = 0; i < bkName.length(); i++) {
+							Log.d("kh", "i " + i);
+							JSONObject jo = bkName.getJSONObject(i);
+
+							card = jo.getString("card");
+							Log.d("kh", "ok");
+
+							// adapter.add(new
+							// BorrowInfo(getApplicationContext(),
+							// card, student, isbn, startdate, enddate,
+							// extension, title));
+							// mListView.setAdapter(adapter);
+						}
+
+						return isbn;
+
+					} catch (Exception e) {
+						Log.e("Fail 3", e.toString());
+					}
+
+					return null;
+				}
+
+				@Override
+				protected void onPostExecute(String result) {
+					if (result == null)
+						return;
+					if (card.equals(bin)) {
+						Toast.makeText(ActivityNFC.this,
+								"이미 등록된 카드입니다.", Toast.LENGTH_LONG).show();
+
+					} else {
+						Intent intent_person = new Intent();
+						intent_person.setClass(ActivityNFC.this,
+								GetBookdata.class);
+						intent_person.putExtra(
+								"nfc",
+								Integer.toBinaryString(hexToint)
+										+ Integer.toBinaryString(hexToint2));
+						intent_person.putExtra("isbn", isbn);
+
+						intent_person.putExtra("sign", sign);
+
+						startActivity(intent_person);
+					}
+
+				}
+			}.execute("")).get();
+
+		} catch (Exception e) {
+			return null;
+		}
+
+	}
+
 }

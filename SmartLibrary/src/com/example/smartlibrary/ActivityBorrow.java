@@ -3,7 +3,11 @@ package com.example.smartlibrary;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -17,13 +21,19 @@ import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.smartlibrary.book.GetBookdata;
+
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +63,11 @@ public class ActivityBorrow extends Activity {
 	String extension;
 	String title;
 	
-	String selectCard;
+	String selectcard;
+	String userid;
+	String selectIsbn;
+	String selectExtension;
+	
 	
 	ListAdapter adapter;
 	private ListView mListView = null;
@@ -78,6 +92,60 @@ public class ActivityBorrow extends Activity {
 		Button btnborrow = (Button) findViewById(R.id.borrow);
 		Button btnhome = (Button) findViewById(R.id.home);
 		Button btnsetting = (Button) findViewById(R.id.setting);
+		Button btnextension = (Button) findViewById(R.id.extension);
+
+		btnextension.setOnClickListener(new Button.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				userid = sharedPref.getString("id", "");
+				if(userid=="")
+				{
+					Toast toast = Toast.makeText(getApplicationContext(),
+							"로그인을 해주세요.", Toast.LENGTH_LONG);
+					toast.setGravity(Gravity.TOP, 25, 400);
+					toast.show();
+				}
+				else
+				{
+					Log.d("kh", "selectextension : "+selectExtension);
+					
+					if (selectExtension.equals("1")) {
+						Log.d("kh","selectExtension : "+selectExtension);
+						
+						alreadyextension();
+							//select(selectIsbn,"reservation");
+//							Toast toast = Toast.makeText(getApplicationContext(),
+//									"더이상 연장할 수 없습니다.", Toast.LENGTH_LONG);
+//							toast.setGravity(Gravity.TOP, 25, 400);
+//							toast.show();
+						
+							//select(searchIsbn);
+						
+
+					}
+					else
+					{
+						SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
+						Date date = null;
+						try{
+							date = dateformat.parse(enddate);
+						}
+						catch(ParseException e){
+							e.printStackTrace();
+						}
+						Calendar cal = Calendar.getInstance();
+						cal.setTime(date);
+						cal.add(Calendar.DATE, 7);
+						String strDate = dateformat.format(cal.getTime());
+						Log.d("kh", "date extension : "+ strDate);
+						extension(strDate);
+						extcomplete();
+					}
+				}
+			}
+		});
+		
 		btnhome.setOnClickListener(new Button.OnClickListener(){
 			@Override
 			public void onClick(View v) {
@@ -200,11 +268,18 @@ public class ActivityBorrow extends Activity {
 							title = (jo.getString("title"));
 							startdate = jo.getString("startdate");
 							card = jo.getString("card");
+							enddate = jo.getString("enddate");
+
+							extension = jo.getString("extension");
 							Log.d("kh", "ok");
 							
 							dataList.add(new BorrowInfo(getApplicationContext(),
 								card, student, isbn, startdate, enddate,
 									extension, title));
+							
+							
+							
+							
 							
 //							adapter.add(new BorrowInfo(getApplicationContext(),
 //									card, student, isbn, startdate, enddate,
@@ -228,11 +303,6 @@ public class ActivityBorrow extends Activity {
 					if (result == null)
 						return;
 
-					// 텍스트 값 넣기
-//					txtIsbn.setText(isbn);
-//					txtTitle.setText(title);
-//					txtAuthor.setText(author);
-//					txtPublisher.setText(publisher);
 					adapter.clear();
 					adapter.addAll(dataList);
 					adapter.notifyDataSetChanged();
@@ -302,7 +372,10 @@ public class ActivityBorrow extends Activity {
 		                if (buttonView.getId() == R.id.checkbox) {
 		                    if (isChecked) {
 		                    	//selectIsbn = list.get((int) getItemId(position)).getIsbn();
-		        				selectCard = list.get(position).getCard();
+		        				selectcard = list.get(position).getCard();
+		        				selectIsbn = list.get(position).getIsbn();
+		        				selectExtension = list.get(position).getExtension();
+		        				Log.d("kh","extension" + selectExtension);
 		                        Toast.makeText(getApplicationContext(), "눌림", 1).show();
 		                    } else {
 		                        Toast.makeText(getApplicationContext(), "안눌림", 1).show();
@@ -328,5 +401,117 @@ public class ActivityBorrow extends Activity {
 //		CheckBox checkbox;
 //	}
 	
+
+	public String extension(final String strdate) {
+
+		try {
+			return (new AsyncTask<String, String, String>() {
+
+				@Override
+				protected void onProgressUpdate(String... values) {
+					// TODO Auto-generated method stub
+					super.onProgressUpdate(values);
+				}
+
+				@Override
+				protected String doInBackground(String... params) {
+					final ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+
+//					nameValuePairs.add(new BasicNameValuePair("student", userid));
+					nameValuePairs.add(new BasicNameValuePair("card", selectcard));
+//					nameValuePairs.add(new BasicNameValuePair("isbn", selectIsbn));
+					nameValuePairs.add(new BasicNameValuePair("enddate", strdate));
+
+					try {
+						HttpClient httpclient = new DefaultHttpClient();
+						HttpPost httppost = new HttpPost(
+								"http://112.108.40.87/extension.php");
+						httppost.setEntity(new UrlEncodedFormEntity(
+								nameValuePairs, HTTP.UTF_8));
+						HttpResponse response = httpclient.execute(httppost);
+						HttpEntity entity = response.getEntity();
+						is = entity.getContent();
+						Log.d("kh", "connection success");
+
+					} catch (Exception e) {
+						Log.e("Fail 1", e.toString());
+					}
+
+//					try {
+//						BufferedReader reader = new BufferedReader(
+//								new InputStreamReader(is, "UTF_8"), 8);
+//						StringBuilder sb = new StringBuilder();
+//
+//						while ((line = reader.readLine()) != null) {
+//							sb.append(line + "\n");
+//						}
+//						is.close();
+//						Log.d("kh", "result");
+//						result = sb.toString();
+//						Log.d("kh", result);
+//					} catch (Exception e) {
+//						Log.e("Fail 2", e.toString());
+//
+//					}
+
+
+					return null;
+				}
+
+				@Override
+				protected void onPostExecute(String result) {
+					if (result == null)
+						return;
+
+
+				}
+			}.execute("")).get();
+
+		} catch (Exception e) {
+			return null;
+		}
+
+	}
+	public void alreadyextension()
+	{
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);     // 여기서 this는 Activity의 this
+
+		// 여기서 부터는 알림창의 속성 설정
+		builder.setTitle("이미 연장한 도서입니다.")        // 제목 설정
+		.setMessage("확인 버튼을 눌러주세요.")        // 메세지 설정
+		.setCancelable(false)        // 뒤로 버튼 클릭시 취소 가능 설정
+		.setPositiveButton("확인", new DialogInterface.OnClickListener(){       
+		 // 확인 버튼 클릭시 설정
+		public void onClick(DialogInterface dialog, int whichButton){
+			
+		//finish();   
+
+		}
+		});
+
+		AlertDialog dialog = builder.create();    // 알림창 객체 생성
+		dialog.show();    // 알림창 띄우기
+	}
+
+	public void extcomplete()
+	{
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);     // 여기서 this는 Activity의 this
+
+		// 여기서 부터는 알림창의 속성 설정
+		builder.setTitle("연장되었습니다.")        // 제목 설정
+		.setMessage("확인 버튼을 눌러주세요.")        // 메세지 설정
+		.setCancelable(false)        // 뒤로 버튼 클릭시 취소 가능 설정
+		.setPositiveButton("확인", new DialogInterface.OnClickListener(){       
+		 // 확인 버튼 클릭시 설정
+		public void onClick(DialogInterface dialog, int whichButton){
+			
+		//finish();   
+
+		}
+		});
+
+		AlertDialog dialog = builder.create();    // 알림창 객체 생성
+		dialog.show();    // 알림창 띄우기
+	}
 	
 }

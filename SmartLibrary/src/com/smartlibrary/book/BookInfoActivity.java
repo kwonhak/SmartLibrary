@@ -21,6 +21,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.hardware.Camera.Size;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,6 +39,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.smartlibrary.ActivityBookMap;
 import com.example.smartlibrary.BorrowInfo;
 import com.example.smartlibrary.R;
 import com.example.smartlibrary.SearchBookList;
@@ -73,7 +75,8 @@ public class BookInfoActivity extends Activity {
 	String selectcard;
 	String userid;
 	String state;
-
+	JSONArray bkName;
+	int cnt=0;
 	private ListView mListView = null;
 	DataAdapter adapter;
 	private ArrayList<BookInfo> bkList;
@@ -266,7 +269,7 @@ public class BookInfoActivity extends Activity {
 						JSONObject json_data = null;
 						json_data = new JSONObject(result);
 						Log.d("kh", "1.5"); // 여기는 됨
-						JSONArray bkName = json_data.getJSONArray("results");
+					 bkName = json_data.getJSONArray("results");
 						for (int i = 0; i < bkName.length(); i++) {
 							Log.d("kh", "i " + i);
 							JSONObject jo = bkName.getJSONObject(i);
@@ -380,24 +383,6 @@ public class BookInfoActivity extends Activity {
 					if (result == null)
 						return;
 
-					// 텍스트 값 넣기
-//					txtIsbn.setText(isbn);
-//					txtTitle.setText(title);
-//					txtAuthor.setText(author);
-//					txtPublisher.setText(publisher);
-//
-//					runOnUiThread(new Runnable() {
-//
-//						@Override
-//						public void run() {
-//							// TODO Auto-generated method stub
-//
-//							adapter.add(new BookInfo(getApplicationContext(),
-//									isbn, booknum, category, author, publisher,
-//									pubdate, title, location, reservation, card));
-//							mListView.setAdapter(adapter);
-//						}
-//					});
 
 				}
 			}.execute("")).get();
@@ -502,9 +487,29 @@ public class BookInfoActivity extends Activity {
 				view.setTag(holder);
 				// 텍스트뷰1에 getLabel()을 출력 즉 첫번째 인수값
 
-				holder.number.setText("1");
+				holder.number.setText(String.valueOf(cnt++));
 				holder.chung.setText(data.getCategory());		
 				holder.location.setText(data.getLocation());
+				
+				
+				holder.location.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						String strcut = location.substring(3,location.length());
+						Log.d("kh", "length : "+strcut);
+						Intent intent_location = new Intent();
+						intent_location.setClass(BookInfoActivity.this,
+								ActivityBookMap.class);
+						intent_location.putExtra("location", strcut);
+
+
+						Log.d("kh", "setting button ");
+						startActivity(intent_location);
+						
+					}
+				}); 
 				
 				Log.d("kh","예약 값 "+ data.getReservation());
 				state=data.getReservation();

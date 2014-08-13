@@ -86,6 +86,7 @@ public class ActivityRent extends Activity {
 
 				Log.d("kh", "list home button ");
 				startActivity(intent_home);
+				finish();
 			}
 		});
 

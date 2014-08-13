@@ -52,14 +52,14 @@
             android:orientation="horizontal" >
 
             <Button
-                android:id="@+id/bt_rent"
+                android:id="@+id/selectall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="모두선택" />
 
             <Button
-                android:id="@+id/bt_search"
+                android:id="@+id/extension"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

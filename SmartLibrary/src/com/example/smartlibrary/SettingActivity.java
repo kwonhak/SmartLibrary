@@ -52,6 +52,7 @@ public class SettingActivity extends Activity implements OnClickListener {
 	EditText id;
 	EditText pw;
 	boolean end = false;
+	Button btnenroll;
 	// 애플리케이션 전체에서 사용할 사용자 아이디값
 
 	Button btnlogin;
@@ -80,17 +81,17 @@ public class SettingActivity extends Activity implements OnClickListener {
 		super.onCreate(SavedInstanceState);
 		setContentView(R.layout.activity_setting);
 
-		Button btnsearch = (Button) findViewById(R.id.bt_search);
+		Button btnsearch = (Button) findViewById(R.id.bt_home);
 		Button btnbookinfo = (Button) findViewById(R.id.bt_book);
-		Button btnpersoninfo = (Button) findViewById(R.id.bt_lock);
-		Button btnenroll = (Button) findViewById(R.id.bt_enroll);
+		//Button btnpersoninfo = (Button) findViewById(R.id.bt_lock);
+	    btnenroll = (Button) findViewById(R.id.bt_enroll);
 		Button btnbluetooth = (Button) findViewById(R.id.bt_bluetooth);
 		btnlogin = (Button) findViewById(R.id.bt_login);
 		Button btnjoin = (Button) findViewById(R.id.bt_join);
 
 		btnsearch.setOnClickListener(this);
 		btnbookinfo.setOnClickListener(this);
-		btnpersoninfo.setOnClickListener(this);
+		//btnpersoninfo.setOnClickListener(this);
 		btnenroll.setOnClickListener(this);
 		btnbluetooth.setOnClickListener(this);
 		btnlogin.setOnClickListener(this);
@@ -98,9 +99,22 @@ public class SettingActivity extends Activity implements OnClickListener {
 
 		sharedPref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
 		sharedEditor = sharedPref.edit();
+		String findId = sharedPref.getString("id", "");
+		if(findId.equals("0001"))
+		{
+			//관리자 모드에서 보여질 버튼
+			btnenroll.setVisibility(View.VISIBLE);
+			
+		}
+		else
+		{
+			btnenroll.setVisibility(View.INVISIBLE);
+		}
+		
 		if (sharedPref.getString("id", "") != "") {
 			btnlogin.setText("Logout");
 		}
+		
 		if (btService == null) {
 			btService = new BluetoothService(this, mHandler);
 		}
@@ -110,12 +124,13 @@ public class SettingActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.bt_search:
+		case R.id.bt_home:
 			Intent intent_search = new Intent();
 			intent_search.setClass(SettingActivity.this, TabMenuActivity.class);
 
 			Log.d("kh", "setting home button ");
 			startActivity(intent_search);
+			finish();
 			break;
 		case R.id.bt_book:
 			String userid = sharedPref.getString("id", "");
@@ -136,12 +151,12 @@ public class SettingActivity extends Activity implements OnClickListener {
 			}
 			
 			break;
-		case R.id.bt_lock:
-			Intent intent_person = new Intent();
-			intent_person.setClass(SettingActivity.this, ActivityChunggu.class);
-			Log.d("kh", "setting personinfo button ");
-			startActivity(intent_person);
-			break;
+//		case R.id.bt_lock:
+//			Intent intent_person = new Intent();
+//			intent_person.setClass(SettingActivity.this, ActivityChunggu.class);
+//			Log.d("kh", "setting personinfo button ");
+//			startActivity(intent_person);
+//			break;
 
 		case R.id.bt_join:
 			Log.d("kh", "setting join 1");
@@ -152,16 +167,7 @@ public class SettingActivity extends Activity implements OnClickListener {
 			break;
 
 		case R.id.bt_enroll:
-			// Intent intent = new
-			// Intent("com.google.zxing.client.android.SCAN");
-			// intent.setPackage("com.google.zxing.client.android");
-			// intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
-			// try {
-			// startActivityForResult(intent, 0);
-			// } catch (ActivityNotFoundException e) {
-			// Log.d("kh", e.toString());
-			// // downloadFromMarket();
-			// }
+
 			Intent intent_enroll = new Intent();
 			intent_enroll.setClass(SettingActivity.this, BarcodeScan.class);
 			Log.d("kh", "setting personinfo button ");
@@ -171,10 +177,6 @@ public class SettingActivity extends Activity implements OnClickListener {
 
 		case R.id.bt_bluetooth:
 			Log.d("kh", "setting bluetooth ");
-			// Intent intent_bluetooth = new Intent();
-			// intent_bluetooth.setClass(SettingActivity.this,
-			// ActivityBluetooth.class);
-			// startActivity(intent_bluetooth);
 
 			if (btService.getDeviceState()) {
 				// 블루투스가 지원 가능한 기기일 때
@@ -191,6 +193,7 @@ public class SettingActivity extends Activity implements OnClickListener {
 			if (sharedValue == "") {
 				Log.d("kh", "Login Button");
 				showAlertLogin();
+				
 			} else {
 				Toast toast = Toast.makeText(getApplicationContext(),
 						"로그아웃되었습니다.", Toast.LENGTH_LONG);
@@ -199,6 +202,17 @@ public class SettingActivity extends Activity implements OnClickListener {
 				sharedEditor.remove("id");
 				sharedEditor.commit();
 				btnlogin.setText("Login");
+				String findId = sharedPref.getString("id", "");
+				if(findId.equals("0001"))
+				{
+					//관리자 모드에서 보여질 버튼
+					btnenroll.setVisibility(View.VISIBLE);
+					
+				}
+				else
+				{
+					btnenroll.setVisibility(View.INVISIBLE);
+				}
 			}
 
 			break;
@@ -372,6 +386,17 @@ public class SettingActivity extends Activity implements OnClickListener {
 							btnlogin.setText("Logout");
 							Log.d("kh", "userId : " + userId + "  id: "
 									+ id.getText().toString() + "  성공");
+							
+							if(id.getText().toString().equals("0001"))
+							{
+								//관리자 모드에서 보여질 버튼
+								btnenroll.setVisibility(View.VISIBLE);
+								
+							}
+							else
+							{
+								btnenroll.setVisibility(View.INVISIBLE);
+							}
 						}
 
 					} else {

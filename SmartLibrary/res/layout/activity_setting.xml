@@ -24,7 +24,7 @@
                 android:padding="30dp" />
 
             <Button
-                android:id="@+id/bt_search"
+                android:id="@+id/bt_home"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:drawableLeft="@drawable/home"
@@ -54,7 +54,7 @@
                 android:drawableLeft="@drawable/book"
                 android:drawablePadding="4dp"
                 android:text="대출정보" />
-
+<!-- 
             <Button
                 android:id="@+id/bt_lock"
                 android:layout_width="wrap_content"
@@ -62,14 +62,8 @@
                 android:drawableLeft="@drawable/lock"
                 android:drawablePadding="4dp"
                 android:text="회원정보" />
-
-            <Button
-                android:id="@+id/bt_enroll"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:drawableLeft="@drawable/book"
-                android:drawablePadding="4dp"
-                android:text="도서등록" />
+ -->
+           
 
             <Button
                 android:id="@+id/bt_bluetooth"
@@ -78,6 +72,13 @@
                 android:drawableLeft="@drawable/book"
                 android:drawablePadding="4dp"
                 android:text="Bluetooth" />
+             <Button
+                android:id="@+id/bt_enroll"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:drawableLeft="@drawable/book"
+                android:drawablePadding="4dp"
+                android:text="도서등록" />
         </LinearLayout>
     </LinearLayout>
 

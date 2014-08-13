@@ -44,14 +44,6 @@ public class SearchViewerActivity extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				// switch (v.getId()) {
-				//
-				// case R.id.book_list:
-				// Toast.makeText(getActivity(), "OneFragment",
-				// Toast.LENGTH_SHORT)
-				// .show();
-				// break;
-				// case R.id.searchButton:
 
 				String encode_str = null;
 				encode_str = e_id.getText().toString();

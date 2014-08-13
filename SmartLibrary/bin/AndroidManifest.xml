@@ -19,6 +19,10 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+  
+
 
     <uses-feature
         android:name="android.hardware.nfc"
@@ -31,6 +35,8 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/TestTheme" >
+  
+        
         <activity
             android:name="com.example.smartlibrary.TabMenuActivity"
             android:label="@string/app_name" >
@@ -53,6 +59,8 @@
         <activity android:name="com.smartlibrary.bluetooth.ActivityBluetooth" >
         </activity>
         <activity android:name="com.example.smartlibrary.ActivityNFC" >
+        </activity>
+         <activity android:name="com.example.smartlibrary.ActivityBookMap" >
         </activity>
         <activity android:name="com.example.smartlibrary.ActivityRent" >
         </activity>
@@ -83,6 +91,8 @@
         </activity>
         <activity android:name="com.example.smartlibrary.ActivityBorrow" >
         </activity>
+
+        
     </application>
 
 </manifest>

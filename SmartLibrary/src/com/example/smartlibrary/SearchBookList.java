@@ -17,9 +17,6 @@ import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.smartlibrary.book.BookInfo;
-import com.smartlibrary.book.BookInfoActivity;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -40,6 +37,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+
+import com.smartlibrary.book.BookInfo;
+import com.smartlibrary.book.BookInfoActivity;
 
 public class SearchBookList extends Activity implements OnItemClickListener,
 		OnClickListener {
@@ -123,6 +123,7 @@ public class SearchBookList extends Activity implements OnItemClickListener,
 
 			Log.d("kh", "list home button ");
 			startActivity(intent_home);
+			finish();
 			break;
 		case R.id.searchButton:
 			adapter.clear();
@@ -131,6 +132,7 @@ public class SearchBookList extends Activity implements OnItemClickListener,
 			Log.d("kh", "json start");
 			select(e_id.getText().toString());
 			Log.d("kh", "list search button ");
+			finish();
 
 			break;
 		case R.id.bt_setting:
@@ -251,8 +253,8 @@ public class SearchBookList extends Activity implements OnItemClickListener,
 
 		super.onResume();
 
-		bkList.clear();
-		defaultData();
+		
+		
 
 	}
 
@@ -275,6 +277,7 @@ public class SearchBookList extends Activity implements OnItemClickListener,
 		intent_search.putExtra("isbn", select_isbn);
 		startActivity(intent_search);
 	}
+	
 
 	private class DataAdapter extends ArrayAdapter<BookInfo> {
 		// 레이아웃 XML을 읽어들이기 위한 객체
@@ -335,4 +338,7 @@ public class SearchBookList extends Activity implements OnItemClickListener,
 
 	}
 
+
+	
+	
 }

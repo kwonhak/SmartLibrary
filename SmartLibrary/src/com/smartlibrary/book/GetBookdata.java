@@ -10,7 +10,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,8 +26,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -36,24 +33,19 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.example.smartlibrary.ActivityNFC;
-import com.example.smartlibrary.R;
-import com.example.smartlibrary.R.layout;
-import com.example.smartlibrary.SettingActivity;
-
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.example.smartlibrary.R;
+import com.example.smartlibrary.SettingActivity;
+
 
 public class GetBookdata extends Activity {
 
@@ -122,6 +114,7 @@ public class GetBookdata extends Activity {
 		card = intent.getStringExtra("nfc");
 		searchIsbn = intent.getStringExtra("isbn");
 		Log.d("kh", "넘어온값 : " + sign + card);
+		location =   "책장/"+sign;
 	
 		txtTitle = (TextView)findViewById(R.id.title);
 		txtIsbn =  (TextView)findViewById(R.id.isbn);
@@ -129,8 +122,8 @@ public class GetBookdata extends Activity {
 		txtPublisher =  (TextView)findViewById(R.id.publisher);
 		
 		select();
+
 	
-		
 		
 		
 
@@ -378,23 +371,6 @@ public class GetBookdata extends Activity {
 		dialog.show();    // 알림창 띄우기
 	}
 
-//	private void showAlertChung() {
-//		LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//		LinearLayout loginLayout = (LinearLayout) vi.inflate(
-//				R.layout.category_input, null);
-//		chung = (EditText) loginLayout.findViewById(R.id.category);
-//
-//		new AlertDialog.Builder(this).setTitle("청구기호").setView(loginLayout)
-//				.setNeutralButton("확인", new DialogInterface.OnClickListener() {
-//					@Override
-//					public void onClick(DialogInterface dialog, int which) {
-//
-//						Log.d("kh", "청구기호 : " + chung.getText().toString());
-//
-//						sign=chung.getText().toString();
-//					}
-//				}).show();
-//	}
 
 	public void changeChar() {
 

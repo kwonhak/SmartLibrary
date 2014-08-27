@@ -28,6 +28,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -38,9 +39,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.smartlibrary.bluetooth.BluetoothService;
 
-public class SettingActivity extends Activity implements OnClickListener {
+public class SettingActivity extends Activity {
 
 	LogBean logbean = new LogBean();
 	String userid = null;
@@ -53,6 +55,7 @@ public class SettingActivity extends Activity implements OnClickListener {
 	EditText pw;
 	boolean end = false;
 	Button btnenroll;
+
 	// 애플리케이션 전체에서 사용할 사용자 아이디값
 
 	Button btnlogin;
@@ -65,7 +68,7 @@ public class SettingActivity extends Activity implements OnClickListener {
 	private BluetoothService btService = null;
 	private SharedPreferences sharedPref;
 	private SharedPreferences.Editor sharedEditor;
-
+	
 	
 	private final Handler mHandler = new Handler() {
 
@@ -81,7 +84,7 @@ public class SettingActivity extends Activity implements OnClickListener {
 		super.onCreate(SavedInstanceState);
 		setContentView(R.layout.activity_setting);
 
-		Button btnsearch = (Button) findViewById(R.id.bt_home);
+		Button btnhome = (Button) findViewById(R.id.bt_home);
 		Button btnbookinfo = (Button) findViewById(R.id.bt_book);
 		//Button btnpersoninfo = (Button) findViewById(R.id.bt_lock);
 	    btnenroll = (Button) findViewById(R.id.bt_enroll);
@@ -89,13 +92,127 @@ public class SettingActivity extends Activity implements OnClickListener {
 		btnlogin = (Button) findViewById(R.id.bt_login);
 		Button btnjoin = (Button) findViewById(R.id.bt_join);
 
-		btnsearch.setOnClickListener(this);
-		btnbookinfo.setOnClickListener(this);
-		//btnpersoninfo.setOnClickListener(this);
-		btnenroll.setOnClickListener(this);
-		btnbluetooth.setOnClickListener(this);
-		btnlogin.setOnClickListener(this);
-		btnjoin.setOnClickListener(this);
+		
+		btnhome.setOnClickListener(new Button.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent_home = new Intent();
+				intent_home.setClass(SettingActivity.this, TabMenuActivity.class);
+
+				Log.d("kh", "list home button ");
+				startActivity(intent_home);
+				finish();
+				
+			}
+		});
+		
+		//대출정보
+		btnbookinfo.setOnClickListener(new Button.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				String sharedValue = sharedPref.getString("id", "");
+				Log.d("kh", "userid : " + sharedValue);
+				if (sharedValue == "") {
+					//Log.d("kh", "Login Button");
+					Toast toast = Toast.makeText(getApplicationContext(),
+							"로그인이 필요합니다.", Toast.LENGTH_LONG);
+					toast.setGravity(Gravity.TOP, 25, 400);
+					toast.show();
+					
+				}
+				else
+				{
+				Intent intent_bkinfo = new Intent();
+				intent_bkinfo.setClass(SettingActivity.this, ActivityBorrow.class);
+				startActivity(intent_bkinfo);
+				}
+				
+			}
+		});
+		
+		//책 등록
+		btnenroll.setOnClickListener(new Button.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent_enroll = new Intent();
+				intent_enroll.setClass(SettingActivity.this, BarcodeScan.class);
+				Log.d("kh", "setting personinfo button ");
+				startActivity(intent_enroll);
+				
+			}
+		});
+		
+		
+		//블루투스
+		btnbluetooth.setOnClickListener(new Button.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Log.d("kh", "setting bluetooth ");
+
+				if (btService.getDeviceState()) {
+					// 블루투스가 지원 가능한 기기일 때
+					btService.enableBluetooth();
+				} else {
+					finish();
+				}
+				
+			}
+		});
+		
+		//로그인
+		btnlogin.setOnClickListener(new Button.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Log.d("kh", "setting login ");
+				String sharedValue = sharedPref.getString("id", "");
+				Log.d("kh", "userid : " + sharedValue);
+				if (sharedValue == "") {
+					Log.d("kh", "Login Button");
+					showAlertLogin();
+					
+				} else {
+					Toast toast = Toast.makeText(getApplicationContext(),
+							"로그아웃되었습니다.", Toast.LENGTH_LONG);
+					toast.setGravity(Gravity.TOP, 25, 400);
+					toast.show();
+					sharedEditor.remove("id");
+					sharedEditor.commit();
+					btnlogin.setBackgroundResource(R.drawable.setting_login);
+					String findId = sharedPref.getString("id", "");
+					if(findId.equals("0001"))
+					{
+						//관리자 모드에서 보여질 버튼
+						btnenroll.setVisibility(View.VISIBLE);
+						
+					}
+					else
+					{
+						btnenroll.setVisibility(View.INVISIBLE);
+					}
+				}
+				
+			}
+		});
+		
+		//회원가입
+		btnjoin.setOnClickListener(new Button.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+			
+				// startActivity(intent_search);	Log.d("kh", "setting join 1");
+				Intent intent_join = new Intent();
+				intent_join.setClass(SettingActivity.this, ActivityJoin.class);
+				Log.d("kh", "setting join ");
+				startActivity(intent_join);
+				
+			}
+		});
 
 		sharedPref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
 		sharedEditor = sharedPref.edit();
@@ -112,111 +229,16 @@ public class SettingActivity extends Activity implements OnClickListener {
 		}
 		
 		if (sharedPref.getString("id", "") != "") {
-			btnlogin.setText("Logout");
+			btnlogin.setBackgroundResource(R.drawable.setting_logout);
+			//btnjoin.setVisibility(View.INVISIBLE);
 		}
+
 		
 		if (btService == null) {
 			btService = new BluetoothService(this, mHandler);
 		}
 
-	}
-
-	@Override
-	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.bt_home:
-			Intent intent_search = new Intent();
-			intent_search.setClass(SettingActivity.this, TabMenuActivity.class);
-
-			Log.d("kh", "setting home button ");
-			startActivity(intent_search);
-			finish();
-			break;
-		case R.id.bt_book:
-			String userid = sharedPref.getString("id", "");
-			if(userid.equals(""))
-			{
-				Toast toast = Toast.makeText(getApplicationContext(),
-						"사용자 정보가 없습니다.", Toast.LENGTH_LONG);
-				toast.setGravity(Gravity.TOP, 25, 400);
-				toast.show();
-			}
-			else
-			{
-				Intent intent_book = new Intent();
-				intent_book.setClass(SettingActivity.this, ActivityBorrow.class);
-
-				Log.d("kh", "setting book button ");
-				startActivity(intent_book);
-			}
-			
-			break;
-//		case R.id.bt_lock:
-//			Intent intent_person = new Intent();
-//			intent_person.setClass(SettingActivity.this, ActivityChunggu.class);
-//			Log.d("kh", "setting personinfo button ");
-//			startActivity(intent_person);
-//			break;
-
-		case R.id.bt_join:
-			Log.d("kh", "setting join 1");
-			Intent intent_join = new Intent();
-			intent_join.setClass(SettingActivity.this, ActivityJoin.class);
-			Log.d("kh", "setting join ");
-			startActivity(intent_join);
-			break;
-
-		case R.id.bt_enroll:
-
-			Intent intent_enroll = new Intent();
-			intent_enroll.setClass(SettingActivity.this, BarcodeScan.class);
-			Log.d("kh", "setting personinfo button ");
-			startActivity(intent_enroll);
-
-			break;
-
-		case R.id.bt_bluetooth:
-			Log.d("kh", "setting bluetooth ");
-
-			if (btService.getDeviceState()) {
-				// 블루투스가 지원 가능한 기기일 때
-				btService.enableBluetooth();
-			} else {
-				finish();
-			}
-			// 여기서 데이터 수신하는 서비스 부분을 호출
-			break;
-		case R.id.bt_login:
-			Log.d("kh", "setting login ");
-			String sharedValue = sharedPref.getString("id", "");
-			Log.d("kh", "userid : " + sharedValue);
-			if (sharedValue == "") {
-				Log.d("kh", "Login Button");
-				showAlertLogin();
-				
-			} else {
-				Toast toast = Toast.makeText(getApplicationContext(),
-						"로그아웃되었습니다.", Toast.LENGTH_LONG);
-				toast.setGravity(Gravity.TOP, 25, 400);
-				toast.show();
-				sharedEditor.remove("id");
-				sharedEditor.commit();
-				btnlogin.setText("Login");
-				String findId = sharedPref.getString("id", "");
-				if(findId.equals("0001"))
-				{
-					//관리자 모드에서 보여질 버튼
-					btnenroll.setVisibility(View.VISIBLE);
-					
-				}
-				else
-				{
-					btnenroll.setVisibility(View.INVISIBLE);
-				}
-			}
-
-			break;
-		}
+		
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -273,17 +295,40 @@ public class SettingActivity extends Activity implements OnClickListener {
 		id = (EditText) loginLayout.findViewById(R.id.id);
 		pw = (EditText) loginLayout.findViewById(R.id.pw);
 
-		new AlertDialog.Builder(this).setTitle("로그인").setView(loginLayout)
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("로그인").setView(loginLayout)
 				.setNeutralButton("확인", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 
-						Log.d("kh", "userId : " + userId + "  id: "
-								+ id.getText().toString());
-
-						select();
+						Log.d("kh", "확인 userId : " + userId + "  id: "
+								+ id.getText().toString().length());
+						if(id.getText().toString().length()==0)
+						{
+							 Toast.makeText(getApplicationContext(), "아이디를 입력해주세요", 1).show();
+						}
+						else if(pw.getText().toString().length()==0)
+						{
+							Toast.makeText(getApplicationContext(), "비밀번호를 입력해주세요", 1).show();
+								
+						}	
+						else
+						{
+							
+							 select();
+						}
 					}
-				}).show();
+				}).setNegativeButton("취소", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						return;
+					}
+				});
+		
+		AlertDialog dialog = builder.create();
+		dialog.show();
 	}
 
 	public String select() {
@@ -302,11 +347,12 @@ public class SettingActivity extends Activity implements OnClickListener {
 				protected String doInBackground(String... params) {
 					// 여기서 데이터 전송
 					final ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+					//String gcmid = sharedPref.getString("gcmid", "");
+					//Log.d("kh", "gcm Id: "+gcmid);
 					nameValuePairs.add(new BasicNameValuePair("id", id
 							.getText().toString()));
 					nameValuePairs.add(new BasicNameValuePair("secret", pw
 							.getText().toString()));
-
 					try {
 						HttpClient httpclient = new DefaultHttpClient();
 						HttpPost httppost = new HttpPost(
@@ -383,7 +429,7 @@ public class SettingActivity extends Activity implements OnClickListener {
 							sharedEditor.putString("id", id.getText()
 									.toString());
 							sharedEditor.commit();
-							btnlogin.setText("Logout");
+							btnlogin.setBackgroundResource(R.drawable.setting_logout);
 							Log.d("kh", "userId : " + userId + "  id: "
 									+ id.getText().toString() + "  성공");
 							
@@ -413,5 +459,7 @@ public class SettingActivity extends Activity implements OnClickListener {
 		}
 
 	}
+	
+	
 
 }

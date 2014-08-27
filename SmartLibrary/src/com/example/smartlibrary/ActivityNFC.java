@@ -117,21 +117,61 @@ public class ActivityNFC<NFCReaderActivity> extends Activity {
 		if (tag != null) {
 			byte[] tagId = tag.getId();
 			tagDesc.setText("TagID: " + toHexString(tagId));
-			String strCut1 = toHexString(tagId).substring(0, 1);
-			String strCut2 = toHexString(tagId).substring(1, 2);
+			String test = toHexString(tagId).substring(4,6);
+			String strCut1 = toHexString(tagId).substring(4, 5);
+			String strCut2 = toHexString(tagId).substring(5, 6);
 
 			hexToint = Integer.parseInt(strCut1, 16);
 			hexToint2 = Integer.parseInt(strCut2, 16);
 
-			Log.d("kh", "binary : " + Integer.toBinaryString(hexToint) + " "
-					+ Integer.toBinaryString(hexToint2));
-		 bin = Integer.toBinaryString(hexToint)
-					+ Integer.toBinaryString(hexToint2);
+			Log.d("kh", "binary : " + changebin(hexToint)+ " "
+			+ changebin(hexToint2));
+	bin = changebin(hexToint)
+			+ changebin(hexToint2);
+	Log.d("kh","NFC bin : "+bin);
+			
 
 			select(bin);
 		}
 	}
 
+	public String changebin( int a)
+	{
+		String c="";
+		if(a==1)
+			return "0001";
+		else if(a==2)
+			return "0010";
+		else if(a==3)
+			return "0011";
+		else if(a==4)
+			return "0100";
+		else if(a==5)
+			return "0101";
+		else if(a==6)
+			return "0110";
+		else if(a==7)
+			return "0111";
+		else if(a==8)
+			return "1000";
+		else if(a==9)
+			return "1001";
+		else if(a==10)
+			return "1010";
+		else if(a==11)
+			return "1011";
+		else if(a==12)
+			return "1100";
+		else if(a==13)
+			return "1101";
+		else if(a==14)
+			return "1110";
+		else if(a==15)
+			return "1111";
+		else if(a==0)
+			return "0000";
+		else return c;
+	}
 	public static final String CHARS = "0123456789ABCDEF";
 
 	public static String toHexString(byte[] data) {
@@ -209,12 +249,6 @@ public class ActivityNFC<NFCReaderActivity> extends Activity {
 
 							card = jo.getString("card");
 							Log.d("kh", "ok");
-
-							// adapter.add(new
-							// BorrowInfo(getApplicationContext(),
-							// card, student, isbn, startdate, enddate,
-							// extension, title));
-							// mListView.setAdapter(adapter);
 						}
 
 						return isbn;
@@ -231,17 +265,16 @@ public class ActivityNFC<NFCReaderActivity> extends Activity {
 					if (result == null)
 						return;
 					if (card.equals(bin)) {
-						Toast.makeText(ActivityNFC.this,
-								"이미 등록된 카드입니다.", Toast.LENGTH_LONG).show();
+						Toast.makeText(ActivityNFC.this, "이미 등록된 카드입니다.",
+								Toast.LENGTH_LONG).show();
 
 					} else {
+						
 						Intent intent_person = new Intent();
 						intent_person.setClass(ActivityNFC.this,
 								GetBookdata.class);
 						intent_person.putExtra(
-								"nfc",
-								Integer.toBinaryString(hexToint)
-										+ Integer.toBinaryString(hexToint2));
+								"nfc",bin);
 						intent_person.putExtra("isbn", isbn);
 
 						intent_person.putExtra("sign", sign);

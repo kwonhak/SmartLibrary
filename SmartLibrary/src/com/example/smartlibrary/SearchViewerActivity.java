@@ -1,11 +1,13 @@
 package com.example.smartlibrary;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.TextView.OnEditorActionListener;
 
 public class SearchViewerActivity extends Fragment {
@@ -47,12 +50,21 @@ public class SearchViewerActivity extends Fragment {
 
 				String encode_str = null;
 				encode_str = e_id.getText().toString();
-				Intent intent_search = new Intent();
-				intent_search.setClass(getActivity(), SearchBookList.class);
-				// intent_search.putExtra("text",encode_str);
-				intent_search.putExtra("text", e_id.getText().toString());
-				Log.d("kh", "searchButton " + encode_str);
-				startActivity(intent_search);
+				if(encode_str.length()!=0)
+				{
+					Intent intent_search = new Intent();
+					intent_search.setClass(getActivity(), SearchBookList.class);
+					// intent_search.putExtra("text",encode_str);
+					intent_search.putExtra("text", e_id.getText().toString());
+					Log.d("kh", "searchButton " + encode_str);
+					startActivity(intent_search);	
+				}
+				else
+				{
+					 Context context = getActivity().getApplicationContext();
+				        Toast.makeText(context, "검색어를 입력해주세요", Toast.LENGTH_LONG).show();
+				}
+				
 				// break;
 				// }
 			}
@@ -90,4 +102,5 @@ public class SearchViewerActivity extends Fragment {
 		return v;
 	}
 
+	
 }

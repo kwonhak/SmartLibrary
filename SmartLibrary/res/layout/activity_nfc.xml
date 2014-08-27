@@ -1,22 +1,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-
+    android:layout_height="match_parent"
+     android:background="@drawable/nfccard" >
+  <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/apptitle"
+        android:orientation="horizontal" />
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-      
-        android:background="#ffffffff"
         android:orientation="vertical" >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_weight="3"
-            android:text="NFC 카드를 스마트폰에 가까이 해주세요." />
+
 
         <TextView
             android:id="@+id/tagDesc"

@@ -1,52 +1,51 @@
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@drawable/batang" >
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="#ffffffff"
         android:orientation="vertical" >
+          <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/apptitle"
+        android:orientation="horizontal" />
 
- 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:background="#ffffffff"
             android:orientation="horizontal" >
-    
-	    <Button
-	        android:id="@+id/bt_oneFragment"
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:layout_weight="1"
-	    	android:text="home"
-	    	/>
-	    <Button
-	        android:id="@+id/bt_twoFragment"
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:layout_weight="2"
-	    	android:text="검색"
-	    	/>
-	    <Button
-	        android:id="@+id/bt_threeFragment"
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:layout_weight="1"
-	    	android:text="..."
-	    	/>
-	      
-	    </LinearLayout>
-	    <LinearLayout
+
+            <Button
+                android:id="@+id/bt_oneFragment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/homebutton" />
+
+            <Button
+                android:id="@+id/bt_twoFragment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:background="@drawable/searchbutton" />
+
+            <Button
+                android:id="@+id/bt_threeFragment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/menubutton" />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/ll_fragment"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
-	</LinearLayout>
-	
-	</RelativeLayout>
+            android:layout_weight="1"
+            android:orientation="horizontal" />
+    </LinearLayout>
+
+</LinearLayout>

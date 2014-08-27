@@ -21,8 +21,14 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-  
 
+    <permission
+        android:name="com.example.smartlibrary.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.example.smartlibrary.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <uses-feature
         android:name="android.hardware.nfc"
@@ -32,21 +38,21 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/appicon"
         android:label="@string/app_name"
         android:theme="@style/TestTheme" >
-  
-        
         <activity
             android:name="com.example.smartlibrary.TabMenuActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustPan" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.smartlibrary.SearchBookList" >
+        <activity android:name="com.example.smartlibrary.SearchBookList" 
+              android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity android:name="com.example.smartlibrary.SearchViewerActivity" >
         </activity>
@@ -54,13 +60,14 @@
         </activity>
         <activity android:name="com.example.smartlibrary.SlidingDrawer" >
         </activity>
-        <activity android:name="com.smartlibrary.book.BookInfoActivity" >
+        <activity android:name="com.smartlibrary.book.BookInfoActivity"
+              android:windowSoftInputMode="adjustPan"  >
         </activity>
         <activity android:name="com.smartlibrary.bluetooth.ActivityBluetooth" >
         </activity>
         <activity android:name="com.example.smartlibrary.ActivityNFC" >
         </activity>
-         <activity android:name="com.example.smartlibrary.ActivityBookMap" >
+        <activity android:name="com.example.smartlibrary.ActivityBookMap" >
         </activity>
         <activity android:name="com.example.smartlibrary.ActivityRent" >
         </activity>
@@ -71,6 +78,8 @@
         <activity android:name="com.smartlibrary.book.GetBookdata" >
         </activity>
         <activity android:name="com.example.smartlibrary.ActivityChunggu" >
+        </activity>
+        <activity android:name="com.smartlibrary.gcm.ActivityMessage" >
         </activity>
         <activity
             android:name="com.example.smartlibrary.BarcodeScan"
@@ -91,8 +100,25 @@
         </activity>
         <activity android:name="com.example.smartlibrary.ActivityBorrow" >
         </activity>
+        <activity android:name="com.smartlibrary.gcm.GCMIntentService" >
+        </activity>
 
-        
+        <receiver
+            android:name="com.smartlibrary.gcm.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+                <category android:name="com.smartlibrary.gcm" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name="com.smartlibrary.gcm.GCMIntentService"/>
+
+        <meta-data android:name="com.google.android.gms.version" 
+        android:value="@integer/google_play_services_version" />
+
     </application>
 
 </manifest>

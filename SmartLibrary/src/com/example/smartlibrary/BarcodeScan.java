@@ -1,7 +1,5 @@
 package com.example.smartlibrary;
 
-import com.smartlibrary.book.GetBookdata;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
@@ -11,9 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.Toast;
 
 public class BarcodeScan extends Activity{
@@ -21,7 +16,7 @@ public class BarcodeScan extends Activity{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_capture);
+       // setContentView(R.layout.activity_capture);
         
         Intent intent = new Intent("com.google.zxing.client.android.SCAN");
         intent.setPackage("com.google.zxing.client.android");
@@ -35,31 +30,7 @@ public class BarcodeScan extends Activity{
         	// downloadFromMarket();
 
         }
-//        try {
-//            Button scanner = (Button)findViewById(R.id.scanner);
-//            scanner.setOnClickListener(new OnClickListener() {
-//                
-//                public void onClick(View v) {
-//                    Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-//                    
-//                    intent.putExtra("com.google.zxing.client.android.SCAN.SCAN_MODE", "QR_CODE_MODE");
-//                    startActivityForResult(intent, 0);
-//                }
-// 
-//            });
-//            
-//            Button scanner2 = (Button)findViewById(R.id.scanner2);
-//            scanner2.setOnClickListener(new OnClickListener() {
-//                
-//                public void onClick(View v) {
-//                   
-//                }
-// 
-//            });
-//            
-//        } catch (ActivityNotFoundException anfe) {
-//            Log.e("onCreate", "Scanner Not Found", anfe);
-//                   }
+
         
     }
     
@@ -72,15 +43,13 @@ public class BarcodeScan extends Activity{
                 String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
                 // Handle successful scan
                 Log.d("kh", "isbn: "+contents);
-//                Toast toast = Toast.makeText(this, "Content:" + contents + " Format:" + format , Toast.LENGTH_LONG);
-//                toast.setGravity(Gravity.TOP, 25, 400);
-//                toast.show();
-                Log.d("kh", "액티비티변경");
+
+
                 Intent intent_search = new Intent();
 				intent_search.setClass(BarcodeScan.this, ActivityChunggu.class);
 				intent_search.putExtra("isbn", contents);
 				startActivity(intent_search);
-				Log.d("kh", "액티비티변경되냐?");
+				Log.d("kh", "값얻음?");
                 
                 
             } else if (resultCode == RESULT_CANCELED) {
@@ -88,6 +57,12 @@ public class BarcodeScan extends Activity{
                 Toast toast = Toast.makeText(this, "Scan was Cancelled!", Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.TOP, 25, 400);
                 toast.show();
+                
+                Intent intent_person = new Intent();
+    			intent_person.setClass(BarcodeScan.this,
+    					SettingActivity.class); 
+    			startActivity(intent_person);
+    		finish();   
             
                 
             }

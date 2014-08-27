@@ -1,20 +1,49 @@
 package com.smartlibrary.bluetooth;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.util.Log;
+
+import com.example.smartlibrary.SettingActivity;
+import com.smartlibrary.book.BookInfo;
+import com.smartlibrary.book.GetBookdata;
 
 public class BluetoothService {
 	// Debugging
@@ -44,7 +73,26 @@ public class BluetoothService {
 	private ConnectedThread mConnectedThread; // ������ �ٽ�
 
 	private int mState;
-	
+
+	InputStream is = null;
+	String result = null;
+	String line = null;
+	String bookCard = null;
+	String bookIsbn;
+	String bookTitle;
+	String bookReservation;
+	String userId;
+	String extension;
+	String GcmId;
+	Boolean btpower = true;
+	Boolean btgest = false;
+	int loginonce = 0;
+	int once = 1;
+	boolean receivecardid = true;
+	String checkid;
+
+	private SharedPreferences sharedPref;
+	private SharedPreferences.Editor sharedEditor;
 
 	// ���¸� ��Ÿ���� ���� ����
 	private static final int STATE_NONE = 0; // we're doing nothing
@@ -137,6 +185,13 @@ public class BluetoothService {
 	private synchronized void setState(int state) {
 		Log.d(TAG, "setState() " + mState + " -> " + state);
 		mState = state;
+		if (state == 3) {
+			// Toast.makeText(mActivity, "블루투스가 연결되었습니다", 1).show();
+			Log.d("kh", "블루투스 연결");
+			Vibrator vibe = (Vibrator) mActivity
+					.getSystemService(Context.VIBRATOR_SERVICE);
+			vibe.vibrate(500);
+		}
 	}
 
 	// Bluetooth ���� get
@@ -246,6 +301,7 @@ public class BluetoothService {
 				return;
 			r = mConnectedThread;
 		} // Perform the write unsynchronized r.write(out); }
+		r.write(out);
 	}
 
 	// ���� ����������
@@ -262,6 +318,7 @@ public class BluetoothService {
 	private class ConnectThread extends Thread {
 		private final BluetoothSocket mmSocket;
 		private final BluetoothDevice mmDevice;
+
 		// private final BluetoothServerSocket mmServerSocket;
 
 		public ConnectThread(BluetoothDevice device) {
@@ -357,36 +414,79 @@ public class BluetoothService {
 			byte[] buffer = new byte[1024];
 			int bytes;
 			String[] strcard = null;
-			int i=0;
+			int i = 0;
 
-			String cardid="";
+			String cardid = "";
 			// Keep listening to the InputStream while connected
+
 			while (true) {
 				try {
-	
+
 					// InputStream으로부터 값을 받는 읽는 부분(값을 받는다)
 					bytes = mmInStream.read(buffer);
-				
+
 					mHandler.obtainMessage(MESSAGE_READ, bytes, -1, buffer)
 							.sendToTarget();
-					Log.d("kh", "bluetooth : "+new String(buffer, Charset.forName("ASCII")).trim());
-					//cardid+=new String(buffer, Charset.forName("ASCII")).trim();
-					strcard[i]+=new String(buffer, Charset.forName("ASCII")).trim();
-					if(i==8&&strcard[0].equals("$")&&strcard[7].equals("#"))
-					{
-						break;
+					Log.d("kh",
+							"bluetooth : "
+									+ new String(buffer, Charset
+											.forName("ASCII")).trim());
+
+					// strcard[i++] += new String(buffer,
+					// Charset.forName("ASCII")).trim();
+					String cd = new String(buffer, Charset.forName("ASCII"))
+							.trim();
+					Log.d("kh", "cd  : " + cd);
+
+					cardid = cd.split("$")[0];
+					cardid = cd.split("#")[0];
+
+					if (cardid.length() == 8) {
+
+						Log.d("kh", "10 cardid : " + cardid);
+
+						//if (receivecardid) {
+							select(cardid);
+						//}
+
+					} else if (cardid.length() == 1) {
+						// cardid = cd.split("*")[0];
+
+						Log.d("kh", "## #cardid : " + cardid);
+
+						if (once == 0) {
+
+							if (cardid.equals("B")) {
+								Log.d("kh", "B is : " + cardid);
+								// 도서 등록 후 진동 보내자
+								// 이건 대출
+								sendborrow();
+								// break;
+
+							} else if (cardid.equals("G")) {
+								Log.d("kh", "G is : " + cardid);
+								// 도서 등록 후 진동 보내자
+								// 이건 대여
+								sendlend();
+								// break;
+							}
+						}
+
 					}
-					buffer = new byte[1024];
-					
+
+					Log.d("kh", "cardid : " + cardid);
 
 				} catch (IOException e) {
 					Log.e(TAG, "disconnected", e);
 					connectionLost();
 					break;
 				}
+
+				Log.d("kh", "cardid : " + cardid);
+				buffer = new byte[1024];
+
 			}
-			Log.d("kh", "cardid : "+cardid);
-			
+
 		}
 
 		/**
@@ -397,16 +497,17 @@ public class BluetoothService {
 		 */
 		public void write(byte[] buffer) {
 			try {
-				
+
 				// 값을 쓰는 부분(값을 보낸다)
 				mmOutStream.write(buffer);
 
 				mmOutStream.write('\r');
 				mmOutStream.flush();
-				
+
 				// Share the sent message back to the UI Activity
 				mHandler.obtainMessage(MESSAGE_WRITE, -1, -1, buffer)
 						.sendToTarget();
+				Log.d("kh", "write conplete!!");
 			} catch (IOException e) {
 				Log.e(TAG, "Exception during write", e);
 			}
@@ -420,4 +521,566 @@ public class BluetoothService {
 			}
 		}
 	}
+
+	public String select(final String qtx) {
+
+		try {
+			return (new AsyncTask<String, String, String>() {
+
+				// ArrayList<BorrowInfo> dataList = new ArrayList<BorrowInfo>();
+				ArrayList<BookInfo> dataList = new ArrayList<BookInfo>();
+
+				@Override
+				protected void onProgressUpdate(String... values) {
+					// TODO Auto-generated method stub
+					super.onProgressUpdate(values);
+				}
+
+				@Override
+				protected String doInBackground(String... params) {
+					final ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+					nameValuePairs.add(new BasicNameValuePair("card", qtx));
+
+					try {
+						HttpClient httpclient = new DefaultHttpClient();
+						HttpPost httppost = new HttpPost(
+								"http://112.108.40.87/selectbookcard.php");
+						httppost.setEntity(new UrlEncodedFormEntity(
+								nameValuePairs, HTTP.UTF_8));
+						HttpResponse response = httpclient.execute(httppost);
+						HttpEntity entity = response.getEntity();
+						is = entity.getContent();
+						Log.d("kh", "connection success");
+
+					} catch (Exception e) {
+						Log.e("Fail 1", e.toString());
+					}
+
+					try {
+						BufferedReader reader = new BufferedReader(
+								new InputStreamReader(is, "UTF_8"), 8);
+						StringBuilder sb = new StringBuilder();
+
+						while ((line = reader.readLine()) != null) {
+							sb.append(line + "\n");
+						}
+						is.close();
+						Log.d("kh", "result");
+						result = sb.toString();
+						Log.d("kh", result);
+					} catch (Exception e) {
+						Log.e("Fail 2", e.toString());
+
+					}
+
+					try {
+						Log.d("kh", "1");
+						JSONObject json_data = null;
+						json_data = new JSONObject(result);
+						Log.d("kh", "1.5"); // 여기는 됨
+						JSONArray bkName = json_data.getJSONArray("results");
+						String a = "";
+
+						for (int i = 0; i < bkName.length(); i++) {
+							Log.d("kh", "i " + i);
+							JSONObject jo = bkName.getJSONObject(i);
+
+							bookIsbn = jo.getString("isbn");
+							bookTitle = jo.getString("title");
+							// final String bookLocation =
+							// jo.getString("location");
+							bookReservation = jo.getString("reservation");
+							bookCard = jo.getString("card");
+
+						}
+
+						return a;
+
+					} catch (Exception e) {
+						Log.e("Fail 3", e.toString());
+					}
+
+					return bookIsbn;
+				}
+
+				@Override
+				protected void onPostExecute(String result) {
+					if (result == null)
+						return;
+					Log.d("kh", "checkid");
+					sharedPref = mActivity.getSharedPreferences("pref",
+							Activity.MODE_PRIVATE);
+					sharedEditor = sharedPref.edit();
+					String findId = sharedPref.getString("id", "");
+					//receivecardid = false;
+					if (findId.equals("")) {
+						if (loginonce == 0) {
+							login();
+							loginonce++;
+						}
+					} else {
+						checkid(qtx);
+					}
+					// btpower=true;
+
+				}
+			}.execute("")).get();
+
+		} catch (Exception e) {
+			return null;
+		}
+
+	}
+
+	public String checkid(final String qtx) {
+
+		try {
+			return (new AsyncTask<String, String, String>() {
+
+				// ArrayList<BorrowInfo> dataList = new ArrayList<BorrowInfo>();
+				ArrayList<BookInfo> dataList = new ArrayList<BookInfo>();
+
+				@Override
+				protected void onProgressUpdate(String... values) {
+					// TODO Auto-generated method stub
+					super.onProgressUpdate(values);
+				}
+
+				@Override
+				protected String doInBackground(String... params) {
+					final ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+					sharedPref = mActivity.getSharedPreferences("pref",
+							Activity.MODE_PRIVATE);
+					sharedEditor = sharedPref.edit();
+					String findId = sharedPref.getString("id", "");
+					nameValuePairs
+							.add(new BasicNameValuePair("student", findId));
+
+					try {
+						HttpClient httpclient = new DefaultHttpClient();
+						HttpPost httppost = new HttpPost(
+								"http://112.108.40.87/checkreservationid.php");
+						httppost.setEntity(new UrlEncodedFormEntity(
+								nameValuePairs, HTTP.UTF_8));
+						HttpResponse response = httpclient.execute(httppost);
+						HttpEntity entity = response.getEntity();
+						is = entity.getContent();
+						Log.d("kh", "connection success");
+
+					} catch (Exception e) {
+						Log.e("Fail 1", e.toString());
+					}
+
+					try {
+						BufferedReader reader = new BufferedReader(
+								new InputStreamReader(is, "UTF_8"), 8);
+						StringBuilder sb = new StringBuilder();
+
+						while ((line = reader.readLine()) != null) {
+							sb.append(line + "\n");
+						}
+						is.close();
+						Log.d("kh", "result");
+						result = sb.toString();
+						Log.d("kh", result);
+					} catch (Exception e) {
+						Log.e("Fail 2", e.toString());
+
+					}
+
+					try {
+						Log.d("kh", "1");
+						JSONObject json_data = null;
+						json_data = new JSONObject(result);
+						Log.d("kh", "1.5"); // 여기는 됨
+						JSONArray bkName = json_data.getJSONArray("results");
+						String a = "";
+
+						for (int i = 0; i < bkName.length(); i++) {
+							Log.d("kh", "i " + i);
+							JSONObject jo = bkName.getJSONObject(i);
+
+							checkid = jo.getString("student");
+							Log.d("kh", "checkid : " + checkid);
+
+						}
+
+						return a;
+
+					} catch (Exception e) {
+						Log.e("Fail 3", e.toString());
+					}
+
+					return checkid;
+				}
+
+				@Override
+				protected void onPostExecute(String result) {
+					if (result == null)
+						return;
+					// btpower=true;
+
+					if (bookReservation.equals("3")) {
+
+						sharedPref = mActivity.getSharedPreferences("pref",
+								Activity.MODE_PRIVATE);
+						sharedEditor = sharedPref.edit();
+						String findId = sharedPref.getString("id", "");
+						Log.d("kh", "checkid :   " + checkid + "  findId ::"
+								+ findId);
+						if (findId.equals(checkid)) {
+							String message = "$3";
+							byte[] send = message.getBytes();
+							write(send);
+							Log.d("kh", "$3 sended");
+							try {
+								Thread.sleep(1000);
+							} catch (Exception e) {
+								Log.d("error", e.getMessage());
+							}
+
+							message = "$1";
+							send = message.getBytes();
+							write(send);
+							Log.d("kh", "$1 sended");
+
+							try {
+								once = 0;
+								Thread.sleep(1000);
+								
+							} catch (Exception e) {
+								Log.d("error", e.getMessage());
+							}
+
+							
+						} else {
+							// gcm과 마찬가지로 알림창이 뜨는 화면을 보여준다.
+
+							// 예약중이면 진동을 2번 보낸다
+							String message = "$3";
+							byte[] send = message.getBytes();
+							write(send);
+							Log.d("kh", "$3 sended");
+
+							try {
+								Thread.sleep(1000);
+							} catch (Exception e) {
+								Log.d("error", e.getMessage());
+							}
+							write(send);
+							alert();
+							write(send);
+						}
+
+					} else if (qtx.equals(bookCard)) {
+						// 받은 카드번호랑 등록된 디비의 카드 번호가 있으면
+						// $1을 보낸다
+
+						Log.d("kh", "한번만 보내기 위함이다");
+						String message = "$3";
+						byte[] send = message.getBytes();
+						write(send);
+						Log.d("kh", "$3 sended");
+						try {
+							Thread.sleep(1000);
+						} catch (Exception e) {
+							Log.d("error", e.getMessage());
+						}
+
+						message = "$1";
+						send = message.getBytes();
+						write(send);
+						Log.d("kh", "$1 sended");
+
+						once = 0;
+						try {
+							Thread.sleep(500);
+						} catch (Exception e) {
+							Log.d("error", e.getMessage());
+						}
+
+					}
+
+				}
+			}.execute("")).get();
+
+		} catch (Exception e) {
+			return null;
+		}
+
+	}
+
+	// 대여 데이터 전송부분
+	public String sendlend() {
+
+		try {
+			return (new AsyncTask<String, String, String>() {
+
+				// ArrayList<BorrowInfo> dataList = new ArrayList<BorrowInfo>();
+				ArrayList<BookInfo> dataList = new ArrayList<BookInfo>();
+
+				@Override
+				protected void onProgressUpdate(String... values) {
+					// TODO Auto-generated method stub
+					super.onProgressUpdate(values);
+				}
+
+				@Override
+				protected String doInBackground(String... params) {
+					final ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+					SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat(
+							"yyyy-MM-dd", Locale.KOREA);
+					Date currentTime = new Date();
+					String mTime = mSimpleDateFormat.format(currentTime);
+
+					// String mTime = "2014-08-22";
+
+					sharedPref = mActivity.getSharedPreferences("pref",
+							Activity.MODE_PRIVATE);
+					sharedEditor = sharedPref.edit();
+					String findId = sharedPref.getString("id", "");
+					Log.d("kh", " user id: " + findId);
+
+					Log.d("kh", "gcmid : " + sharedPref.getString("gcmid", ""));
+					nameValuePairs
+							.add(new BasicNameValuePair("card", bookCard));
+					nameValuePairs
+							.add(new BasicNameValuePair("student", findId));
+					nameValuePairs.add(new BasicNameValuePair("startdate",
+							mTime));
+					nameValuePairs
+							.add(new BasicNameValuePair("isbn", bookIsbn));
+					nameValuePairs.add(new BasicNameValuePair("title",
+							bookTitle));
+					nameValuePairs.add(new BasicNameValuePair("gcmid",
+							sharedPref.getString("gcmid", "")));
+
+					try {
+						HttpClient httpclient = new DefaultHttpClient();
+						HttpPost httppost = new HttpPost(
+								"http://112.108.40.87/lendinsert.php");
+						httppost.setEntity(new UrlEncodedFormEntity(
+								nameValuePairs, HTTP.UTF_8));
+						HttpResponse response = httpclient.execute(httppost);
+						HttpEntity entity = response.getEntity();
+						is = entity.getContent();
+						Log.d("kh", "connection success");
+						once++;
+						Log.d("kh", "once " + once);
+
+					} catch (Exception e) {
+						Log.e("Fail 1", e.toString());
+					}
+
+					try {
+						BufferedReader reader = new BufferedReader(
+								new InputStreamReader(is, "UTF_8"), 8);
+						StringBuilder sb = new StringBuilder();
+
+						while ((line = reader.readLine()) != null) {
+							sb.append(line + "\n");
+						}
+						is.close();
+						Log.d("kh", "result");
+						result = sb.toString();
+						Log.d("kh", result);
+					} catch (Exception e) {
+						Log.e("Fail 2", e.toString());
+
+					}
+
+					
+					return result;
+				}
+
+				@Override
+				protected void onPostExecute(String result) {
+					if (result == null)
+						return;
+					//receivecardid = true;
+					try {
+						Thread.sleep(1000);
+						once=0;
+					} catch (Exception e) {
+						Log.d("error", e.getMessage());
+					}
+					
+					// btpower = true;
+					// btgest = false;
+				}
+			}.execute("")).get();
+
+		} catch (Exception e) {
+			return null;
+		}
+
+	}
+
+	// 대출 데이터 전송부분
+	public String sendborrow() {
+
+		try {
+			return (new AsyncTask<String, String, String>() {
+
+				// ArrayList<BorrowInfo> dataList = new ArrayList<BorrowInfo>();
+				// ArrayList<BookInfo> dataList = new ArrayList<BookInfo>();
+
+				@Override
+				protected void onProgressUpdate(String... values) {
+					// TODO Auto-generated method stub
+					super.onProgressUpdate(values);
+				}
+
+				@Override
+				protected String doInBackground(String... params) {
+					final ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+
+					sharedPref = mActivity.getSharedPreferences("pref",
+							Activity.MODE_PRIVATE);
+					sharedEditor = sharedPref.edit();
+					String findId = sharedPref.getString("id", "");
+					Log.d("kh", " user id: " + findId);
+
+					SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat(
+							"yyyy-MM-dd", Locale.KOREA);
+					Date currentTime = new Date();
+					String mTime = mSimpleDateFormat.format(currentTime);
+
+					Date date = null;
+					try {
+						date = mSimpleDateFormat.parse(mTime);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+					Calendar cal = Calendar.getInstance();
+					cal.setTime(date);
+					cal.add(Calendar.DATE, 14);
+					String enddate = mSimpleDateFormat.format(cal.getTime());
+					Log.d("kh", "date extension : " + enddate);
+
+					// String mTime = "2014-08-22";
+					// String enddate = "2014-08-22";
+
+					nameValuePairs
+							.add(new BasicNameValuePair("card", bookCard));
+					nameValuePairs
+							.add(new BasicNameValuePair("student", findId));
+					nameValuePairs.add(new BasicNameValuePair("startdate",
+							mTime));
+					nameValuePairs
+							.add(new BasicNameValuePair("isbn", bookIsbn));
+					nameValuePairs.add(new BasicNameValuePair("title",
+							bookTitle));
+					nameValuePairs.add(new BasicNameValuePair("enddate",
+							enddate));
+					nameValuePairs
+							.add(new BasicNameValuePair("extension", "0"));
+
+					try {
+						HttpClient httpclient = new DefaultHttpClient();
+						HttpPost httppost = new HttpPost(
+								"http://112.108.40.87/borrowinsert.php");
+						httppost.setEntity(new UrlEncodedFormEntity(
+								nameValuePairs, HTTP.UTF_8));
+						HttpResponse response = httpclient.execute(httppost);
+						HttpEntity entity = response.getEntity();
+						is = entity.getContent();
+						Log.d("kh", "connection success");
+						
+
+					} catch (Exception e) {
+						Log.e("Fail 1", e.toString());
+					}
+					try {
+						BufferedReader reader = new BufferedReader(
+								new InputStreamReader(is, "UTF_8"), 8);
+						StringBuilder sb = new StringBuilder();
+
+						while ((line = reader.readLine()) != null) {
+							sb.append(line + "\n");
+						}
+						is.close();
+						Log.d("kh", "result");
+						result = sb.toString();
+						Log.d("kh", result);
+					} catch (Exception e) {
+						Log.e("Fail 2", e.toString());
+
+					}
+
+					return result;
+				}
+
+				@Override
+				protected void onPostExecute(String result) {
+					if (result == null)
+						return;
+					//receivecardid = true;
+					
+					once=1;
+					try {
+						Thread.sleep(1500);
+						once=0;
+					} catch (Exception e) {
+						Log.d("error", e.getMessage());
+					}
+					// btpower = true;
+					// btgest = false;
+				}
+			}.execute("")).get();
+
+		} catch (Exception e) {
+			return null;
+		}
+
+	}
+
+	public void alert() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(mActivity); // 여기서
+																			// this는
+																			// Activity의
+																			// this
+		Vibrator vibe = (Vibrator) mActivity
+				.getSystemService(Context.VIBRATOR_SERVICE);
+		vibe.vibrate(500);
+		// 여기서 부터는 알림창의 속성 설정
+		builder.setTitle("Error Message") // 제목 설정
+				.setMessage("이미 예약된 도서입니다.") // 메세지 설정
+				.setCancelable(false) // 뒤로 버튼 클릭시 취소 가능 설정
+				.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+					// 확인 버튼 클릭시 설정
+					public void onClick(DialogInterface dialog, int whichButton) {
+						//receivecardid = true;
+					}
+				});
+
+		AlertDialog dialog = builder.create(); // 알림창 객체 생성
+		dialog.show(); // 알림창 띄우기
+	}
+
+	public void login() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(mActivity); // 여기서
+																			// this는
+																			// Activity의
+																			// this
+		Vibrator vibe = (Vibrator) mActivity
+				.getSystemService(Context.VIBRATOR_SERVICE);
+		vibe.vibrate(500);
+		// 여기서 부터는 알림창의 속성 설정
+		builder.setTitle("Error Message") // 제목 설정
+				.setMessage("로그인이 필요합니다.") // 메세지 설정
+				.setCancelable(false) // 뒤로 버튼 클릭시 취소 가능 설정
+				.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+					// 확인 버튼 클릭시 설정
+					public void onClick(DialogInterface dialog, int whichButton) {
+
+						loginonce = 0;
+						//receivecardid = true;
+					}
+				});
+
+		AlertDialog dialog = builder.create(); // 알림창 객체 생성
+		dialog.show(); // 알림창 띄우기
+	}
+
 }

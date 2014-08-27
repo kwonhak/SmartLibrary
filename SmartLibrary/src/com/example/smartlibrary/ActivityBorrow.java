@@ -62,13 +62,13 @@ public class ActivityBorrow extends Activity {
 	String enddate;
 	String extension;
 	String title;
-	
-	String selectcard;
-	String userid;
-	String selectIsbn;
-	String selectExtension;
-	
-	
+
+	String selectcard = "";
+	String userid = "";
+	String selectIsbn = "";
+	String selectExtension = "";
+	// boolean isChecked;
+
 	ListAdapter adapter;
 	private ListView mListView = null;
 	EditText e_id;
@@ -78,14 +78,13 @@ public class ActivityBorrow extends Activity {
 
 	private ArrayAdapter<String> mAaBooklist;
 	private SharedPreferences sharedPref;
-	private SharedPreferences.Editor sharedEditor ;
-	
-	
+	private SharedPreferences.Editor sharedEditor;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		
+
 		setContentView(R.layout.activity_borrow);
 
 		Button btnrent = (Button) findViewById(R.id.rent);
@@ -93,113 +92,104 @@ public class ActivityBorrow extends Activity {
 		Button btnhome = (Button) findViewById(R.id.home);
 		Button btnsetting = (Button) findViewById(R.id.setting);
 		Button btnextension = (Button) findViewById(R.id.extension);
+		//btnborrow.setBackgroundColor(R.drawable.borrowbutton_change);
 
-		btnextension.setOnClickListener(new Button.OnClickListener(){
+		btnextension.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				userid = sharedPref.getString("id", "");
-				if(userid=="")
-				{
+				if (userid == "") {
 					Toast toast = Toast.makeText(getApplicationContext(),
 							"로그인을 해주세요.", Toast.LENGTH_LONG);
 					toast.setGravity(Gravity.TOP, 25, 400);
 					toast.show();
-				}
-				else
-				{
-					Log.d("kh", "selectextension : "+selectExtension);
-					
-					if (selectExtension.equals("1")) {
-						Log.d("kh","selectExtension : "+selectExtension);
-						
-						alreadyextension();
-							//select(selectIsbn,"reservation");
-//							Toast toast = Toast.makeText(getApplicationContext(),
-//									"더이상 연장할 수 없습니다.", Toast.LENGTH_LONG);
-//							toast.setGravity(Gravity.TOP, 25, 400);
-//							toast.show();
-						
-							//select(searchIsbn);
-						
+				} else {
+					if (selectcard.equals("")) {
 
-					}
-					else
-					{
-						SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
-						Date date = null;
-						try{
-							date = dateformat.parse(enddate);
+					} else {
+						Log.d("kh", "selectextension : " + selectExtension);
+
+						if (selectExtension.equals("1")) {
+							Log.d("kh", "selectExtension : " + selectExtension);
+
+							alreadyextension();
+
+						} else {
+							SimpleDateFormat dateformat = new SimpleDateFormat(
+									"yyyy-MM-dd");
+							Date date = null;
+							try {
+								date = dateformat.parse(enddate);
+							} catch (ParseException e) {
+								e.printStackTrace();
+							}
+							Calendar cal = Calendar.getInstance();
+							cal.setTime(date);
+							cal.add(Calendar.DATE, 7);
+							String strDate = dateformat.format(cal.getTime());
+							Log.d("kh", "date extension : " + strDate);
+							extension(strDate);
+							extcomplete();
 						}
-						catch(ParseException e){
-							e.printStackTrace();
-						}
-						Calendar cal = Calendar.getInstance();
-						cal.setTime(date);
-						cal.add(Calendar.DATE, 7);
-						String strDate = dateformat.format(cal.getTime());
-						Log.d("kh", "date extension : "+ strDate);
-						extension(strDate);
-						extcomplete();
 					}
 				}
 			}
 		});
-		
-		btnhome.setOnClickListener(new Button.OnClickListener(){
+
+		btnhome.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent_home = new Intent();
-				intent_home.setClass(ActivityBorrow.this, TabMenuActivity.class);
+				intent_home
+						.setClass(ActivityBorrow.this, TabMenuActivity.class);
 
 				Log.d("kh", "list home button ");
 				startActivity(intent_home);
+				finish();
 			}
 		});
-		
-		btnsetting.setOnClickListener(new Button.OnClickListener(){
+
+		btnsetting.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent_setting = new Intent();
-				intent_setting.setClass(ActivityBorrow.this, SettingActivity.class);
+				intent_setting.setClass(ActivityBorrow.this,
+						SettingActivity.class);
 
 				Log.d("kh", "list setting button ");
 				startActivity(intent_setting);
+				finish();
 			}
 		});
-		btnrent.setOnClickListener(new Button.OnClickListener(){
+		btnrent.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-//				adapter.clear();
-//				bkList = new ArrayList<BookInfo>();
-				// TODO Auto-generated method stub
+
 				Intent intent_search = new Intent();
 				intent_search.setClass(ActivityBorrow.this, ActivityRent.class);
 
 				Log.d("kh", "list home button ");
 				startActivity(intent_search);
+				finish();
 			}
 		});
 
-		
 		sharedPref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
 		sharedEditor = sharedPref.edit();
 		String userid = sharedPref.getString("id", "");
-		Log.d("kh", "아이디네 : "+userid);
+		Log.d("kh", "아이디네 : " + userid);
 		select(userid);
-		
-		
+
 		mListView = (ListView) findViewById(R.id.book_list);
 		brList = new ArrayList<BorrowInfo>();
 		adapter = new ListAdapter(this, brList);
 
 		mListView.setAdapter(adapter);
-		
-		
+
 	}
-	
 
 	public String select(final String qtx) {
 
@@ -207,7 +197,7 @@ public class ActivityBorrow extends Activity {
 			return (new AsyncTask<String, String, String>() {
 
 				ArrayList<BorrowInfo> dataList = new ArrayList<BorrowInfo>();
-				
+
 				@Override
 				protected void onProgressUpdate(String... values) {
 					// TODO Auto-generated method stub
@@ -218,9 +208,7 @@ public class ActivityBorrow extends Activity {
 				protected String doInBackground(String... params) {
 					final ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 					nameValuePairs.add(new BasicNameValuePair("student", qtx));
-					
 
-					
 					try {
 						HttpClient httpclient = new DefaultHttpClient();
 						HttpPost httppost = new HttpPost(
@@ -259,7 +247,7 @@ public class ActivityBorrow extends Activity {
 						json_data = new JSONObject(result);
 						Log.d("kh", "1.5"); // 여기는 됨
 						JSONArray bkName = json_data.getJSONArray("results");
-						
+
 						for (int i = 0; i < bkName.length(); i++) {
 							Log.d("kh", "i " + i);
 							JSONObject jo = bkName.getJSONObject(i);
@@ -272,22 +260,12 @@ public class ActivityBorrow extends Activity {
 
 							extension = jo.getString("extension");
 							Log.d("kh", "ok");
-							
-							dataList.add(new BorrowInfo(getApplicationContext(),
-								card, student, isbn, startdate, enddate,
-									extension, title));
-							
-							
-							
-							
-							
-//							adapter.add(new BorrowInfo(getApplicationContext(),
-//									card, student, isbn, startdate, enddate,
-//									extension, title));
-//							mListView.setAdapter(adapter);
+
+							dataList.add(new BorrowInfo(
+									getApplicationContext(), card, student,
+									isbn, startdate, enddate, extension, title));
+
 						}
-						
-						
 
 						return isbn;
 
@@ -315,13 +293,11 @@ public class ActivityBorrow extends Activity {
 		}
 
 	}
-	
+
 	private class ListAdapter extends ArrayAdapter<BorrowInfo> {
 		// 레이아웃 XML을 읽어들이기 위한 객체
 		private LayoutInflater mInflater;
 		private ArrayList<BorrowInfo> list;
-
-	
 
 		public ListAdapter(Context context, ArrayList<BorrowInfo> object) {
 
@@ -331,10 +307,9 @@ public class ActivityBorrow extends Activity {
 			mInflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			list = object;
-			
 
 		}
-		
+
 		@Override
 		public long getItemId(int position) {
 			return position;
@@ -365,24 +340,31 @@ public class ActivityBorrow extends Activity {
 				TextView bkenddate = (TextView) view.findViewById(R.id.enddate);
 				CheckBox chbox = (CheckBox) view.findViewById(R.id.checkbox);
 				chbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-					  
-		            @Override
-		            public void onCheckedChanged(CompoundButton buttonView,
-		                    boolean isChecked) {
-		                if (buttonView.getId() == R.id.checkbox) {
-		                    if (isChecked) {
-		                    	//selectIsbn = list.get((int) getItemId(position)).getIsbn();
-		        				selectcard = list.get(position).getCard();
-		        				selectIsbn = list.get(position).getIsbn();
-		        				selectExtension = list.get(position).getExtension();
-		        				Log.d("kh","extension" + selectExtension);
-		                        Toast.makeText(getApplicationContext(), "눌림", 1).show();
-		                    } else {
-		                        Toast.makeText(getApplicationContext(), "안눌림", 1).show();
-		                    }
-		                }
-		            }
-		        });
+
+					@Override
+					public void onCheckedChanged(CompoundButton buttonView,
+							boolean isChecked) {
+						if (buttonView.getId() == R.id.checkbox) {
+							if (isChecked) {
+								// selectIsbn = list.get((int)
+								// getItemId(position)).getIsbn();
+								selectcard = list.get(position).getCard();
+								selectIsbn = list.get(position).getIsbn();
+								selectExtension = list.get(position)
+										.getExtension();
+								Log.d("kh", "extension" + selectExtension);
+								// Toast.makeText(getApplicationContext(), "눌림",
+								// 1).show();
+							} else {
+								selectcard = "";
+								selectIsbn = "";
+								selectExtension = "";
+								// Toast.makeText(getApplicationContext(),
+								// "안눌림", 1).show();
+							}
+						}
+					}
+				});
 
 				bktitle.setText(data.getTitle());
 				bkenddate.setText(data.getEnddate());
@@ -394,13 +376,6 @@ public class ActivityBorrow extends Activity {
 		}
 
 	}
-	
-//	class ViewHolder {
-//		
-//
-//		CheckBox checkbox;
-//	}
-	
 
 	public String extension(final String strdate) {
 
@@ -417,10 +392,14 @@ public class ActivityBorrow extends Activity {
 				protected String doInBackground(String... params) {
 					final ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 
-//					nameValuePairs.add(new BasicNameValuePair("student", userid));
-					nameValuePairs.add(new BasicNameValuePair("card", selectcard));
-//					nameValuePairs.add(new BasicNameValuePair("isbn", selectIsbn));
-					nameValuePairs.add(new BasicNameValuePair("enddate", strdate));
+					// nameValuePairs.add(new BasicNameValuePair("student",
+					// userid));
+					nameValuePairs.add(new BasicNameValuePair("card",
+							selectcard));
+					// nameValuePairs.add(new BasicNameValuePair("isbn",
+					// selectIsbn));
+					nameValuePairs.add(new BasicNameValuePair("enddate",
+							strdate));
 
 					try {
 						HttpClient httpclient = new DefaultHttpClient();
@@ -437,24 +416,6 @@ public class ActivityBorrow extends Activity {
 						Log.e("Fail 1", e.toString());
 					}
 
-//					try {
-//						BufferedReader reader = new BufferedReader(
-//								new InputStreamReader(is, "UTF_8"), 8);
-//						StringBuilder sb = new StringBuilder();
-//
-//						while ((line = reader.readLine()) != null) {
-//							sb.append(line + "\n");
-//						}
-//						is.close();
-//						Log.d("kh", "result");
-//						result = sb.toString();
-//						Log.d("kh", result);
-//					} catch (Exception e) {
-//						Log.e("Fail 2", e.toString());
-//
-//					}
-
-
 					return null;
 				}
 
@@ -462,7 +423,6 @@ public class ActivityBorrow extends Activity {
 				protected void onPostExecute(String result) {
 					if (result == null)
 						return;
-
 
 				}
 			}.execute("")).get();
@@ -472,46 +432,56 @@ public class ActivityBorrow extends Activity {
 		}
 
 	}
-	public void alreadyextension()
-	{
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);     // 여기서 this는 Activity의 this
+
+	public void alreadyextension() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this); // 여기서
+																		// this는
+																		// Activity의
+																		// this
 
 		// 여기서 부터는 알림창의 속성 설정
-		builder.setTitle("이미 연장한 도서입니다.")        // 제목 설정
-		.setMessage("확인 버튼을 눌러주세요.")        // 메세지 설정
-		.setCancelable(false)        // 뒤로 버튼 클릭시 취소 가능 설정
-		.setPositiveButton("확인", new DialogInterface.OnClickListener(){       
-		 // 확인 버튼 클릭시 설정
-		public void onClick(DialogInterface dialog, int whichButton){
-			
-		//finish();   
+		builder.setTitle("이미 연장한 도서입니다.") // 제목 설정
+				.setMessage("확인 버튼을 눌러주세요.") // 메세지 설정
+				.setCancelable(false) // 뒤로 버튼 클릭시 취소 가능 설정
+				.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+					// 확인 버튼 클릭시 설정
+					public void onClick(DialogInterface dialog, int whichButton) {
 
-		}
-		});
+						// finish();
 
-		AlertDialog dialog = builder.create();    // 알림창 객체 생성
-		dialog.show();    // 알림창 띄우기
+					}
+				});
+
+		AlertDialog dialog = builder.create(); // 알림창 객체 생성
+		dialog.show(); // 알림창 띄우기
 	}
 
-	public void extcomplete()
-	{
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);     // 여기서 this는 Activity의 this
+	public void extcomplete() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this); // 여기서
+																		// this는
+																		// Activity의
+																		// this
 
 		// 여기서 부터는 알림창의 속성 설정
-		builder.setTitle("연장되었습니다.")        // 제목 설정
-		.setMessage("확인 버튼을 눌러주세요.")        // 메세지 설정
-		.setCancelable(false)        // 뒤로 버튼 클릭시 취소 가능 설정
-		.setPositiveButton("확인", new DialogInterface.OnClickListener(){       
-		 // 확인 버튼 클릭시 설정
-		public void onClick(DialogInterface dialog, int whichButton){
-			
-		//finish();   
+		builder.setTitle("연장되었습니다.") // 제목 설정
+				.setMessage("확인 버튼을 눌러주세요.") // 메세지 설정
+				.setCancelable(false) // 뒤로 버튼 클릭시 취소 가능 설정
+				.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+					// 확인 버튼 클릭시 설정
+					public void onClick(DialogInterface dialog, int whichButton) {
 
-		}
-		});
+						// finish();
+						adapter.clear();
+						Intent intent_person = new Intent();
+						intent_person.setClass(ActivityBorrow.this,
+								ActivityBorrow.class);
+						startActivity(intent_person);
 
-		AlertDialog dialog = builder.create();    // 알림창 객체 생성
-		dialog.show();    // 알림창 띄우기
+					}
+				});
+
+		AlertDialog dialog = builder.create(); // 알림창 객체 생성
+		dialog.show(); // 알림창 띄우기
 	}
-	
+
 }

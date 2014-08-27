@@ -19,8 +19,6 @@ public class RentInfo {
 		student = b_student;
 		startdate = b_startdate;
 
-		
-
 	}
 
 	public String getIsbn() {

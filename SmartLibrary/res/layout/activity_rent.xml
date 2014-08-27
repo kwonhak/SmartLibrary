@@ -1,19 +1,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent" 
+     android:background="@drawable/batang">
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="#ffffffff"
-        android:orientation="vertical" >
+        
+        android:orientation="vertical" >  <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/apptitle"
+        android:orientation="horizontal" />
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:background="#ffffffff"
+
+            
             android:orientation="horizontal" >
 
             <Button
@@ -21,50 +26,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="home" />
+                android:background="@drawable/homebutton"  />
 
             <Button
                 android:id="@+id/borrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="대출" />
+                android:background="@drawable/borrowbutton"/>"
 
             <Button
                 android:id="@+id/rent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="대여" />
+               android:background="@drawable/lendbutton" />
 
             <Button
                 android:id="@+id/setting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="..." />
+                    android:background="@drawable/menubutton"/>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="#ffffffff"
-            android:orientation="horizontal" >
-
-            <Button
-                android:id="@+id/bt_rent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="모두선택" />
-
-            <Button
-                android:id="@+id/bt_search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="반납" />
-        </LinearLayout>
+      
 
       
 
@@ -78,6 +64,27 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" >
             </ListView>
+        </LinearLayout>
+          <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            
+            android:orientation="horizontal" >
+<!-- 
+            <Button
+                android:id="@+id/bt_rent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="모두선택" />
+      -->       
+
+            <Button
+                android:id="@+id/bt_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="반납" />
         </LinearLayout>
     </LinearLayout>
 

@@ -2,105 +2,114 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@drawable/batang"
     android:orientation="vertical" >
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="30dp" />
-    
+        android:background="@drawable/apptitle"
+        android:orientation="horizontal" />
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="5dp" >
+        android:gravity="center"
+        android:orientation="vertical" >
 
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="학번" />
-
-        <EditText
-            android:id="@+id/id"
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:inputType="number" />
-    </LinearLayout>
+            android:orientation="horizontal"
+            android:padding="5dp" >
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="5dp" >
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="학    번" />
 
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="패스워드" />
+            <EditText
+                android:id="@+id/id"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+        </LinearLayout>
 
-        <EditText
-            android:id="@+id/pw"
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:password="true" />
-    </LinearLayout>
+            android:orientation="horizontal"
+            android:padding="5dp" >
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="5dp" >
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="패스워드" />
 
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="이름" />
+            <EditText
+                android:id="@+id/pw"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:password="true" />
+        </LinearLayout>
 
-        <EditText
-            android:id="@+id/name"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="5dp" >
-
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="전화번호" />
-
-        <EditText
-            android:id="@+id/phone"
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:inputType="number" />
-    </LinearLayout>
+            android:orientation="horizontal"
+            android:padding="5dp" >
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-         android:gravity="center_horizontal"
-        android:padding="5dp" >
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="이    름" />
 
-        <Button
-            android:id="@+id/join"
-            android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/name"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="30dp"
-            android:padding="5dp"
-            android:text="Join" />
+            android:orientation="horizontal"
+            android:padding="5dp" >
 
-        <Button
-            android:id="@+id/cancle"
-            android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="전화번호" />
+
+            <EditText
+                android:id="@+id/phone"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:text="Cancle" />
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:padding="5dp" >
+
+            <Button
+                android:id="@+id/join"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="30dp"
+                android:background="@drawable/btnjoin_button"
+                android:padding="5dp" />
+
+            <Button
+                android:id="@+id/cancle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btnjoin_cancle"
+                android:padding="5dp" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

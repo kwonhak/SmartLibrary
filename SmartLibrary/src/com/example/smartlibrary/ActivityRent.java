@@ -105,9 +105,6 @@ public class ActivityRent extends Activity {
 		btnborrow.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// adapter.clear();
-				// bkList = new ArrayList<BookInfo>();
-				// TODO Auto-generated method stub
 				Intent intent_search = new Intent();
 				intent_search.setClass(ActivityRent.this, ActivityBorrow.class);
 
@@ -285,11 +282,9 @@ public class ActivityRent extends Activity {
 								// selectIsbn = list.get((int)
 								// getItemId(position)).getIsbn();
 								selectCard = list.get(position).getCard();
-								Toast.makeText(getApplicationContext(), "눌림", 1)
-										.show();
+								//Toast.makeText(getApplicationContext(), "눌림", 1).show();
 							} else {
-								Toast.makeText(getApplicationContext(), "안눌림",
-										1).show();
+								//Toast.makeText(getApplicationContext(), "안눌림",1).show();
 							}
 						}
 					}

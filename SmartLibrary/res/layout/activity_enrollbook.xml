@@ -2,14 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+     android:background="@drawable/batang">
 
-   
+     <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/apptitle"
+        android:orientation="horizontal" />
     <!-- 위에 도서 정보 -->
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_marginTop="10dp"
         android:orientation="vertical" >
 
         <!-- 책제목 -->
@@ -23,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="제 목" />
+                android:text="제    목" />
 
             <TextView
                 android:id="@+id/title"
@@ -43,7 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="저자" />
+                android:text="저    자" />
 
             <TextView
                 android:id="@+id/author"
@@ -84,7 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="ISBN" />
+                android:text="I S B N" />
 
             <TextView
                 android:id="@+id/isbn"
@@ -92,6 +98,32 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp" />
         </LinearLayout>
+         <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" 
+            android:background="@drawable/bookconfirm"/>
+          <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/enroll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/book_enroll" />
+
+            <Button
+                android:id="@+id/cancle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/enroll_cancle" />
+        </LinearLayout>
+
+         
 
         <!-- 소장정보 -->
 

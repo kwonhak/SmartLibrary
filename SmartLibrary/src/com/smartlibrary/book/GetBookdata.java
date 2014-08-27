@@ -40,12 +40,14 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.smartlibrary.R;
 import com.example.smartlibrary.SettingActivity;
-
+import com.example.smartlibrary.TabMenuActivity;
 
 public class GetBookdata extends Activity {
 
@@ -104,31 +106,55 @@ public class GetBookdata extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_enrollbook);
 
-		
 		// public GetBookInfo throws ParserConfigurationException,
 		// MalformedURLException, IOException, AXException{
-		 
-		//showAlertChung();
+
+		// showAlertChung();
 		Intent intent = getIntent();
 		sign = intent.getStringExtra("sign");
 		card = intent.getStringExtra("nfc");
 		searchIsbn = intent.getStringExtra("isbn");
 		Log.d("kh", "넘어온값 : " + sign + card);
-		location =   "책장/"+sign;
-	
-		txtTitle = (TextView)findViewById(R.id.title);
-		txtIsbn =  (TextView)findViewById(R.id.isbn);
-		txtAuthor =  (TextView)findViewById(R.id.author);
-		txtPublisher =  (TextView)findViewById(R.id.publisher);
-		
+		location = "책장/" + sign;
+
+		txtTitle = (TextView) findViewById(R.id.title);
+		txtIsbn = (TextView) findViewById(R.id.isbn);
+		txtAuthor = (TextView) findViewById(R.id.author);
+		txtPublisher = (TextView) findViewById(R.id.publisher);
+		Button btn_enroll = (Button) findViewById(R.id.enroll);
+		Button btn_cancle = (Button) findViewById(R.id.cancle);
+
 		select();
 
-	
-		
-		
+		btn_enroll.setOnClickListener(new Button.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent_home = new Intent();
+				intent_home.setClass(GetBookdata.this, SettingActivity.class);
+
+				Log.d("kh", "list home button ");
+				startActivity(intent_home);
+
+				send();
+			}
+		});
+
+		btn_cancle.setOnClickListener(new Button.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent_home = new Intent();
+				intent_home.setClass(GetBookdata.this, SettingActivity.class);
+
+				Log.d("kh", "list home button ");
+				startActivity(intent_home);
+
+				// send();
+			}
+		});
 
 	}
-
 
 	public String send() {
 
@@ -159,8 +185,7 @@ public class GetBookdata extends Activity {
 							pubdate));
 					nameValuePairs.add(new BasicNameValuePair("reservation",
 							reservation));
-					nameValuePairs.add(new BasicNameValuePair("card",
-							card));
+					nameValuePairs.add(new BasicNameValuePair("card", card));
 
 					try {
 						HttpClient httpclient = new DefaultHttpClient();
@@ -193,7 +218,7 @@ public class GetBookdata extends Activity {
 						Log.e("Fail 2", e.toString());
 
 					}
-				
+
 					return null;
 				}
 
@@ -201,7 +226,7 @@ public class GetBookdata extends Activity {
 				protected void onPostExecute(String result) {
 					if (result == null)
 						return;
-					
+
 				}
 			}.execute("")).get();
 
@@ -259,9 +284,7 @@ public class GetBookdata extends Activity {
 						// System.out.println(xmlData);
 						// 여기까지 진행이 되면 xml 파싱은 끝이 나며 doc에는 DOM 형태의 문서 구조를 갖는다.
 						// 이제 DOM 을 파싱해보자.
-						//Log.d("kh", xmlData);
-						
-						
+						// Log.d("kh", xmlData);
 
 						return xmlData;
 
@@ -325,20 +348,17 @@ public class GetBookdata extends Activity {
 					pubdate = ((Node) childPubdateNodeList.item(0))
 							.getNodeValue();
 					Log.d("kh", "이거슨 출판일 : " + pubdate);
-					
-					
+
 					changeChar();
-					
-					
+
 					Log.d("kh", "이름기호 : " + category);
-					send();
+
 					txtAuthor.setText(author);
 					txtIsbn.setText(isbn);
 					txtTitle.setText(title);
 					txtPublisher.setText(publisher);
-					 alert();
-					
-					
+					// alert();
+
 				}
 			}.execute("")).get();
 
@@ -347,30 +367,24 @@ public class GetBookdata extends Activity {
 		}
 
 	}
-	public void alert()
-	{
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);     // 여기서 this는 Activity의 this
 
-		// 여기서 부터는 알림창의 속성 설정
-		builder.setTitle("도서 등록이 완료되었습니다.")        // 제목 설정
-		.setMessage("확인을 누르시면 Setting화면으로 넘어갑니다.")        // 메세지 설정
-		.setCancelable(false)        // 뒤로 버튼 클릭시 취소 가능 설정
-		.setPositiveButton("확인", new DialogInterface.OnClickListener(){       
-		 // 확인 버튼 클릭시 설정
-		public void onClick(DialogInterface dialog, int whichButton){
-			Intent intent_person = new Intent();
-			intent_person.setClass(GetBookdata.this,
-					SettingActivity.class);
-			startActivity(intent_person);
-		finish();   
-
-		}
-		});
-
-		AlertDialog dialog = builder.create();    // 알림창 객체 생성
-		dialog.show();    // 알림창 띄우기
-	}
-
+	/*
+	 * public void alert() { AlertDialog.Builder builder = new
+	 * AlertDialog.Builder(this); // 여기서 this는 Activity의 this
+	 * 
+	 * // 여기서 부터는 알림창의 속성 설정 builder.setTitle("도서 등록이 완료되었습니다.") // 제목 설정
+	 * .setMessage("확인을 누르시면 Setting화면으로 넘어갑니다.") // 메세지 설정
+	 * .setCancelable(false) // 뒤로 버튼 클릭시 취소 가능 설정 .setPositiveButton("확인", new
+	 * DialogInterface.OnClickListener(){ // 확인 버튼 클릭시 설정 public void
+	 * onClick(DialogInterface dialog, int whichButton){ Intent intent_person =
+	 * new Intent(); intent_person.setClass(GetBookdata.this,
+	 * SettingActivity.class); startActivity(intent_person); finish();
+	 * 
+	 * } });
+	 * 
+	 * AlertDialog dialog = builder.create(); // 알림창 객체 생성 dialog.show(); // 알림창
+	 * 띄우기 }
+	 */
 
 	public void changeChar() {
 
@@ -379,17 +393,17 @@ public class GetBookdata extends Activity {
 		String firstname_2 = null; // 이름
 		char titleVal = (char) (publisher.charAt(0) - 0xAC00);
 		char titlename = (char) (((titleVal - (titleVal % 28)) / 28) / 21);
-		//System.out.println(CHO[titlename]);
+		// System.out.println(CHO[titlename]);
 
 		List<Map<String, Integer>> list = new ArrayList<Map<String,
 
 		Integer>>();
 		String tempStr = author;
-//		String lastStr = "";
+		// String lastStr = "";
 
 		System.out.println(tempStr);
 		for (int i = 1; i < 2; i++) {
-//			Map<String, Integer> map = new HashMap<String, Integer>();
+			// Map<String, Integer> map = new HashMap<String, Integer>();
 			char test = tempStr.charAt(i);
 
 			if (test >= 0xAC00) {
@@ -404,8 +418,8 @@ public class GetBookdata extends Activity {
 				System.out.println("" + test + "// 0x"
 						+ Integer.toHexString((char) test));
 
-//				Character cr = new Character(test); // char을 Object로 랩
-//				lastname = cr.toString();
+				// Character cr = new Character(test); // char을 Object로 랩
+				// lastname = cr.toString();
 
 				System.out.println("이름이다");
 				System.out.println("" + CHO[cho] + "// 0x"
@@ -615,15 +629,15 @@ public class GetBookdata extends Activity {
 					System.out.println("두번째 초성 " + firstname_2);
 
 				}
-//				if ((char) jon != 0x0000)
-//					System.out.println("" + JON[jon] + "// 0x"
-//							+ Integer.toHexString((char) jon));
-//
-//				map.put("cho", (int) cho);
-//				map.put("jun", (int) jun);
-//				map.put("jon", (int) jon);
-//				list.add(map);
-				
+				// if ((char) jon != 0x0000)
+				// System.out.println("" + JON[jon] + "// 0x"
+				// + Integer.toHexString((char) jon));
+				//
+				// map.put("cho", (int) cho);
+				// map.put("jun", (int) jun);
+				// map.put("jon", (int) jon);
+				// list.add(map);
+
 			}
 		}
 

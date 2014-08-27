@@ -1,84 +1,89 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@drawable/batang" >
+
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/apptitle"
+        android:orientation="horizontal" />
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:background="#ffffffff"
+        android:gravity="center"
         android:orientation="horizontal" >
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            android:background="#ffffffff"
             android:orientation="vertical" >
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="30dp" />
+                android:padding="10dp" >
 
-            <Button
-                android:id="@+id/bt_home"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:drawableLeft="@drawable/home"
-                android:drawablePadding="4dp"
-                android:text="Home" />
+                <Button
+                    android:id="@+id/bt_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/setting_home"
+                    android:layout_marginRight="5dp"
+                    android:drawablePadding="4dp" />
 
-            <Button
-                android:id="@+id/bt_login"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:drawableLeft="@drawable/home"
-                android:drawablePadding="4dp"
-                android:text="Login" />
+                <Button
+                    android:id="@+id/bt_login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/setting_login"
+                    android:layout_marginRight="5dp"
+                    android:drawablePadding="4dp" />
 
-            <Button
-                android:id="@+id/bt_join"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:drawableLeft="@drawable/home"
-                android:drawablePadding="4dp"
-                android:text="회원가입" />
+                <Button
+                    android:id="@+id/bt_join"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/setting_member"
+                    android:drawablePadding="4dp" />
+            </LinearLayout>
 
-            <Button
-                android:id="@+id/bt_book"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:drawableLeft="@drawable/book"
-                android:drawablePadding="4dp"
-                android:text="대출정보" />
-<!-- 
-            <Button
-                android:id="@+id/bt_lock"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:drawableLeft="@drawable/lock"
-                android:drawablePadding="4dp"
-                android:text="회원정보" />
- -->
-           
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp" >
 
-            <Button
-                android:id="@+id/bt_bluetooth"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:drawableLeft="@drawable/book"
-                android:drawablePadding="4dp"
-                android:text="Bluetooth" />
-             <Button
-                android:id="@+id/bt_enroll"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:drawableLeft="@drawable/book"
-                android:drawablePadding="4dp"
-                android:text="도서등록" />
+                <Button
+                    android:id="@+id/bt_book"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/setting_borrow"
+                    android:drawablePadding="4dp" />
+
+                <Button
+                    android:id="@+id/bt_bluetooth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/setting_bluetooth"
+                    android:drawablePadding="4dp" />
+
+                <Button
+                    android:id="@+id/bt_enroll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/setting_enroll"
+                    android:drawablePadding="4dp" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

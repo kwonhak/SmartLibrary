@@ -20,7 +20,7 @@ public class ActivityBookMap extends Activity {
 		location = intenta.getStringExtra("location");
 		int booklo = Integer.parseInt(location);
 		Button btnhome = (Button) findViewById(R.id.home);
-		Button btnsetting = (Button) findViewById(R.id.setting);
+		Button btnsearch = (Button) findViewById(R.id.search);
 		ImageView images = (ImageView) findViewById(R.id.image);
 		
 
@@ -90,7 +90,7 @@ public class ActivityBookMap extends Activity {
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					Intent intent_home = new Intent();
-					intent_home.setClass(ActivityBookMap.this, TabMenuActivity.class);
+					intent_home.setClass(ActivityBookMap.this, MainActivity.class);
 
 					Log.d("kh", "list home button ");
 					startActivity(intent_home);
@@ -100,14 +100,14 @@ public class ActivityBookMap extends Activity {
 			});
 			
 
-			btnsetting.setOnClickListener(new Button.OnClickListener() {
+			btnsearch.setOnClickListener(new Button.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					Intent intent_setting = new Intent();
-					intent_setting.setClass(ActivityBookMap.this, SettingActivity.class);
+					intent_setting.setClass(ActivityBookMap.this, ActivitySearch.class);
 
-					Log.d("kh", "list setting button ");
+					Log.d("kh", "search button ");
 					startActivity(intent_setting);
 					finish();
 					

@@ -3,7 +3,11 @@ package com.example.smartlibrary;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -54,6 +58,8 @@ public class ActivityRent extends Activity {
 	String title;
 
 	String selectCard;
+	String selectIsbn;
+	String userid="";
 
 	ListAdapter adapter;
 	private ListView mListView = null;
@@ -74,15 +80,45 @@ public class ActivityRent extends Activity {
 		setContentView(R.layout.activity_rent);
 
 		Button btnrent = (Button) findViewById(R.id.rent);
+		Button btnsearch = (Button) findViewById(R.id.search);
 		Button btnborrow = (Button) findViewById(R.id.borrow);
 		Button btnhome = (Button) findViewById(R.id.home);
-		Button btnsetting = (Button) findViewById(R.id.setting);
+		Button btnreturn = (Button) findViewById(R.id.returnbook);
+		//Button btnsetting = (Button) findViewById(R.id.setting);
+		
+		btnreturn.setOnClickListener(new Button.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if (selectCard.equals("")) {
+
+				} else {
+					delete();
+				}
+			
+			}
+		});
+		
+		btnsearch.setOnClickListener(new Button.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent_setting = new Intent();
+				intent_setting.setClass(ActivityRent.this, ActivitySearch.class);
+
+				Log.d("kh", "search button ");
+				startActivity(intent_setting);
+				finish();
+				
+			}
+		});
+		
 		btnhome.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent_home = new Intent();
-				intent_home.setClass(ActivityRent.this, TabMenuActivity.class);
+				intent_home.setClass(ActivityRent.this, MainActivity.class);
 
 				Log.d("kh", "list home button ");
 				startActivity(intent_home);
@@ -90,18 +126,7 @@ public class ActivityRent extends Activity {
 			}
 		});
 
-		btnsetting.setOnClickListener(new Button.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent_setting = new Intent();
-				intent_setting.setClass(ActivityRent.this,
-						SettingActivity.class);
-
-				Log.d("kh", "list setting button ");
-				startActivity(intent_setting);
-			}
-		});
+	
 		btnborrow.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -115,7 +140,7 @@ public class ActivityRent extends Activity {
 
 		sharedPref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
 		sharedEditor = sharedPref.edit();
-		String userid = sharedPref.getString("id", "");
+		userid = sharedPref.getString("id", "");
 		Log.d("kh", "아이디네 : " + userid);
 		select(userid);
 
@@ -226,6 +251,78 @@ public class ActivityRent extends Activity {
 		}
 
 	}
+	
+
+	public String delete() {
+
+		try {
+			return (new AsyncTask<String, String, String>() {
+
+				ArrayList<RentInfo> dataList = new ArrayList<RentInfo>();
+
+				@Override
+				protected void onProgressUpdate(String... values) {
+					// TODO Auto-generated method stub
+					super.onProgressUpdate(values);
+				}
+
+				@Override
+				protected String doInBackground(String... params) {
+					final ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+					nameValuePairs.add(new BasicNameValuePair("card", selectCard));
+					nameValuePairs.add(new BasicNameValuePair("isbn", selectIsbn));
+
+					try {
+						HttpClient httpclient = new DefaultHttpClient();
+						HttpPost httppost = new HttpPost(
+								"http://112.108.40.87/lenddelete.php");
+						httppost.setEntity(new UrlEncodedFormEntity(
+								nameValuePairs, HTTP.UTF_8));
+						HttpResponse response = httpclient.execute(httppost);
+						HttpEntity entity = response.getEntity();
+						is = entity.getContent();
+						Log.d("kh", "lenddelete success");
+
+					} catch (Exception e) {
+						Log.e("Fail 1", e.toString());
+					}
+
+					try {
+						BufferedReader reader = new BufferedReader(
+								new InputStreamReader(is, "UTF_8"), 8);
+						StringBuilder sb = new StringBuilder();
+
+						while ((line = reader.readLine()) != null) {
+							sb.append(line + "\n");
+						}
+						is.close();
+						Log.d("kh", "result");
+						result = sb.toString();
+						Log.d("kh", result);
+					} catch (Exception e) {
+						Log.e("Fail 2", e.toString());
+
+					}
+
+					return result;
+				}
+
+				@Override
+				protected void onPostExecute(String result) {
+					if (result == null)
+						return;
+
+					select(userid);
+
+				}
+			}.execute("")).get();
+
+		} catch (Exception e) {
+			return null;
+			
+		}
+
+	}
 
 	private class ListAdapter extends ArrayAdapter<RentInfo> {
 		// 레이아웃 XML을 읽어들이기 위한 객체
@@ -282,6 +379,7 @@ public class ActivityRent extends Activity {
 								// selectIsbn = list.get((int)
 								// getItemId(position)).getIsbn();
 								selectCard = list.get(position).getCard();
+								selectIsbn = list.get(position).getIsbn();
 								//Toast.makeText(getApplicationContext(), "눌림", 1).show();
 							} else {
 								//Toast.makeText(getApplicationContext(), "안눌림",1).show();

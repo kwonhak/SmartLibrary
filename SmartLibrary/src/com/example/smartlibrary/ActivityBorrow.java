@@ -90,7 +90,7 @@ public class ActivityBorrow extends Activity {
 		Button btnrent = (Button) findViewById(R.id.rent);
 		Button btnborrow = (Button) findViewById(R.id.borrow);
 		Button btnhome = (Button) findViewById(R.id.home);
-		Button btnsetting = (Button) findViewById(R.id.setting);
+		Button btnsearch = (Button) findViewById(R.id.search);
 		Button btnextension = (Button) findViewById(R.id.extension);
 		//btnborrow.setBackgroundColor(R.drawable.borrowbutton_change);
 
@@ -143,7 +143,7 @@ public class ActivityBorrow extends Activity {
 				// TODO Auto-generated method stub
 				Intent intent_home = new Intent();
 				intent_home
-						.setClass(ActivityBorrow.this, TabMenuActivity.class);
+						.setClass(ActivityBorrow.this, MainActivity.class);
 
 				Log.d("kh", "list home button ");
 				startActivity(intent_home);
@@ -151,19 +151,7 @@ public class ActivityBorrow extends Activity {
 			}
 		});
 
-		btnsetting.setOnClickListener(new Button.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent_setting = new Intent();
-				intent_setting.setClass(ActivityBorrow.this,
-						SettingActivity.class);
-
-				Log.d("kh", "list setting button ");
-				startActivity(intent_setting);
-				finish();
-			}
-		});
+		
 		btnrent.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -174,6 +162,20 @@ public class ActivityBorrow extends Activity {
 				Log.d("kh", "list home button ");
 				startActivity(intent_search);
 				finish();
+			}
+		});
+		
+		btnsearch.setOnClickListener(new Button.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent_setting = new Intent();
+				intent_setting.setClass(ActivityBorrow.this, ActivitySearch.class);
+
+				Log.d("kh", "search button ");
+				startActivity(intent_setting);
+				finish();
+				
 			}
 		});
 

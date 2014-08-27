@@ -23,7 +23,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.hardware.Camera.Size;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,20 +35,17 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.smartlibrary.ActivityBookMap;
-import com.example.smartlibrary.BorrowInfo;
+import com.example.smartlibrary.ActivitySearch;
+import com.example.smartlibrary.MainActivity;
 import com.example.smartlibrary.R;
-import com.example.smartlibrary.SearchBookList;
-import com.example.smartlibrary.SearchViewerActivity;
-import com.example.smartlibrary.SettingActivity;
-import com.example.smartlibrary.TabMenuActivity;
 
 public class BookInfoActivity extends Activity {
 	String id;
@@ -104,7 +100,7 @@ public class BookInfoActivity extends Activity {
 
 		Button btnsearch = (Button) findViewById(R.id.search);
 		Button btnhome = (Button) findViewById(R.id.home);
-		Button btnsetting = (Button) findViewById(R.id.setting);
+		//Button btnsetting = (Button) findViewById(R.id.setting);
 
 		btnhome.setOnClickListener(new Button.OnClickListener() {
 			@Override
@@ -112,25 +108,14 @@ public class BookInfoActivity extends Activity {
 				// TODO Auto-generated method stub
 				Intent intent_home = new Intent();
 				intent_home.setClass(BookInfoActivity.this,
-						TabMenuActivity.class);
+						MainActivity.class);
 
 				Log.d("kh", "list home button ");
 				startActivity(intent_home);
 			}
 		});
 
-		btnsetting.setOnClickListener(new Button.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent_setting = new Intent();
-				intent_setting.setClass(BookInfoActivity.this,
-						SettingActivity.class);
-
-				Log.d("kh", "list setting button ");
-				startActivity(intent_setting);
-			}
-		});
+		
 		btnsearch.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -139,7 +124,7 @@ public class BookInfoActivity extends Activity {
 				// TODO Auto-generated method stub
 				Intent intent_search = new Intent();
 				intent_search.setClass(BookInfoActivity.this,
-						TabMenuActivity.class);
+						ActivitySearch.class);
 
 				Log.d("kh", "list home button ");
 				startActivity(intent_search);

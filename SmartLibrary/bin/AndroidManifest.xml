@@ -42,7 +42,7 @@
         android:label="@string/app_name"
         android:theme="@style/TestTheme" >
         <activity
-            android:name="com.example.smartlibrary.TabMenuActivity"
+            android:name="com.example.smartlibrary.MainActivity"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustPan" >
             <intent-filter>
@@ -57,6 +57,10 @@
         <activity android:name="com.example.smartlibrary.SearchViewerActivity" >
         </activity>
         <activity android:name="com.example.smartlibrary.SettingActivity" >
+        </activity>
+         <activity android:name="com.example.smartlibrary.ActivitySearch" 
+             android:windowSoftInputMode="adjustPan"
+            >
         </activity>
         <activity android:name="com.example.smartlibrary.SlidingDrawer" >
         </activity>

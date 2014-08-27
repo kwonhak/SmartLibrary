@@ -1,86 +1,89 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-     android:background="@drawable/batang" >
+    android:background="@drawable/batang" >
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        
         android:orientation="vertical" >
-          <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/apptitle"
-        android:orientation="horizontal" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/apptitle"
+            android:orientation="horizontal" />
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            
+            android:layout_marginTop="10dp"
             android:orientation="horizontal" >
 
             <Button
                 android:id="@+id/home"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-               android:background="@drawable/homebutton" />
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/mainhome" />
 
-            <Button
-                android:id="@+id/borrow"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-               android:background="@drawable/borrowbutton" />
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/borrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="30dp"
+                    android:background="@drawable/borrow_btnborrow_down" />
+
+                <Button
+                    android:id="@+id/rent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/lendbutton" />
+            </LinearLayout>
 
             <Button
-                android:id="@+id/rent"
+                android:id="@+id/search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/lendbutton" />
-
-            <Button
-                android:id="@+id/setting"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                 android:background="@drawable/menubutton" />
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/mainglass" />
         </LinearLayout>
-
-
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            
             android:layout_marginLeft="20dp"
             android:orientation="horizontal" >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_marginLeft="50dp"
+                android:layout_marginTop="10dp"
                 android:layout_weight="3"
-                
-                android:text="제목"
-                 />
+                android:text="제목" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                android:layout_marginTop="10dp"
                 android:layout_weight="1"
-               android:text="반납예정일"
-               />
+                android:text="반납예정일" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="vertical" >
 
             <ListView
@@ -89,13 +92,11 @@
                 android:layout_height="wrap_content" >
             </ListView>
         </LinearLayout>
-                <LinearLayout
+
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            
             android:orientation="horizontal" >
-
-
 
             <Button
                 android:id="@+id/extension"

@@ -37,17 +37,18 @@ public class ActivityJoin extends Activity {
 	String line = null;
 	String result = null;
 	private final String urlPath = "http://112.108.40.87/memberjoin.php";
-//	private SharedPreferences prvPref;
-    private SharedPreferences sharedPref;
- //   private SharedPreferences.Editor prvEditor;
-    private SharedPreferences.Editor sharedEditor;
+	// private SharedPreferences prvPref;
+	private SharedPreferences sharedPref;
+	// private SharedPreferences.Editor prvEditor;
+	private SharedPreferences.Editor sharedEditor;
 
 	EditText id;
 	EditText pw;
 	EditText name;
 	EditText phone;
 	LogBean bean = new LogBean();
-String checkid;
+	String checkid;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -60,66 +61,55 @@ String checkid;
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				String prvValue = id.getText().toString();
-				if(prvValue.length()==0)
-				{
-					 Toast.makeText(getApplicationContext(), "아이디를 입력해주세요", 1).show();
+				if (prvValue.length() == 0) {
+					Toast.makeText(getApplicationContext(), "아이디를 입력해주세요", 1)
+							.show();
+				} else if (pw.getText().toString().length() == 0) {
+					Toast.makeText(getApplicationContext(), "비밀번호를 입력해주세요", 1)
+							.show();
+
+				} else if (name.getText().toString().length() == 0) {
+					Toast.makeText(getApplicationContext(), "이름을 입력해주세요", 1)
+							.show();
+				} else if (phone.getText().toString().length() == 0) {
+					Toast.makeText(getApplicationContext(), "전화번호를 입력해주세요", 1)
+							.show();
+				} else {
+					String sharedValue = id.getText().toString();
+					// prvEditor.putString("id", prvValue);
+					sharedEditor.putString("id", sharedValue);
+					sharedEditor.commit();
+
+					new HttpfindID().execute();
+					// bean.setUserId(id.getText().toString());
+
 				}
-				else if(pw.getText().toString().length()==0)
-				{
-					Toast.makeText(getApplicationContext(), "비밀번호를 입력해주세요", 1).show();
-						
-				}	
-				else if(name.getText().toString().length()==0)
-				{
-					Toast.makeText(getApplicationContext(), "이름을 입력해주세요", 1).show();
-				}
-				else if(phone.getText().toString().length()==0){
-					Toast.makeText(getApplicationContext(), "전화번호를 입력해주세요", 1).show();
-				}
-				else
-				{
-					 String sharedValue = id.getText().toString();
-					 //            prvEditor.putString("id", prvValue);
-					             sharedEditor.putString("id", sharedValue);
-					             sharedEditor.commit();
-								
-								
-					             new HttpfindID().execute();
-								//bean.setUserId(id.getText().toString());
-								
-								
-				}
-	            
-				
+
 			}
 		});
-		
+
 		btncancle.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent_setting = new Intent();
-				intent_setting.setClass(ActivityJoin.this, SettingActivity.class);
+				intent_setting.setClass(ActivityJoin.this, MainActivity.class);
 				Log.d("kh", "setting home button ");
 				startActivity(intent_setting);
-				
+
 			}
 		});
-		
 
 		id = (EditText) findViewById(R.id.id);
 		pw = (EditText) findViewById(R.id.pw);
 		name = (EditText) findViewById(R.id.name);
 		phone = (EditText) findViewById(R.id.phone);
 
+		// prvPref = getPreferences(Activity.MODE_PRIVATE);
+		sharedPref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
 
-
-		
-//		prvPref = getPreferences(Activity.MODE_PRIVATE);
-        sharedPref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
-         
- //       prvEditor = prvPref.edit();
-        sharedEditor = sharedPref.edit();
+		// prvEditor = prvPref.edit();
+		sharedEditor = sharedPref.edit();
 	}
 
 	class HttpTask extends AsyncTask<Void, Void, String> {
@@ -127,13 +117,12 @@ String checkid;
 		protected String doInBackground(Void... params) {
 			try {
 
-			
 				HttpPost request = new HttpPost(urlPath);
 				// 전달할 인자들
 				Vector<NameValuePair> nameValue = new Vector<NameValuePair>();
 				nameValue.add(new BasicNameValuePair("id", id.getText()
 						.toString()));
-				
+
 				Log.d("kh", "ID : " + id.getText().toString());
 				nameValue.add(new BasicNameValuePair("secret", pw.getText()
 						.toString()));
@@ -179,33 +168,32 @@ String checkid;
 		protected void onPostExecute(String value) {
 			super.onPostExecute(value);
 			// result.setText(value);
-			Toast toast = Toast.makeText(getApplicationContext(), id.getText().toString()+"님 가입되었습니다!",
-					Toast.LENGTH_LONG);
+			Toast toast = Toast.makeText(getApplicationContext(), id.getText()
+					.toString() + "님 가입되었습니다!", Toast.LENGTH_LONG);
 			toast.setGravity(Gravity.TOP, 25, 400);
 			toast.show();
 			Intent intent_settin = new Intent();
-			intent_settin.setClass(ActivityJoin.this, SettingActivity.class);
+			intent_settin.setClass(ActivityJoin.this, MainActivity.class);
 			Log.d("kh", "setting home button ");
 			startActivity(intent_settin);
 			finish();
 		}
 
 	}
-	
+/*
 	class HttpID extends AsyncTask<Void, Void, String> {
 		@Override
 		protected String doInBackground(Void... params) {
 			try {
 
-			
 				HttpPost request = new HttpPost(urlPath);
 				// 전달할 인자들
 				Vector<NameValuePair> nameValue = new Vector<NameValuePair>();
 				nameValue.add(new BasicNameValuePair("id", id.getText()
 						.toString()));
-				
+
 				Log.d("kh", "ID : " + id.getText().toString());
-			
+
 				// 웹 접속 - utf-8 방식으로
 				UrlEncodedFormEntity enty = new UrlEncodedFormEntity(nameValue,
 						HTTP.UTF_8);
@@ -246,19 +234,20 @@ String checkid;
 		}
 
 	}
+*/
 	
+	/*
 	class HttpTasks extends AsyncTask<Void, Void, String> {
 		@Override
 		protected String doInBackground(Void... params) {
 			try {
 
-			
 				HttpPost request = new HttpPost(urlPath);
 				// 전달할 인자들
 				Vector<NameValuePair> nameValue = new Vector<NameValuePair>();
 				nameValue.add(new BasicNameValuePair("id", id.getText()
 						.toString()));
-				
+
 				Log.d("kh", "ID : " + id.getText().toString());
 				nameValue.add(new BasicNameValuePair("secret", pw.getText()
 						.toString()));
@@ -304,22 +293,25 @@ String checkid;
 		protected void onPostExecute(String value) {
 			super.onPostExecute(value);
 			// result.setText(value);
+			Toast.makeText(getApplicationContext(), "가입되었습니다.", 1)
+			.show();
 		}
 
 	}
-	
+*/
 	class HttpfindID extends AsyncTask<Void, Void, String> {
 		@Override
 		protected String doInBackground(Void... params) {
 			final ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-			nameValuePairs.add(new BasicNameValuePair("id", id.getText().toString()));
+			nameValuePairs.add(new BasicNameValuePair("id", id.getText()
+					.toString()));
 
 			try {
 				HttpClient httpclient = new DefaultHttpClient();
 				HttpPost httppost = new HttpPost(
 						"http://112.108.40.87/checkmemberenroll.php");
-				httppost.setEntity(new UrlEncodedFormEntity(
-						nameValuePairs, HTTP.UTF_8));
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
+						HTTP.UTF_8));
 				HttpResponse response = httpclient.execute(httppost);
 				HttpEntity entity = response.getEntity();
 				is = entity.getContent();
@@ -358,11 +350,9 @@ String checkid;
 					Log.d("kh", "i " + i);
 					JSONObject jo = bkName.getJSONObject(i);
 					checkid = jo.getString("id");
-
-					
+					Log.d("kh","checkid : "+checkid);
 
 				}
-
 
 			} catch (Exception e) {
 				Log.e("Fail 3", e.toString());
@@ -377,18 +367,14 @@ String checkid;
 			if (result == null)
 				return;
 			// btpower=true;
-			if(id.getText().toString().equals(checkid))
-			{
-				Toast.makeText(getApplicationContext(), "이미 가입되었습니다.", 1).show();
-			}
-			else
-			{
-				new HttpTasks().execute();
+			if (id.getText().toString().equals(checkid)) {
+				Toast.makeText(getApplicationContext(), "이미 가입되었습니다.", 1)
+						.show();
+			} else {
+				new HttpTask().execute();
 			}
 		}
 
 	}
-	
-	
 
 }

@@ -24,6 +24,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,9 +72,9 @@ public class SearchBookList extends Activity implements OnItemClickListener {
 		querytxt = searchText;
 
 		Button btnselect = (Button) findViewById(R.id.searchButton);
-		Button btnsearch = (Button) findViewById(R.id.search);
+		//Button btnsearch = (Button) findViewById(R.id.search);
 		Button btnhome = (Button) findViewById(R.id.home);
-		Button btnsetting = (Button) findViewById(R.id.setting);
+		//Button btnsetting = (Button) findViewById(R.id.setting);
 
 		
 		btnselect.setOnClickListener(new Button.OnClickListener() {
@@ -93,29 +94,24 @@ public class SearchBookList extends Activity implements OnItemClickListener {
 				}
 				else
 				{
-					Toast.makeText(getApplicationContext(), "검색어를 입력해주세요", 1).show();
+					Toast toast = Toast.makeText(getApplicationContext(),
+							"검색어를 입력해주세요.", Toast.LENGTH_SHORT);
+					toast.setGravity(Gravity.TOP, 25, 400);
+					toast.show();
 				}
 				
 				
 			}
 		});
 		
-		btnsearch.setOnClickListener(new Button.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Log.d("kh", "list setting button ");
-				// startActivity(intent_search);
-				
-			}
-		});
+		
 		
 		btnhome.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent_home = new Intent();
-				intent_home.setClass(SearchBookList.this, TabMenuActivity.class);
+				intent_home.setClass(SearchBookList.this, MainActivity.class);
 
 				Log.d("kh", "list home button ");
 				startActivity(intent_home);
@@ -123,18 +119,7 @@ public class SearchBookList extends Activity implements OnItemClickListener {
 				
 			}
 		});
-		btnsetting.setOnClickListener(new Button.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent_setting = new Intent();
-				intent_setting.setClass(SearchBookList.this, SettingActivity.class);
-
-				Log.d("kh", "list setting button ");
-				startActivity(intent_setting);
-				
-			}
-		});
+	
 		
 
 		e_id = (EditText) findViewById(R.id.book_input);
@@ -149,8 +134,19 @@ public class SearchBookList extends Activity implements OnItemClickListener {
 				// TODO Auto-generated method stub
 				switch (actionId) {
 				case EditorInfo.IME_ACTION_SEARCH:
-					adapter.clear();
-					select(e_id.getText().toString());
+					if(e_id.getText().toString().length()!=0)
+					{
+						adapter.clear();
+						select(e_id.getText().toString());
+					}
+					else
+					{
+						Toast toast = Toast.makeText(getApplicationContext(),
+								"검색어를 입력해주세요.", Toast.LENGTH_SHORT);
+						toast.setGravity(Gravity.TOP, 25, 400);
+						toast.show();
+					}
+					
 					break;
 				default:
 					return false;

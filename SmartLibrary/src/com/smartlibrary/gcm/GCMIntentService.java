@@ -82,11 +82,12 @@ public class GCMIntentService extends IntentService {
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.putExtra("msg", msg);
 
+		startActivity(intent);
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
 				intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-				this).setSmallIcon(R.drawable.ic_launcher)
+				this).setSmallIcon(R.drawable.appicon)
 				.setContentTitle("SmartLibrary")
 				.setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
 				.setContentText(msg).setAutoCancel(true)

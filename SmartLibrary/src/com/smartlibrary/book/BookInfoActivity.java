@@ -106,12 +106,15 @@ public class BookInfoActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent_home = new Intent();
-				intent_home.setClass(BookInfoActivity.this,
+				Intent intent_home = new Intent(BookInfoActivity.this,
 						MainActivity.class);
-
+//				intent_home.setClass(BookInfoActivity.this,
+//						MainActivity.class);
+			
+				intent_home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				Log.d("kh", "list home button ");
 				startActivity(intent_home);
+				finish();
 			}
 		});
 
@@ -125,6 +128,7 @@ public class BookInfoActivity extends Activity {
 				Intent intent_search = new Intent();
 				intent_search.setClass(BookInfoActivity.this,
 						ActivitySearch.class);
+				intent_search.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
 				Log.d("kh", "list home button ");
 				startActivity(intent_search);
@@ -292,7 +296,7 @@ public class BookInfoActivity extends Activity {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						// TODO Auto-generated method stub
-						return;
+						finish();
 					}
 				});
 		
@@ -458,10 +462,10 @@ public class BookInfoActivity extends Activity {
 					}
 
 					try {
-						Log.d("kh", "1");
+						//Log.d("kh", "1");
 						JSONObject json_data = null;
 						json_data = new JSONObject(result);
-						Log.d("kh", "1.5"); // 여기는 됨
+					//	Log.d("kh", "1.5"); // 여기는 됨
 						bkName = json_data.getJSONArray("results");
 						for (int i = 0; i < bkName.length(); i++) {
 							Log.d("kh", "i " + i);
@@ -576,7 +580,8 @@ public class BookInfoActivity extends Activity {
 					nameValuePairs.add(new BasicNameValuePair("gcmid", GcmId));
 					nameValuePairs.add(new BasicNameValuePair("msg", qtx+"@"+gcmmyid));
 					Log.d("kh", "message : "+qtx);
-					Log.d("kh", "GcmId : "+GcmId);
+					Log.d("kh", "target GcmId : "+GcmId);
+					Log.d("kh", "my GcmId : "+gcmmyid);
 					
 					//nameValuePairs.add(new BasicNameValuePair("sender", gcmid));
 
@@ -603,6 +608,8 @@ public class BookInfoActivity extends Activity {
 				protected void onPostExecute(String result) {
 					if (result == null)
 						return;
+					
+					//finish();
 
 				}
 			}.execute("")).get();
@@ -726,6 +733,7 @@ public class BookInfoActivity extends Activity {
 						intent_location.setClass(BookInfoActivity.this,
 								ActivityBookMap.class);
 						intent_location.putExtra("location", strcut);
+						intent_location.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						Log.d("kh", "booklocation text ");
 						startActivity(intent_location);
 

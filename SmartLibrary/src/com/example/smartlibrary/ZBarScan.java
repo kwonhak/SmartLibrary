@@ -44,6 +44,7 @@ public class ZBarScan extends Activity {
     				Intent intent_search = new Intent();
     				intent_search.setClass(ZBarScan.this, ActivityChunggu.class);
     				intent_search.putExtra("isbn", contents);
+    				//intent_search.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     				startActivity(intent_search);
     				Log.d("kh", "값얻음?");
                 
@@ -60,6 +61,7 @@ public class ZBarScan extends Activity {
 
     				Intent intent_person = new Intent();
     				intent_person.setClass(ZBarScan.this, MainActivity.class);
+    				intent_person.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     				startActivity(intent_person);
     				finish();
                 }

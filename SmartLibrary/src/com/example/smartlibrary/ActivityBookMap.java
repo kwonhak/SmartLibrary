@@ -92,6 +92,7 @@ public class ActivityBookMap extends Activity {
 					Intent intent_home = new Intent();
 					intent_home.setClass(ActivityBookMap.this, MainActivity.class);
 
+					intent_home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					Log.d("kh", "list home button ");
 					startActivity(intent_home);
 					finish();
@@ -107,6 +108,7 @@ public class ActivityBookMap extends Activity {
 					Intent intent_setting = new Intent();
 					intent_setting.setClass(ActivityBookMap.this, ActivitySearch.class);
 
+					intent_setting.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					Log.d("kh", "search button ");
 					startActivity(intent_setting);
 					finish();

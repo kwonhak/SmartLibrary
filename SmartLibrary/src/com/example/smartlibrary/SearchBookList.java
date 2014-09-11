@@ -113,9 +113,10 @@ public class SearchBookList extends Activity implements OnItemClickListener {
 				Intent intent_home = new Intent();
 				intent_home.setClass(SearchBookList.this, MainActivity.class);
 
+				intent_home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				Log.d("kh", "list home button ");
 				startActivity(intent_home);
-				finish();
+				//finish();
 				
 			}
 		});
@@ -308,6 +309,7 @@ public class SearchBookList extends Activity implements OnItemClickListener {
 		Intent intent_search = new Intent();
 		intent_search.setClass(SearchBookList.this, BookInfoActivity.class);
 		intent_search.putExtra("isbn", select_isbn);
+		intent_search.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent_search);
 	}
 	

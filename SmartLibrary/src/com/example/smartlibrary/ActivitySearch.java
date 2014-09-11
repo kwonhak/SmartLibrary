@@ -47,6 +47,7 @@ public class ActivitySearch extends Activity {
 				Intent intent_home = new Intent();
 				intent_home
 						.setClass(ActivitySearch.this, MainActivity.class);
+				intent_home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
 				Log.d("kh", "list home button ");
 				startActivity(intent_home);
@@ -109,8 +110,10 @@ public class ActivitySearch extends Activity {
 					intent_search.setClass(ActivitySearch.this, SearchBookList.class);
 					// intent_search.putExtra("text",encode_str);
 					intent_search.putExtra("text", e_id.getText().toString());
+					intent_search.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					Log.d("kh", "searchButton " + encode_str);
 					startActivity(intent_search);
+					finish();
 				} else {
 					Toast toast = Toast.makeText(getApplicationContext(),
 							"검색어를 입력해주세요.", Toast.LENGTH_SHORT);
@@ -139,6 +142,7 @@ public class ActivitySearch extends Activity {
 						intent_search.setClass(ActivitySearch.this, SearchBookList.class);
 						// intent_search.putExtra("text",encode_str);
 						intent_search.putExtra("text", e_id.getText().toString());
+						intent_search.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						Log.d("kh", "searchButton " + encode_str);
 						startActivity(intent_search);
 					} else {

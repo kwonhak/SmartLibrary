@@ -94,6 +94,7 @@ public class ActivityJoin extends Activity {
 				// TODO Auto-generated method stub
 				Intent intent_setting = new Intent();
 				intent_setting.setClass(ActivityJoin.this, MainActivity.class);
+				intent_setting.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				Log.d("kh", "setting home button ");
 				startActivity(intent_setting);
 
@@ -174,6 +175,7 @@ public class ActivityJoin extends Activity {
 			toast.show();
 			Intent intent_settin = new Intent();
 			intent_settin.setClass(ActivityJoin.this, MainActivity.class);
+			intent_settin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			Log.d("kh", "setting home button ");
 			startActivity(intent_settin);
 			finish();

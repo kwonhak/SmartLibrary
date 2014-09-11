@@ -12,6 +12,7 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
+
 		// TODO Auto-generated method stub
 		Log.i("GcmBroadcastReceiver.java | onReceive", "|" + "================="+"|");
 	      Bundle bundle = intent.getExtras();

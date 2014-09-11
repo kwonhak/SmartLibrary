@@ -130,6 +130,7 @@ public class GetBookdata extends Activity {
 				Intent intent_home = new Intent();
 				intent_home.setClass(GetBookdata.this, MainActivity.class);
 
+				intent_home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				Log.d("kh", "list home button ");
 				startActivity(intent_home);
 
@@ -143,6 +144,7 @@ public class GetBookdata extends Activity {
 				// TODO Auto-generated method stub
 				Intent intent_home = new Intent();
 				intent_home.setClass(GetBookdata.this, MainActivity.class);
+				intent_home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
 				Log.d("kh", "list home button ");
 				startActivity(intent_home);

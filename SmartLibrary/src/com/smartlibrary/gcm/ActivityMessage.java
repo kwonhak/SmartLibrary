@@ -28,12 +28,15 @@ import android.widget.LinearLayout;
 
 import com.example.smartlibrary.MainActivity;
 import com.example.smartlibrary.R;
+import com.smartlibrary.bluetooth.BluetoothService;
 
 public class ActivityMessage extends Activity {
 	private SharedPreferences sharedPref;
 	private SharedPreferences.Editor sharedEditor;
 	String messagesender;
 	String message;
+
+	BluetoothService btservice;
 
 	InputStream is = null;
 
@@ -47,6 +50,15 @@ public class ActivityMessage extends Activity {
 		messagesender = sharedPref.getString("msgsender", "");
 		Intent intent = getIntent();
 		message = intent.getStringExtra("msg");
+		//Log.d("kh","왜안되냐");
+		
+		String messa = "$3";
+		byte[] send = messa.getBytes();
+		//write(send);
+//		btservice.write(send);
+//		btservice.write(send);
+		
+		
 		alert();
 
 	}
@@ -68,16 +80,17 @@ public class ActivityMessage extends Activity {
 					// 확인 버튼 클릭시 설정
 					public void onClick(DialogInterface dialog, int whichButton) {
 						showAlertSend();
+						
 
 					}
 				})
 				.setNegativeButton("취소", new DialogInterface.OnClickListener() {
 					// 취소 버튼 클릭시 설정
 					public void onClick(DialogInterface dialog, int whichButton) {
-						Intent intent_person = new Intent();
-						intent_person.setClass(ActivityMessage.this,
-								MainActivity.class);
-						startActivity(intent_person);
+//						Intent intent_person = new Intent();
+//						intent_person.setClass(ActivityMessage.this,
+//								MainActivity.class);
+//						startActivity(intent_person);
 						finish();
 					}
 				});
@@ -101,6 +114,7 @@ public class ActivityMessage extends Activity {
 						// 여기서 메시지랑 gcm아이디 보냄
 						Log.d("kh", "확인버튼누름");
 						sendmessage(message.getText().toString());
+						//finish();
 
 					}
 				})
@@ -109,12 +123,12 @@ public class ActivityMessage extends Activity {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						// TODO Auto-generated method stub
-						Intent intent_person = new Intent();
-						intent_person.setClass(ActivityMessage.this,
-								MainActivity.class);
-						startActivity(intent_person);
+//						Intent intent_person = new Intent();
+//						intent_person.setClass(ActivityMessage.this,
+//								MainActivity.class);
+//						startActivity(intent_person);
 						finish();
-						return;
+						
 					}
 				}).show();
 	}
@@ -140,7 +154,8 @@ public class ActivityMessage extends Activity {
 					nameValuePairs.add(new BasicNameValuePair("msg", qtx + "@"
 							+ gcmid));
 					Log.d("kh", "message : " + qtx);
-					Log.d("kh", "GcmId : " + messagesender);
+					Log.d("kh", "my GcmId : " + gcmid);
+					Log.d("kh", "target GcmId : " + messagesender);
 
 					// nameValuePairs.add(new BasicNameValuePair("sender",
 					// gcmid));
@@ -167,11 +182,11 @@ public class ActivityMessage extends Activity {
 				protected void onPostExecute(String result) {
 					if (result == null)
 						return;
-					Intent intent_person = new Intent();
-					intent_person.setClass(ActivityMessage.this,
-							MainActivity.class);
-					startActivity(intent_person);
-					// finish();
+//					Intent intent_person = new Intent();
+//					intent_person.setClass(ActivityMessage.this,
+//							MainActivity.class);
+//					startActivity(intent_person);
+					 finish();
 
 				}
 			}.execute("")).get();

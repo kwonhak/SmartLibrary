@@ -53,6 +53,7 @@ public class ActivityChunggu extends Activity{
 						intent_person.setClass(ActivityChunggu.this, ActivityNFC.class);
 						intent_person.putExtra("chung", chung.getText().toString());
 						intent_person.putExtra("isbn", isbn);
+						intent_person.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						startActivity(intent_person);
 					}
 				}).show();

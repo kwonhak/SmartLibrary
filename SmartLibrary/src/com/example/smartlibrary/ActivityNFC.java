@@ -278,6 +278,7 @@ public class ActivityNFC<NFCReaderActivity> extends Activity {
 						intent_person.putExtra("isbn", isbn);
 
 						intent_person.putExtra("sign", sign);
+						intent_person.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
 						startActivity(intent_person);
 					}

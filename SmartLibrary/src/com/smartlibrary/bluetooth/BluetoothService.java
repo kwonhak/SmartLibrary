@@ -40,6 +40,8 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.Gravity;
+import android.widget.Toast;
 
 import com.smartlibrary.book.BookInfo;
 
@@ -89,8 +91,8 @@ public class BluetoothService {
 	int once = 1;
 	boolean receivecardid = true;
 	String checkid;
-int forone=1;
-boolean innerwhile = true;
+	int forone = 1;
+	boolean innerwhile = true;
 	private SharedPreferences sharedPref;
 	private SharedPreferences.Editor sharedEditor;
 
@@ -191,6 +193,10 @@ boolean innerwhile = true;
 			Vibrator vibe = (Vibrator) mActivity
 					.getSystemService(Context.VIBRATOR_SERVICE);
 			vibe.vibrate(500);
+			// Toast toast = Toast.makeText(Context.getApplicationContext(),
+			// "로그인이 필요합니다.", Toast.LENGTH_SHORT);
+			// toast.setGravity(Gravity.TOP, 25, 400);
+			// toast.show();
 		}
 	}
 
@@ -422,7 +428,6 @@ boolean innerwhile = true;
 			while (innerwhile) {
 				try {
 
-					
 					// InputStream으로부터 값을 받는 읽는 부분(값을 받는다)
 					bytes = mmInStream.read(buffer);
 
@@ -444,26 +449,24 @@ boolean innerwhile = true;
 
 					if (cardid.length() == 8) {
 
-						//innerwhile=false;
+						// innerwhile=false;
 						Log.d("kh", "10 cardid : " + cardid);
 
-						rfidcard=cardid;
+						rfidcard = cardid;
 						// if (receivecardid) {
-						if(forone++==1)	{
-							Log.d("hak","forone : "+forone);
-						select(cardid);
+						if (forone++ == 1) {
+							Log.d("hak", "forone : " + forone);
+							select(cardid);
 						}
-						
 
 					} else if (cardid.length() == 1) {
-						
+
 						// cardid = cd.split("*")[0];
 
 						Log.d("kh", "## #cardid : " + cardid);
-						
+
 						if (once == 0) {
 
-							
 							if (cardid.equals("B")) {
 								Log.d("kh", "B is : " + cardid);
 								// 도서 등록 후 진동 보내자
@@ -479,11 +482,11 @@ boolean innerwhile = true;
 								// break;
 							}
 						}
-						forone=1;
-						
+						forone = 1;
+
 					}
 					buffer = new byte[1024];
-					//Log.d("kh", "cardid : " + cardid);
+					// Log.d("kh", "cardid : " + cardid);
 
 				} catch (IOException e) {
 					Log.e(TAG, "disconnected", e);
@@ -491,8 +494,7 @@ boolean innerwhile = true;
 					break;
 				}
 
-				//Log.d("kh", "cardid : " + cardid);
-				
+				// Log.d("kh", "cardid : " + cardid);
 
 			}
 
@@ -547,7 +549,7 @@ boolean innerwhile = true;
 
 				@Override
 				protected String doInBackground(String... params) {
-					
+
 					final ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 					nameValuePairs.add(new BasicNameValuePair("card", qtx));
 
@@ -561,7 +563,7 @@ boolean innerwhile = true;
 						HttpEntity entity = response.getEntity();
 						is = entity.getContent();
 						Log.d("kh", "connection success");
-						//innerwhile=true;
+						// innerwhile=true;
 
 					} catch (Exception e) {
 						Log.e("Fail 1", e.toString());
@@ -602,17 +604,15 @@ boolean innerwhile = true;
 							// jo.getString("location");
 							bookReservation = jo.getString("reservation");
 							bookCard = jo.getString("card");
-							
 
 						}
 
-						
 						return a;
 
 					} catch (Exception e) {
 						Log.e("Fail 3", e.toString());
 					}
-					
+
 					return bookIsbn;
 				}
 
@@ -693,7 +693,7 @@ boolean innerwhile = true;
 							sb.append(line + "\n");
 						}
 						is.close();
-						//Log.d("kh", "result");
+						// Log.d("kh", "result");
 						result = sb.toString();
 						Log.d("kh", result);
 					} catch (Exception e) {
@@ -702,15 +702,15 @@ boolean innerwhile = true;
 					}
 
 					try {
-						//Log.d("kh", "1");
+						// Log.d("kh", "1");
 						JSONObject json_data = null;
 						json_data = new JSONObject(result);
-						//Log.d("kh", "1.5"); // 여기는 됨
+						// Log.d("kh", "1.5"); // 여기는 됨
 						JSONArray bkName = json_data.getJSONArray("results");
 						String a = "";
 
 						for (int i = 0; i < bkName.length(); i++) {
-							//Log.d("kh", "i " + i);
+							// Log.d("kh", "i " + i);
 							JSONObject jo = bkName.getJSONObject(i);
 
 							checkid = jo.getString("card");
@@ -732,11 +732,10 @@ boolean innerwhile = true;
 					if (result == null)
 						return;
 					// btpower=true;
-					Log.d("kh","예약 : "+bookReservation);
-					if (bookReservation.equals("3")) 
-					{
-						//예약된 도서일경우인데
-						
+					Log.d("kh", "예약 : " + bookReservation);
+					if (bookReservation.equals("3")) {
+						// 예약된 도서일경우인데
+
 						sharedPref = mActivity.getSharedPreferences("pref",
 								Activity.MODE_PRIVATE);
 						sharedEditor = sharedPref.edit();
@@ -758,7 +757,7 @@ boolean innerwhile = true;
 							message = "$1";
 							send = message.getBytes();
 							write(send);
-							//Log.d("kh", "$1 sended");
+							// Log.d("kh", "$1 sended");
 
 							try {
 								once = 0;
@@ -792,14 +791,13 @@ boolean innerwhile = true;
 						// 받은 카드번호랑 등록된 디비의 카드 번호가 있으면
 						// $1을 보낸다
 
-						
 						String message = "$3";
 						byte[] send = message.getBytes();
 						Log.d("kh", "진동을 보낸다");
 						write(send);
-						//Log.d("kh", "$3 sended");
+						// Log.d("kh", "$3 sended");
 						try {
-							
+
 							Thread.sleep(1000);
 						} catch (Exception e) {
 							Log.d("error", e.getMessage());
@@ -813,7 +811,7 @@ boolean innerwhile = true;
 						once = 0;
 						try {
 							Thread.sleep(1500);
-						 send = null;
+							send = null;
 						} catch (Exception e) {
 							Log.d("error", e.getMessage());
 						}
@@ -974,7 +972,7 @@ boolean innerwhile = true;
 					cal.setTime(date);
 					cal.add(Calendar.DATE, 14);
 					String enddate = mSimpleDateFormat.format(cal.getTime());
-					//Log.d("kh", "date extension : " + enddate);
+					// Log.d("kh", "date extension : " + enddate);
 
 					// String mTime = "2014-08-22";
 					// String enddate = "2014-08-22";

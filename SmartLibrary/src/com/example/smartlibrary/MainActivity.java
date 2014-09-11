@@ -112,8 +112,10 @@ public class MainActivity extends Activity {
 				Intent intent_search = new Intent();
 				intent_search.setClass(MainActivity.this, ActivitySearch.class);
 
+				intent_search.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				Log.d("kh", "list home button ");
 				startActivity(intent_search);
+				finish();
 
 			}
 		});
@@ -149,6 +151,7 @@ public class MainActivity extends Activity {
 					Intent intent_bkinfo = new Intent();
 					intent_bkinfo.setClass(MainActivity.this,
 							ActivityBorrow.class);
+					intent_bkinfo.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(intent_bkinfo);
 				}
 
@@ -163,7 +166,9 @@ public class MainActivity extends Activity {
 				Intent intent_enroll = new Intent();
 				intent_enroll.setClass(MainActivity.this, ZBarScan.class);
 				Log.d("kh", "setting personinfo button ");
+				//intent_enroll.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent_enroll);
+				//finish();
 
 			}
 		});
@@ -227,6 +232,7 @@ public class MainActivity extends Activity {
 				// startActivity(intent_search); Log.d("kh", "setting join 1");
 				Intent intent_join = new Intent();
 				intent_join.setClass(MainActivity.this, ActivityJoin.class);
+				intent_join.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				Log.d("kh", "setting join ");
 				startActivity(intent_join);
 

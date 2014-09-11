@@ -2,16 +2,13 @@ package com.smartlibrary.bluetooth;
 
 import java.io.InputStream;
 
-import com.example.smartlibrary.R;
-import com.example.smartlibrary.TabMenuActivity;
-import com.smartlibrary.gcm.ActivityMessage;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
+import com.example.smartlibrary.R;
 
 public class ActivityReservationAlert extends Activity {
 	private SharedPreferences sharedPref;

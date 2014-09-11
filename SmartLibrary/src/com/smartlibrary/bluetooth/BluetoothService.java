@@ -41,9 +41,7 @@ import android.os.Handler;
 import android.os.Vibrator;
 import android.util.Log;
 
-import com.example.smartlibrary.SettingActivity;
 import com.smartlibrary.book.BookInfo;
-import com.smartlibrary.book.GetBookdata;
 
 public class BluetoothService {
 	// Debugging
@@ -87,10 +85,12 @@ public class BluetoothService {
 	Boolean btpower = true;
 	Boolean btgest = false;
 	int loginonce = 0;
+	String rfidcard;
 	int once = 1;
 	boolean receivecardid = true;
 	String checkid;
-
+int forone=1;
+boolean innerwhile = true;
 	private SharedPreferences sharedPref;
 	private SharedPreferences.Editor sharedEditor;
 
@@ -419,9 +419,10 @@ public class BluetoothService {
 			String cardid = "";
 			// Keep listening to the InputStream while connected
 
-			while (true) {
+			while (innerwhile) {
 				try {
 
+					
 					// InputStream으로부터 값을 받는 읽는 부분(값을 받는다)
 					bytes = mmInStream.read(buffer);
 
@@ -443,19 +444,26 @@ public class BluetoothService {
 
 					if (cardid.length() == 8) {
 
+						//innerwhile=false;
 						Log.d("kh", "10 cardid : " + cardid);
 
-						//if (receivecardid) {
-							select(cardid);
-						//}
+						rfidcard=cardid;
+						// if (receivecardid) {
+						if(forone++==1)	{
+							Log.d("hak","forone : "+forone);
+						select(cardid);
+						}
+						
 
 					} else if (cardid.length() == 1) {
+						
 						// cardid = cd.split("*")[0];
 
 						Log.d("kh", "## #cardid : " + cardid);
-
+						
 						if (once == 0) {
 
+							
 							if (cardid.equals("B")) {
 								Log.d("kh", "B is : " + cardid);
 								// 도서 등록 후 진동 보내자
@@ -471,10 +479,11 @@ public class BluetoothService {
 								// break;
 							}
 						}
-
+						forone=1;
+						
 					}
-
-					Log.d("kh", "cardid : " + cardid);
+					buffer = new byte[1024];
+					//Log.d("kh", "cardid : " + cardid);
 
 				} catch (IOException e) {
 					Log.e(TAG, "disconnected", e);
@@ -482,8 +491,8 @@ public class BluetoothService {
 					break;
 				}
 
-				Log.d("kh", "cardid : " + cardid);
-				buffer = new byte[1024];
+				//Log.d("kh", "cardid : " + cardid);
+				
 
 			}
 
@@ -538,6 +547,7 @@ public class BluetoothService {
 
 				@Override
 				protected String doInBackground(String... params) {
+					
 					final ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 					nameValuePairs.add(new BasicNameValuePair("card", qtx));
 
@@ -551,6 +561,7 @@ public class BluetoothService {
 						HttpEntity entity = response.getEntity();
 						is = entity.getContent();
 						Log.d("kh", "connection success");
+						//innerwhile=true;
 
 					} catch (Exception e) {
 						Log.e("Fail 1", e.toString());
@@ -591,15 +602,17 @@ public class BluetoothService {
 							// jo.getString("location");
 							bookReservation = jo.getString("reservation");
 							bookCard = jo.getString("card");
+							
 
 						}
 
+						
 						return a;
 
 					} catch (Exception e) {
 						Log.e("Fail 3", e.toString());
 					}
-
+					
 					return bookIsbn;
 				}
 
@@ -612,7 +625,7 @@ public class BluetoothService {
 							Activity.MODE_PRIVATE);
 					sharedEditor = sharedPref.edit();
 					String findId = sharedPref.getString("id", "");
-					//receivecardid = false;
+					// receivecardid = false;
 					if (findId.equals("")) {
 						if (loginonce == 0) {
 							login();
@@ -680,7 +693,7 @@ public class BluetoothService {
 							sb.append(line + "\n");
 						}
 						is.close();
-						Log.d("kh", "result");
+						//Log.d("kh", "result");
 						result = sb.toString();
 						Log.d("kh", result);
 					} catch (Exception e) {
@@ -689,19 +702,19 @@ public class BluetoothService {
 					}
 
 					try {
-						Log.d("kh", "1");
+						//Log.d("kh", "1");
 						JSONObject json_data = null;
 						json_data = new JSONObject(result);
-						Log.d("kh", "1.5"); // 여기는 됨
+						//Log.d("kh", "1.5"); // 여기는 됨
 						JSONArray bkName = json_data.getJSONArray("results");
 						String a = "";
 
 						for (int i = 0; i < bkName.length(); i++) {
-							Log.d("kh", "i " + i);
+							//Log.d("kh", "i " + i);
 							JSONObject jo = bkName.getJSONObject(i);
 
-							checkid = jo.getString("student");
-							Log.d("kh", "checkid : " + checkid);
+							checkid = jo.getString("card");
+							Log.d("kh", "서버에서 받은 checkid : " + checkid);
 
 						}
 
@@ -719,16 +732,19 @@ public class BluetoothService {
 					if (result == null)
 						return;
 					// btpower=true;
-
-					if (bookReservation.equals("3")) {
-
+					Log.d("kh","예약 : "+bookReservation);
+					if (bookReservation.equals("3")) 
+					{
+						//예약된 도서일경우인데
+						
 						sharedPref = mActivity.getSharedPreferences("pref",
 								Activity.MODE_PRIVATE);
 						sharedEditor = sharedPref.edit();
 						String findId = sharedPref.getString("id", "");
 						Log.d("kh", "checkid :   " + checkid + "  findId ::"
-								+ findId);
-						if (findId.equals(checkid)) {
+								+ rfidcard);
+						if (rfidcard.equals(checkid)) {
+							Log.d("kh", "내가 예약한 책이라면");
 							String message = "$3";
 							byte[] send = message.getBytes();
 							write(send);
@@ -742,28 +758,28 @@ public class BluetoothService {
 							message = "$1";
 							send = message.getBytes();
 							write(send);
-							Log.d("kh", "$1 sended");
+							//Log.d("kh", "$1 sended");
 
 							try {
 								once = 0;
-								Thread.sleep(1000);
-								
+								Thread.sleep(500);
+
 							} catch (Exception e) {
 								Log.d("error", e.getMessage());
 							}
 
-							
 						} else {
-							// gcm과 마찬가지로 알림창이 뜨는 화면을 보여준다.
 
 							// 예약중이면 진동을 2번 보낸다
+							Log.d("kh", "예약중인 도서");
+
 							String message = "$3";
 							byte[] send = message.getBytes();
 							write(send);
 							Log.d("kh", "$3 sended");
 
 							try {
-								Thread.sleep(1000);
+								Thread.sleep(2000);
 							} catch (Exception e) {
 								Log.d("error", e.getMessage());
 							}
@@ -776,12 +792,14 @@ public class BluetoothService {
 						// 받은 카드번호랑 등록된 디비의 카드 번호가 있으면
 						// $1을 보낸다
 
-						Log.d("kh", "한번만 보내기 위함이다");
+						
 						String message = "$3";
 						byte[] send = message.getBytes();
+						Log.d("kh", "진동을 보낸다");
 						write(send);
-						Log.d("kh", "$3 sended");
+						//Log.d("kh", "$3 sended");
 						try {
+							
 							Thread.sleep(1000);
 						} catch (Exception e) {
 							Log.d("error", e.getMessage());
@@ -790,11 +808,12 @@ public class BluetoothService {
 						message = "$1";
 						send = message.getBytes();
 						write(send);
-						Log.d("kh", "$1 sended");
+						Log.d("kh", "동작하라 보냈다");
 
 						once = 0;
 						try {
-							Thread.sleep(500);
+							Thread.sleep(1500);
+						 send = null;
 						} catch (Exception e) {
 							Log.d("error", e.getMessage());
 						}
@@ -889,7 +908,6 @@ public class BluetoothService {
 
 					}
 
-					
 					return result;
 				}
 
@@ -897,14 +915,14 @@ public class BluetoothService {
 				protected void onPostExecute(String result) {
 					if (result == null)
 						return;
-					//receivecardid = true;
+					// receivecardid = true;
 					try {
 						Thread.sleep(1000);
-						once=0;
+						once = 0;
 					} catch (Exception e) {
 						Log.d("error", e.getMessage());
 					}
-					
+
 					// btpower = true;
 					// btgest = false;
 				}
@@ -956,7 +974,7 @@ public class BluetoothService {
 					cal.setTime(date);
 					cal.add(Calendar.DATE, 14);
 					String enddate = mSimpleDateFormat.format(cal.getTime());
-					Log.d("kh", "date extension : " + enddate);
+					//Log.d("kh", "date extension : " + enddate);
 
 					// String mTime = "2014-08-22";
 					// String enddate = "2014-08-22";
@@ -986,7 +1004,6 @@ public class BluetoothService {
 						HttpEntity entity = response.getEntity();
 						is = entity.getContent();
 						Log.d("kh", "connection success");
-						
 
 					} catch (Exception e) {
 						Log.e("Fail 1", e.toString());
@@ -1015,12 +1032,12 @@ public class BluetoothService {
 				protected void onPostExecute(String result) {
 					if (result == null)
 						return;
-					//receivecardid = true;
-					
-					once=1;
+					// receivecardid = true;
+
+					once = 1;
 					try {
 						Thread.sleep(1500);
-						once=0;
+						once = 0;
 					} catch (Exception e) {
 						Log.d("error", e.getMessage());
 					}
@@ -1050,7 +1067,7 @@ public class BluetoothService {
 				.setPositiveButton("확인", new DialogInterface.OnClickListener() {
 					// 확인 버튼 클릭시 설정
 					public void onClick(DialogInterface dialog, int whichButton) {
-						//receivecardid = true;
+						// receivecardid = true;
 					}
 				});
 
@@ -1075,7 +1092,7 @@ public class BluetoothService {
 					public void onClick(DialogInterface dialog, int whichButton) {
 
 						loginonce = 0;
-						//receivecardid = true;
+						// receivecardid = true;
 					}
 				});
 

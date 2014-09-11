@@ -620,6 +620,7 @@ public class BookInfoActivity extends Activity {
 		private ArrayList<BookInfo> list;
 		
 
+
 		public DataAdapter(Context context, ArrayList<BookInfo> object) {
 
 			// 상위 클래스의 초기화 과정
@@ -675,7 +676,7 @@ public class BookInfoActivity extends Activity {
 		// 보여지는 스타일을 자신이 만든 xml로 보이기 위한 구문
 		@Override
 		public View getView(final int position, View v, ViewGroup parent) {
-
+			cnt=0;
 			View view = null;
 
 			// 현재 리스트의 하나의 항목에 보일 컨트롤 얻기
@@ -710,7 +711,7 @@ public class BookInfoActivity extends Activity {
 
 				
 
-				holder.number.setText(String.valueOf(cnt++));
+				holder.number.setText(String.valueOf(++cnt));
 				holder.chung.setText(data.getCategory());
 				holder.location.setText(data.getLocation());
 

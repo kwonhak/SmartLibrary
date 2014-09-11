@@ -145,6 +145,7 @@ public class ActivityRent extends Activity {
 		select(userid);
 
 		mListView = (ListView) findViewById(R.id.book_list);
+		mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		brList = new ArrayList<RentInfo>();
 		adapter = new ListAdapter(this, brList);
 

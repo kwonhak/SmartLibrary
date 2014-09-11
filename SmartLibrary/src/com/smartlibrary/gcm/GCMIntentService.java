@@ -12,7 +12,6 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.example.smartlibrary.R;
-import com.example.smartlibrary.TabMenuActivity;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 public class GCMIntentService extends IntentService {

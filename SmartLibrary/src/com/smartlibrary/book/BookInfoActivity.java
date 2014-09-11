@@ -765,6 +765,10 @@ public class BookInfoActivity extends Activity {
 										
 										getgcmid(selectcard);
 									} else {
+										selectIsbn = null;
+										selectReservation = null;
+										selectcard = null;
+										
 										
 									}
 								}

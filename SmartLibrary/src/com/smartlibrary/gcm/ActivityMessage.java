@@ -26,8 +26,8 @@ import android.view.LayoutInflater;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.example.smartlibrary.MainActivity;
 import com.example.smartlibrary.R;
-import com.example.smartlibrary.TabMenuActivity;
 
 public class ActivityMessage extends Activity {
 	private SharedPreferences sharedPref;
@@ -76,7 +76,7 @@ public class ActivityMessage extends Activity {
 					public void onClick(DialogInterface dialog, int whichButton) {
 						Intent intent_person = new Intent();
 						intent_person.setClass(ActivityMessage.this,
-								TabMenuActivity.class);
+								MainActivity.class);
 						startActivity(intent_person);
 						finish();
 					}
@@ -111,7 +111,7 @@ public class ActivityMessage extends Activity {
 						// TODO Auto-generated method stub
 						Intent intent_person = new Intent();
 						intent_person.setClass(ActivityMessage.this,
-								TabMenuActivity.class);
+								MainActivity.class);
 						startActivity(intent_person);
 						finish();
 						return;
@@ -169,7 +169,7 @@ public class ActivityMessage extends Activity {
 						return;
 					Intent intent_person = new Intent();
 					intent_person.setClass(ActivityMessage.this,
-							TabMenuActivity.class);
+							MainActivity.class);
 					startActivity(intent_person);
 					// finish();
 

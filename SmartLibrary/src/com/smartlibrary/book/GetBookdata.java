@@ -34,8 +34,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -45,9 +43,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.smartlibrary.MainActivity;
 import com.example.smartlibrary.R;
-import com.example.smartlibrary.SettingActivity;
-import com.example.smartlibrary.TabMenuActivity;
 
 public class GetBookdata extends Activity {
 
@@ -131,7 +128,7 @@ public class GetBookdata extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent_home = new Intent();
-				intent_home.setClass(GetBookdata.this, SettingActivity.class);
+				intent_home.setClass(GetBookdata.this, MainActivity.class);
 
 				Log.d("kh", "list home button ");
 				startActivity(intent_home);
@@ -145,7 +142,7 @@ public class GetBookdata extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent_home = new Intent();
-				intent_home.setClass(GetBookdata.this, SettingActivity.class);
+				intent_home.setClass(GetBookdata.this, MainActivity.class);
 
 				Log.d("kh", "list home button ");
 				startActivity(intent_home);

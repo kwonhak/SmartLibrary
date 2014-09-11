@@ -62,7 +62,7 @@ public class ActivityBorrow extends Activity {
 	String enddate;
 	String extension;
 	String title;
-
+	private boolean mCheckBoxState = true;
 	String selectcard = "";
 	String userid = "";
 	String selectIsbn = "";
@@ -92,7 +92,7 @@ public class ActivityBorrow extends Activity {
 		Button btnhome = (Button) findViewById(R.id.home);
 		Button btnsearch = (Button) findViewById(R.id.search);
 		Button btnextension = (Button) findViewById(R.id.extension);
-		//btnborrow.setBackgroundColor(R.drawable.borrowbutton_change);
+		// btnborrow.setBackgroundColor(R.drawable.borrowbutton_change);
 
 		btnextension.setOnClickListener(new Button.OnClickListener() {
 			@Override
@@ -142,8 +142,7 @@ public class ActivityBorrow extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent_home = new Intent();
-				intent_home
-						.setClass(ActivityBorrow.this, MainActivity.class);
+				intent_home.setClass(ActivityBorrow.this, MainActivity.class);
 
 				Log.d("kh", "list home button ");
 				startActivity(intent_home);
@@ -151,7 +150,6 @@ public class ActivityBorrow extends Activity {
 			}
 		});
 
-		
 		btnrent.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -164,18 +162,19 @@ public class ActivityBorrow extends Activity {
 				finish();
 			}
 		});
-		
+
 		btnsearch.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent_setting = new Intent();
-				intent_setting.setClass(ActivityBorrow.this, ActivitySearch.class);
+				intent_setting.setClass(ActivityBorrow.this,
+						ActivitySearch.class);
 
 				Log.d("kh", "search button ");
 				startActivity(intent_setting);
 				finish();
-				
+
 			}
 		});
 
@@ -190,6 +189,7 @@ public class ActivityBorrow extends Activity {
 		adapter = new ListAdapter(this, brList);
 
 		mListView.setAdapter(adapter);
+		mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
 	}
 
@@ -306,9 +306,11 @@ public class ActivityBorrow extends Activity {
 			// 상위 클래스의 초기화 과정
 			// context, 0, 자료구조
 			super(context, 0, object);
+			
 			mInflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			list = object;
+			
 
 		}
 
@@ -341,32 +343,44 @@ public class ActivityBorrow extends Activity {
 				TextView bktitle = (TextView) view.findViewById(R.id.title);
 				TextView bkenddate = (TextView) view.findViewById(R.id.enddate);
 				CheckBox chbox = (CheckBox) view.findViewById(R.id.checkbox);
+				
+				if (mCheckBoxState) {
 				chbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 					@Override
 					public void onCheckedChanged(CompoundButton buttonView,
 							boolean isChecked) {
-						if (buttonView.getId() == R.id.checkbox) {
-							if (isChecked) {
-								// selectIsbn = list.get((int)
-								// getItemId(position)).getIsbn();
-								selectcard = list.get(position).getCard();
-								selectIsbn = list.get(position).getIsbn();
-								selectExtension = list.get(position)
-										.getExtension();
-								Log.d("kh", "extension" + selectExtension);
-								// Toast.makeText(getApplicationContext(), "눌림",
-								// 1).show();
-							} else {
-								selectcard = "";
-								selectIsbn = "";
-								selectExtension = "";
-								// Toast.makeText(getApplicationContext(),
-								// "안눌림", 1).show();
-							}
+						
+							if (buttonView.getId() == R.id.checkbox) {
+								if (isChecked) {
+									// selectIsbn = list.get((int)
+									// getItemId(position)).getIsbn();
+									selectcard = list.get(position).getCard();
+									selectIsbn = list.get(position).getIsbn();
+									selectExtension = list.get(position)
+											.getExtension();
+									Log.d("kh", "extension" + selectExtension);
+									//mCheckBoxState=false;
+									isChecked = false;
+									// Toast.makeText(getApplicationContext(),
+									// "눌림",
+									// 1).show();
+								} else {
+									selectcard = "";
+									selectIsbn = "";
+									selectExtension = "";
+									//mCheckBoxState=true;
+									isChecked = true;
+									// Toast.makeText(getApplicationContext(),
+									// "안눌림", 1).show();
+								}
+							
 						}
 					}
 				});
+				}
+				
+				
 
 				bktitle.setText(data.getTitle());
 				bkenddate.setText(data.getEnddate());

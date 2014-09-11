@@ -249,19 +249,26 @@ public class SearchBookList extends Activity implements OnItemClickListener {
 									bookPublisher, bookPubdate, bookTitle,
 									bookLocation, bookReservation,bookCard));
 						}
-						return a;
+						return result;
 
 					} catch (Exception e) {
 						Log.e("Fail 3", e.toString());
 					}
 
-					return null;
+					return result;
 				}
 
 				@Override
 				protected void onPostExecute(String result) {
 					if (result == null)
+					{
+						Toast toast = Toast.makeText(getApplicationContext(),
+								"검색 결과가 없습니다.", Toast.LENGTH_SHORT);
+						toast.setGravity(Gravity.TOP, 25, 400);
+						toast.show();
+						
 						return;
+					}
 
 					adapter.clear();
 					adapter.addAll(dataList);

@@ -244,7 +244,7 @@ public class ActivityNFC<NFCReaderActivity> extends Activity {
 						JSONArray bkName = json_data.getJSONArray("results");
 
 						for (int i = 0; i < bkName.length(); i++) {
-							Log.d("kh", "i " + i);
+							//Log.d("kh", "i " + i);
 							JSONObject jo = bkName.getJSONObject(i);
 
 							card = jo.getString("card");
@@ -278,7 +278,7 @@ public class ActivityNFC<NFCReaderActivity> extends Activity {
 						intent_person.putExtra("isbn", isbn);
 
 						intent_person.putExtra("sign", sign);
-						intent_person.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						//intent_person.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
 						startActivity(intent_person);
 					}

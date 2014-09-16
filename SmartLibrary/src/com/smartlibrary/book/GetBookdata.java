@@ -130,11 +130,13 @@ public class GetBookdata extends Activity {
 				Intent intent_home = new Intent();
 				intent_home.setClass(GetBookdata.this, MainActivity.class);
 
-				intent_home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				//intent_home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				Log.d("kh", "list home button ");
-				startActivity(intent_home);
-
 				send();
+				startActivity(intent_home);
+				//finish();
+
+				
 			}
 		});
 
@@ -218,7 +220,7 @@ public class GetBookdata extends Activity {
 
 					}
 
-					return null;
+					return result;
 				}
 
 				@Override

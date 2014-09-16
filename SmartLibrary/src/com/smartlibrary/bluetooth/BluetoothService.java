@@ -37,11 +37,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.os.Vibrator;
 import android.util.Log;
-import android.view.Gravity;
-import android.widget.Toast;
 
 import com.smartlibrary.book.BookInfo;
 
@@ -71,6 +71,9 @@ public class BluetoothService {
 
 	private ConnectThread mConnectThread; // ������ �ٽ�
 	private ConnectedThread mConnectedThread; // ������ �ٽ�
+	
+	public static final String TOAST = "toast";
+
 
 	private int mState;
 
@@ -187,16 +190,33 @@ public class BluetoothService {
 	private synchronized void setState(int state) {
 		Log.d(TAG, "setState() " + mState + " -> " + state);
 		mState = state;
+		
+		 // mHandler.obtainMessage(BluetoothService.MESSAGE_STATE_CHANGE, state, -1).sendToTarget();
 		if (state == 3) {
 			// Toast.makeText(mActivity, "블루투스가 연결되었습니다", 1).show();
 			Log.d("kh", "블루투스 연결");
 			Vibrator vibe = (Vibrator) mActivity
 					.getSystemService(Context.VIBRATOR_SERVICE);
 			vibe.vibrate(500);
-			// Toast toast = Toast.makeText(Context.getApplicationContext(),
-			// "로그인이 필요합니다.", Toast.LENGTH_SHORT);
-			// toast.setGravity(Gravity.TOP, 25, 400);
-			// toast.show();
+
+			
+//			 Toast toast = Toast.makeText(mActivity,
+//			 "블투스 연결 성공", Toast.LENGTH_LONG);
+//			 toast.setGravity(Gravity.TOP, 25, 400);
+//			 toast.show();
+			
+//			Message msg = mHandler.obtainMessage(BluetoothService.MESSAGE_TOAST);
+//			Bundle bundle = new Bundle();
+//			bundle.putString(BluetoothService.TOAST, "블루투스 연결 성공");
+//			msg.setData(bundle);
+//			mHandler.sendMessage(msg);
+			
+			 
+			String message = "$3";
+			byte[] send = message.getBytes();
+			write(send);
+			
+			//BluetoothService.this.start();
 		}
 	}
 
@@ -798,7 +818,7 @@ public class BluetoothService {
 						// Log.d("kh", "$3 sended");
 						try {
 
-							Thread.sleep(1000);
+							Thread.sleep(1800);
 						} catch (Exception e) {
 							Log.d("error", e.getMessage());
 						}
@@ -914,6 +934,9 @@ public class BluetoothService {
 					if (result == null)
 						return;
 					// receivecardid = true;
+					String message = "$3";
+					byte[] send = message.getBytes();
+					write(send);
 					try {
 						Thread.sleep(1000);
 						once = 0;
@@ -1032,6 +1055,9 @@ public class BluetoothService {
 						return;
 					// receivecardid = true;
 
+					String message = "$3";
+					byte[] send = message.getBytes();
+					write(send);
 					once = 1;
 					try {
 						Thread.sleep(1500);

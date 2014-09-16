@@ -44,6 +44,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -345,7 +346,9 @@ public class ActivityBorrow extends Activity {
 				// 화면 출력
 				TextView bktitle = (TextView) view.findViewById(R.id.title);
 				TextView bkenddate = (TextView) view.findViewById(R.id.enddate);
+				//CheckBox chbox = (CheckBox) view.findViewById(R.id.checkbox);
 				CheckBox chbox = (CheckBox) view.findViewById(R.id.checkbox);
+				
 				
 				
 				chbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -353,7 +356,8 @@ public class ActivityBorrow extends Activity {
 					public void onCheckedChanged(CompoundButton buttonView,
 							boolean isChecked) {						
 							if (buttonView.getId() == R.id.checkbox) {
-								if (isChecked) {									
+								if (isChecked) {						
+									
 									selectcard = list.get(position).getCard();
 									selectIsbn = list.get(position).getIsbn();
 									selectExtension = list.get(position)
@@ -370,6 +374,28 @@ public class ActivityBorrow extends Activity {
 				});
 				
 				
+//				
+//				chbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+//					
+//					@Override
+//					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//						// TODO Auto-generated method stub
+//						if (buttonView.getId() == R.id.checkbox) {
+//							if (isChecked) {									
+//								selectcard = list.get(position).getCard();
+//								selectIsbn = list.get(position).getIsbn();
+//								selectExtension = list.get(position)
+//										.getExtension();
+//								Log.d("kh", "extension" + selectExtension);
+//								
+//							} else {
+//								selectcard = "";
+//								selectIsbn = "";
+//								selectExtension = "";								
+//							}							
+//						}
+//					}
+//				});
 				
 
 				bktitle.setText(data.getTitle());
@@ -489,5 +515,7 @@ public class ActivityBorrow extends Activity {
 		AlertDialog dialog = builder.create(); // 알림창 객체 생성
 		dialog.show(); // 알림창 띄우기
 	}
+	
+
 
 }

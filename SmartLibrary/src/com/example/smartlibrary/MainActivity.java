@@ -88,6 +88,11 @@ public class MainActivity extends Activity {
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
+//			switch (msg.what) {
+//			case BluetoothService.MESSAGE_TOAST:
+//
+//				break;			
+//			}
 		}
 
 	};
@@ -771,6 +776,7 @@ public class MainActivity extends Activity {
 		}
 
 	}
+	
 
 
 }
